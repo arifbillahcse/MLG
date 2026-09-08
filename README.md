@@ -13,10 +13,30 @@ python3 -m http.server 8080
 ## Files
 
 ```
-index.html            All 14 homepage sections
+index.html            Homepage — all 14 sections
+contact.html          Contact page — form, office info, map slot, next steps
+blog.html             Blog index — featured post, filterable grid, pagination
 assets/css/style.css  Design tokens + every component
-assets/js/main.js     Animations, countdown, carousel, forms, language toggle
+assets/js/main.js     Animations, countdown, carousel, forms, filter, language toggle
 ```
+
+The three pages share the topbar, header and footer markup verbatim. There is no
+templating here, so **a change to the header or footer must be copied into all three
+files** — the first thing the WordPress port fixes.
+
+### Contact page
+
+Office info cards, a five-field message form, a map placeholder and a four-step
+"what happens next" sequence. Replace the `.map` block with a Google Maps `<iframe>`
+(add `loading="lazy"`). Carries `EducationalOrganization` JSON-LD with
+`openingHoursSpecification`.
+
+### Blog page
+
+One featured post plus a six-card grid, filterable by topic. Filtering is client-side:
+each card carries `data-cat`, each chip carries `data-filter`, and the handler hides
+non-matching cards and shows an empty state. Pagination is static markup — wire it to
+real paging when the posts become a CMS collection.
 
 ## Design tokens
 
@@ -102,7 +122,9 @@ Two things make these safe in production:
 | Partner names | marquee in `index.html` — only institutions you can substantiate |
 | Google review text and count | `#reviewTrack`, or drop in a live reviews widget |
 | Video testimonial thumbnails | `.vcard__thumb` gradients are placeholders for real stills |
-| Blog post thumbnails | `.post__thumb` gradients, same |
+| Blog post thumbnails | `.post__thumb` gradients on `index.html` and `blog.html` |
+| Map embed | `.map` block in `contact.html` |
+| Blog post URLs | every `href="#"` in `blog.html` |
 | Form submission | `assets/js/main.js` § 12 — replace the `setTimeout` with a real `fetch()` POST |
 | JSON-LD `url`, `telephone`, `email`, `sameAs` | `<head>` of `index.html` |
 

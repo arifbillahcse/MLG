@@ -512,13 +512,15 @@
   }
 
   /* ---------- 12. Forms -------------------------------------------
-     Client-side validation only. Wire the fetch() to your CRM,
-     Google Sheet, or WordPress REST endpoint before launch. */
+     Every form carrying data-lead is handled here; its status line is
+     the .form__status inside it. Client-side validation only — wire the
+     fetch() to your CRM, Google Sheet or WordPress REST endpoint. */
   function initForms() {
-    [['#seminarForm', '#seminarStatus'], ['#leadForm', '#leadStatus']].forEach(function (pair) {
-      var form = $(pair[0]);
-      var status = $(pair[1]);
-      if (!form || !status) return;
+    var bdPhone = /^01[3-9]\d{8}$/;
+
+    $$('form[data-lead]').forEach(function (form) {
+      var status = $('.form__status', form);
+      if (!status) return;
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -526,23 +528,21 @@
 
         var name = form.querySelector('input[name="name"]');
         var phone = form.querySelector('input[name="phone"]');
-        var bdPhone = /^01[3-9]\d{8}$/;
 
-        [name, phone].forEach(function (f) { f.removeAttribute('aria-invalid'); });
+        [name, phone].forEach(function (f) { if (f) f.removeAttribute('aria-invalid'); });
 
-        if (!name.value.trim()) {
-          name.setAttribute('aria-invalid', 'true');
-          name.focus();
-          status.textContent = 'Please enter your name.';
+        function fail(field, message) {
+          field.setAttribute('aria-invalid', 'true');
+          field.focus();
+          status.textContent = message;
           status.classList.add('is-err');
-          return;
         }
-        if (!bdPhone.test(phone.value.replace(/[\s-]/g, ''))) {
-          phone.setAttribute('aria-invalid', 'true');
-          phone.focus();
-          status.textContent = 'Enter a valid Bangladeshi mobile number, e.g. 01712345678.';
-          status.classList.add('is-err');
-          return;
+
+        if (name && !name.value.trim()) {
+          return fail(name, 'Please enter your name.');
+        }
+        if (phone && !bdPhone.test(phone.value.replace(/[\s-]/g, ''))) {
+          return fail(phone, 'Enter a valid Bangladeshi mobile number, e.g. 01712345678.');
         }
 
         var btn = form.querySelector('button[type="submit"]');
@@ -558,6 +558,39 @@
           status.textContent = 'Thank you. We will call you within one working day.';
           status.classList.add('is-ok');
         }, 700);
+      });
+    });
+  }
+
+  /* ---------- 12b. Blog topic filter ---------- */
+  function initBlogFilter() {
+    var chips = $$('.chip[data-filter]');
+    var grid = $('#postGrid');
+    if (!chips.length || !grid) return;
+
+    var posts = $$('.post', grid);
+    var featured = $('.featured[data-cat]');
+    var empty = $('#blogEmpty');
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var filter = chip.dataset.filter;
+        chips.forEach(function (c) { c.classList.toggle('is-active', c === chip); });
+
+        var shown = 0;
+        posts.forEach(function (post) {
+          var match = filter === 'all' || post.dataset.cat === filter;
+          post.hidden = !match;
+          if (match) shown++;
+        });
+
+        if (featured) {
+          var featMatch = filter === 'all' || featured.dataset.cat === filter;
+          featured.hidden = !featMatch;
+          if (featMatch) shown++;
+        }
+
+        if (empty) empty.hidden = shown > 0;
       });
     });
   }
@@ -603,6 +636,7 @@
     initFaq();
     initLang();
     initForms();
+    initBlogFilter();
     initToTop();
     initYear();
   }
