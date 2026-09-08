@@ -46,13 +46,16 @@ whole page follows.
 | Token | Value | Role |
 |---|---|---|
 | `--ink` | `#0D1B3E` | Midnight Indigo — nav, footer, headings |
-| `--red` | `#D3372B` | Torii Red — primary CTA, **Japanese/visa track** |
-| `--teal` | `#0B7A70` | Gateway Teal — secondary CTA, **IELTS/global track** |
+| `--red` | `#D3372B` | Torii Red — primary CTA, **language courses** |
+| `--teal` | `#0B7A70` | Gateway Teal — secondary CTA, **test prep &amp; study abroad** |
 | `--gold` | `#E8A33D` | Sunrise Gold — ratings, badges, counters (navy grounds only) |
 | `--paper` / `--band` | `#F5F6FA` / `#EEF0F7` | Page ground and alternating section bands |
 | `--slate` | `#5A6478` | Body copy |
 
-Red and teal are not decoration — they encode the two product lines. Keep that split.
+Red and teal encode the two halves of the business: red is "learn a language with us",
+teal is "go somewhere with us". With four language lines, resist giving each its own
+accent — four accents plus navy plus gold is more palette than a page can hold. Languages
+are distinguished by their glyph (あ / 한 / 中 / IELTS), not by colour.
 
 Spacing uses a fixed scale (`--s1`…`--s9` = 4/8/12/16/24/32/48/64/96). Don't introduce
 values off the scale.
@@ -63,20 +66,29 @@ EN/বাংলা toggle doesn't switch typeface), system monospace for figures
 
 ## Sections
 
+Built to the client requirements PDF (four course lines, three destinations).
+
 1. Utility bar — phone, email, EN/বাংলা toggle, socials
-2. Sticky header — simple dropdowns on desktop, slide-in drawer on mobile
-3. Animated hero — sakura canvas, orbiting destinations, rotating headline, floating cards
-4. Program selector — Japanese / IELTS / Japan Visa
-5. Live batch schedule with countdown
-6. Why MLG — four pillars
-7. Japan route — six-step timeline
-8. Partner marquee
-9. Success stories — video cards + Google review carousel
-10. Transparent pricing — fee table + three visa packages
-11. Free seminar + registration form
-12. Blog / resources
-13. FAQ accordion
-14. Final CTA band + mega footer
+2. Sticky header — Language Courses / Study Abroad / Success Stories / About Us / Blog / Contact
+3. Animated hero — sakura canvas, orbiting destinations, rotating country name, floating cards
+4. **Course grid** — Japanese (JLPT), Korean (TOPIK), Chinese (HSK), IELTS, each with online/in-class chips
+5. **Study abroad** — Japan, Korea, China destination cards
+6. Application process — six steps, country-agnostic
+7. **Online recorded vs in class** — side-by-side comparison
+8. Batch schedule — four batches with live countdown
+9. Why choose us + **accreditation badges**
+10. **Results board** — IELTS bands, JLPT/TOPIK/HSK passes
+11. **Faculty** — four instructor cards
+12. **Acceptance letters** — redacted offer-letter gallery
+13. Success stories — video cards + review carousel
+14. Universities marquee
+15. **Free mock test booking** — IELTS / JLPT / TOPIK / HSK
+16. Pricing — fee table with separate in-class and online columns
+17. **About** — mission, vision, facility photos
+18. Free seminar + registration
+19. Blog / resources
+20. FAQ accordion
+21. Final CTA band + mega footer
 
 Plus a floating WhatsApp button, a sticky mobile call/WhatsApp bar, and back-to-top —
 all three hide themselves while the mobile drawer is open.
@@ -96,11 +108,12 @@ submenu needs exactly one child element to collapse fully.
 |---|---|
 | Sakura petal canvas | Hero — pauses when scrolled out of view |
 | Orbiting destination nodes | Hero — CSS `@keyframes`, counter-rotated so flags stay upright |
-| Rotating headline word | "Japan" → "the world" → "日本", colour follows the track |
+| Rotating headline word | "Japan" → "Korea" → "China" |
 | Drifting gradient blobs | Hero background |
 | Scroll reveal | Every section, staggered via `data-delay="1…6"` |
 | Counting statistics | Hero trust strip |
 | Live countdown | Next batch section |
+| Blog topic filter | Blog page chips, client-side |
 | Star-field canvas | Final CTA — pauses when out of view |
 | Marquee | Partner wall, pauses on hover |
 
