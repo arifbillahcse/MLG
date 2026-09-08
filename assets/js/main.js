@@ -64,79 +64,108 @@
     update();
   }
 
-  /* ---------- 3. Mobile menu + mega dropdowns ---------- */
+  /* ---------- 3. Mobile drawer + dropdowns ---------- */
   function initNav() {
     var burger = $('#burger');
     var nav = $('#nav');
+    var backdrop = $('#navBackdrop');
+    var closeBtn = $('#navClose');
     if (!burger || !nav) return;
 
-    burger.addEventListener('click', function () {
-      var open = nav.classList.toggle('is-open');
-      burger.setAttribute('aria-expanded', String(open));
-      burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      document.body.style.overflow = open ? 'hidden' : '';
-    });
+    var isDesktop = function () { return window.matchMedia('(min-width:1051px)').matches; };
+    var items = $$('.nav__item.has-sub');
 
-    // close the menu when a link inside it is followed
-    nav.addEventListener('click', function (e) {
-      var link = e.target.closest('a[href^="#"]');
-      if (!link || !nav.classList.contains('is-open')) return;
+    function closeSubmenus() {
+      items.forEach(function (i) {
+        i.classList.remove('is-open');
+        var t = $('.nav__link', i);
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    function openDrawer() {
+      nav.classList.add('is-open');
+      burger.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('nav-open');
+      document.body.style.overflow = 'hidden';
+      if (backdrop) {
+        backdrop.hidden = false;
+        window.requestAnimationFrame(function () { backdrop.classList.add('is-shown'); });
+      }
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeDrawer(returnFocus) {
       nav.classList.remove('is-open');
       burger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
       document.body.style.overflow = '';
-    });
+      closeSubmenus();
+      if (backdrop) {
+        backdrop.classList.remove('is-shown');
+        window.setTimeout(function () { backdrop.hidden = true; }, 300);
+      }
+      if (returnFocus) burger.focus();
+    }
 
-    var items = $$('.nav__item.has-mega');
+    burger.addEventListener('click', function () {
+      if (nav.classList.contains('is-open')) closeDrawer(); else openDrawer();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', function () { closeDrawer(true); });
+    if (backdrop) backdrop.addEventListener('click', function () { closeDrawer(); });
+
+    // following any link inside the drawer closes it
+    nav.addEventListener('click', function (e) {
+      if (!e.target.closest('a[href]')) return;
+      if (nav.classList.contains('is-open')) closeDrawer();
+    });
 
     items.forEach(function (item) {
       var trigger = $('.nav__link', item);
 
       trigger.addEventListener('click', function (e) {
         e.preventDefault();
-        var open = item.classList.contains('is-open');
-        items.forEach(function (i) {
-          i.classList.remove('is-open');
-          var t = $('.nav__link', i);
-          if (t) t.setAttribute('aria-expanded', 'false');
-        });
-        if (!open) {
+        var wasOpen = item.classList.contains('is-open');
+        closeSubmenus();
+        if (!wasOpen) {
           item.classList.add('is-open');
           trigger.setAttribute('aria-expanded', 'true');
         }
       });
 
-      // hover-open on pointer devices with room for the panel
+      // hover opens on desktop only
       item.addEventListener('mouseenter', function () {
-        if (window.matchMedia('(min-width:1051px)').matches) {
-          item.classList.add('is-open');
-          trigger.setAttribute('aria-expanded', 'true');
-        }
+        if (!isDesktop()) return;
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
       });
       item.addEventListener('mouseleave', function () {
-        if (window.matchMedia('(min-width:1051px)').matches) {
-          item.classList.remove('is-open');
-          trigger.setAttribute('aria-expanded', 'false');
-        }
+        if (!isDesktop()) return;
+        item.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
       });
     });
 
+    // click outside closes desktop dropdowns
     document.addEventListener('click', function (e) {
-      if (e.target.closest('.nav__item.has-mega')) return;
-      items.forEach(function (i) {
-        i.classList.remove('is-open');
-        var t = $('.nav__link', i);
-        if (t) t.setAttribute('aria-expanded', 'false');
-      });
+      if (e.target.closest('.nav__item.has-sub')) return;
+      if (!isDesktop()) return;
+      closeSubmenus();
     });
 
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
-      items.forEach(function (i) { i.classList.remove('is-open'); });
-      if (nav.classList.contains('is-open')) {
-        nav.classList.remove('is-open');
-        burger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      }
+      if (nav.classList.contains('is-open')) closeDrawer(true);
+      else closeSubmenus();
+    });
+
+    // resizing past the breakpoint must not leave the drawer stuck open
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        if (isDesktop() && nav.classList.contains('is-open')) closeDrawer();
+      }, 150);
     });
   }
 

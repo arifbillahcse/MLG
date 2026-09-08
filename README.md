@@ -44,7 +44,7 @@ EN/বাংলা toggle doesn't switch typeface), system monospace for figures
 ## Sections
 
 1. Utility bar — phone, email, EN/বাংলা toggle, socials
-2. Sticky header with mega-menu
+2. Sticky header — simple dropdowns on desktop, slide-in drawer on mobile
 3. Animated hero — sakura canvas, orbiting destinations, rotating headline, floating cards
 4. Program selector — Japanese / IELTS / Japan Visa
 5. Live batch schedule with countdown
@@ -58,7 +58,17 @@ EN/বাংলা toggle doesn't switch typeface), system monospace for figures
 13. FAQ accordion
 14. Final CTA band + mega footer
 
-Plus a floating WhatsApp button, a sticky mobile call/WhatsApp bar, and back-to-top.
+Plus a floating WhatsApp button, a sticky mobile call/WhatsApp bar, and back-to-top —
+all three hide themselves while the mobile drawer is open.
+
+**Navigation note:** `.header` must not carry `backdrop-filter` at mobile widths. A
+filtered ancestor becomes the containing block for `position: fixed`, which traps the
+drawer inside the 72px header bar instead of filling the viewport. The mobile media query
+turns it off deliberately — don't add it back.
+
+Each submenu is a `<div class="submenu">` wrapping a single `<ul>`. The mobile collapse
+uses `grid-template-rows: 0fr → 1fr`, which only sizes the **first** row track, so the
+submenu needs exactly one child element to collapse fully.
 
 ## Animations
 
