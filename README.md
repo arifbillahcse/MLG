@@ -93,6 +93,17 @@ Built to the client requirements PDF (four course lines, three destinations).
 Plus a floating WhatsApp button, a sticky mobile call/WhatsApp bar, and back-to-top —
 all three hide themselves while the mobile drawer is open.
 
+**Mobile header notes:**
+
+- `.header__cta` needs `margin-left: auto` at mobile widths. `.nav` is `position: fixed`
+  there, so it no longer occupies flow space and stops pushing the burger to the right edge.
+- The topbar is `flex-wrap: nowrap` under 760px. Left wrapping, it became two rows and
+  doubled the bar's height on phones.
+- Hero float cards are hidden under 980px. They are absolutely positioned and collide with
+  each other and the orbit at that width; the copy above already states what they say.
+- `.hero__art` must not be re-ordered before `.hero__copy` on mobile — it pushes the
+  headline and primary CTA below the fold.
+
 **Navigation note:** `.header` must not carry `backdrop-filter` at mobile widths. A
 filtered ancestor becomes the containing block for `position: fixed`, which traps the
 drawer inside the 72px header bar instead of filling the viewport. The mobile media query

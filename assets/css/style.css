@@ -182,7 +182,18 @@ address{font-style:normal}
 .socials .ic{width:15px;height:15px}
 
 @media (max-width:760px){
+  .topbar{font-size:12.5px}
   .topbar__hours,.topbar__link--hide-sm{display:none}
+  /* one row only — wrapping doubled the bar's height on phones */
+  .topbar__inner{flex-wrap:nowrap;gap:var(--s3);min-height:36px}
+  .topbar__contact{flex-wrap:nowrap;gap:var(--s3)}
+  .topbar__right{gap:var(--s3)}
+  .lang__btn{padding:3px 9px;font-size:11.5px}
+  .socials{gap:2px}
+  .socials a{width:24px;height:24px}
+}
+@media (max-width:430px){
+  .socials{display:none}
 }
 
 /* ---------- 7. HEADER ---------- */
@@ -266,6 +277,8 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 @media (max-width:1050px){
   .burger{display:flex}
   .header__cta .btn{display:none}
+  /* .nav is fixed here, so it no longer pushes the burger right */
+  .header__cta{margin-left:auto}
 
   /* backdrop-filter makes the header a containing block for position:fixed,
      which would trap the drawer inside the header bar. Drop it here. */
@@ -458,7 +471,7 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 
 /* --- floating cards --- */
 .float-card{
-  position:absolute;z-index:3;
+  position:absolute;z-index:3;max-width:236px;
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
   box-shadow:var(--shadow);padding:12px 16px;
   display:flex;align-items:center;gap:10px;font-size:13.5px;
@@ -486,24 +499,28 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 @keyframes scroll-hint{0%,100%{transform:scaleY(.3);opacity:.4}50%{transform:scaleY(1);opacity:1}}
 
 @media (max-width:980px){
-  .hero{padding:var(--s8) 0}
-  .hero__inner{grid-template-columns:1fr;gap:var(--s7)}
-  .hero__art{height:400px;order:-1}
+  .hero{padding:var(--s7) 0 var(--s8)}
+  .hero__inner{grid-template-columns:1fr;gap:var(--s6)}
+  /* headline first — the art used to push it below the fold */
+  .hero__art{height:340px}
+  /* the three cards are absolutely positioned and collide at this width;
+     the copy above already states everything they say */
+  .float-card{display:none}
   .orbit{width:300px;height:300px}
   .orbit__ring--inner,.orbit__spin--inner{inset:58px}
   .node{transform:rotate(var(--a)) translate(150px) rotate(calc(-1 * var(--a)))}
   .orbit__spin--inner .node{transform:rotate(var(--a)) translate(92px) rotate(calc(-1 * var(--a)))}
-  .orbit__core{width:136px;height:136px}
-  .orbit__core-jp{font-size:24px}
-  .float-card--a{top:0;left:0}
-  .float-card--b{bottom:20px;left:0}
-  .float-card--c{top:30px;right:0}
+  .orbit__core{width:152px;height:152px;padding:0 8px}
+  .orbit__core-jp{font-size:26px}
+  .orbit__core-label{font-size:10px;letter-spacing:-.01em}
   .hero__scroll{display:none}
   .trust{gap:var(--s6)}
 }
 @media (max-width:560px){
-  .float-card--b{display:none}
-  .hero__art{height:340px}
+  .hero__art{height:290px}
+  .orbit__core{width:140px;height:140px}
+  .orbit__core-jp{font-size:23px}
+  .orbit__core-label{font-size:9px}
   .orbit{width:250px;height:250px}
   .node{transform:rotate(var(--a)) translate(125px) rotate(calc(-1 * var(--a)))}
   .node__in{width:40px;height:40px;top:-20px;left:-20px;font-size:18px}
