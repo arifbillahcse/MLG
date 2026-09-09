@@ -17,6 +17,7 @@ index.html            Homepage — all 21 sections
 japanese.html         Japanese course — JLPT N5 & N4
 contact.html          Contact page — form, office info, map slot, next steps
 blog.html             Blog index — featured post, filterable grid, pagination
+assets/img/           Logo files
 assets/css/style.css  Design tokens + every component
 assets/js/main.js     Animations, countdown, carousel, forms, filter, language toggle
 ```
@@ -181,6 +182,21 @@ coverage, add the attribute pair to more elements — no JavaScript change neede
 choice persists in `localStorage`. For a full bilingual site, use Polylang or WPML on the
 WordPress port rather than extending this.
 
+## Logo
+
+`assets/img/glm-logo.png` (387×337, 141 KB) is the master file as supplied. Pages use
+`glm-logo-132.png` (152×132, 28 KB) — a box-filtered downsample at roughly 3× the 42px
+display height, so it stays sharp on retina without carrying 141 KB on every page. It also
+serves as the favicon.
+
+The mark has no wordmark in it, so the header keeps the "Multi Languages Gateway" text
+lockup beside it. The mark is navy and gold, which disappears on the navy footer, so
+`.logo--light .logo__mark` puts it on a white rounded tile there.
+
+The `<img>` carries `width` and `height` attributes; those hold the aspect ratio and stop
+the header reflowing while the logo loads. If you regenerate the file at a different size,
+update those attributes to match.
+
 ## Performance budget
 
 Targets for Bangladeshi mobile: LCP under 2.0s on 4G, total homepage weight under 500KB,
@@ -192,6 +208,8 @@ Current page ships no images and no libraries. Before launch:
   Fonts link — removes two round trips to `fonts.gstatic.com`.
 - Add `width`/`height` on every image you introduce, and `loading="lazy"` below the fold.
 - Minify `style.css` and `main.js`.
+- Re-export the logo as SVG if the designer has vector source — it would drop 28 KB to
+  about 3 KB and stay sharp at any size.
 
 ## Porting to WordPress
 

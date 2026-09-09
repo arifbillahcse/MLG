@@ -208,11 +208,12 @@ address{font-style:normal}
 .header__inner{display:flex;align-items:center;gap:var(--s5);min-height:var(--header-h)}
 
 .logo{display:flex;align-items:center;gap:10px;flex:none}
-.logo__mark{width:38px;height:38px;display:grid;place-items:center;flex:none}
-.logo__mark svg{width:38px;height:38px}
-.logo__torii-a{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round}
-.logo__sun{fill:var(--red)}
-.logo--light .logo__torii-a{stroke:#fff}
+/* width/height attributes on the <img> hold the aspect ratio, so the
+   header does not reflow while the logo loads */
+.logo__mark{height:42px;display:flex;align-items:center;flex:none}
+.logo__mark img{height:100%;width:auto;display:block}
+/* the mark is navy and gold — on the navy footer it needs a light tile */
+.logo--light .logo__mark{background:#fff;border-radius:10px;padding:5px;height:46px}
 .logo__text{display:flex;flex-direction:column;line-height:1.05;font-family:var(--display)}
 .logo__text strong{font-size:13.5px;font-weight:900;letter-spacing:-.01em}
 .logo__text em{font-style:normal;font-size:13.5px;font-weight:900;color:var(--red);letter-spacing:.02em}
@@ -356,6 +357,7 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 
 @media (max-width:480px){
   .logo__text strong,.logo__text em{font-size:12.5px}
+  .logo__mark{height:36px}
   .header__inner{gap:var(--s3)}
 }
 
