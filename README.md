@@ -13,16 +13,29 @@ python3 -m http.server 8080
 ## Files
 
 ```
-index.html            Homepage — all 14 sections
+index.html            Homepage — all 21 sections
+japanese.html         Japanese course — JLPT N5 & N4
 contact.html          Contact page — form, office info, map slot, next steps
 blog.html             Blog index — featured post, filterable grid, pagination
 assets/css/style.css  Design tokens + every component
 assets/js/main.js     Animations, countdown, carousel, forms, filter, language toggle
 ```
 
-The three pages share the topbar, header and footer markup verbatim. There is no
-templating here, so **a change to the header or footer must be copied into all three
-files** — the first thing the WordPress port fixes.
+All pages share the topbar, header and footer markup verbatim. There is no templating
+here, so **a change to the header or footer must be copied into every page file** — the
+first thing the WordPress port fixes.
+
+### Japanese course page
+
+The template for the other three course pages (Korean, Chinese, IELTS). Sections: page
+head with a quick-facts strip, two level cards (N5, N4) with vocabulary/kanji counts and
+both fee columns, a month-by-month syllabus, the online vs in-class comparison, batch
+schedule and fee tables, instructors, recent passes, what the level unlocks, a registration
+form, and a course FAQ. Carries `Course` JSON-LD with a `hasCourseInstance` for each
+delivery mode, so Google can show it as a course result.
+
+To build Korean, Chinese or IELTS, copy this file and swap the content — the components
+(`.lvl`, `.facts`, `.compare`, `.tbl`, `.fac`, `.results`, `.faq`) are all generic.
 
 ### Contact page
 
@@ -93,9 +106,8 @@ Built to the client requirements PDF (four course lines, three destinations).
 Plus a floating WhatsApp button, a sticky mobile call/WhatsApp bar, and back-to-top —
 all three hide themselves while the mobile drawer is open.
 
-**Menu links are placeholders.** Every submenu item and the four top-level dropdown
-triggers currently point at `href="#"`, waiting on the pages behind them. Only Blog,
-Contact and the Free Consultation CTA go anywhere real. When a page is built, replace its
+**Menu links are mostly placeholders.** Submenu items point at `href="#"` until their page
+exists. Live so far: Japanese, Blog, Contact and the Free Consultation CTA. When a page is built, replace its
 placeholder in the nav of **all** page files — the header markup is duplicated, not shared.
 Body CTAs (hero buttons, course cards) still use in-page anchors on purpose; those scroll
 to sections that exist.
