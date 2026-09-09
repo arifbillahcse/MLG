@@ -93,6 +93,13 @@ Built to the client requirements PDF (four course lines, three destinations).
 Plus a floating WhatsApp button, a sticky mobile call/WhatsApp bar, and back-to-top —
 all three hide themselves while the mobile drawer is open.
 
+**Menu links are placeholders.** Every submenu item and the four top-level dropdown
+triggers currently point at `href="#"`, waiting on the pages behind them. Only Blog,
+Contact and the Free Consultation CTA go anywhere real. When a page is built, replace its
+placeholder in the nav of **all** page files — the header markup is duplicated, not shared.
+Body CTAs (hero buttons, course cards) still use in-page anchors on purpose; those scroll
+to sections that exist.
+
 **Mobile header notes:**
 
 - `.header__cta` needs `margin-left: auto` at mobile widths. `.nav` is `position: fixed`
