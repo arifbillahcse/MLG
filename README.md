@@ -189,13 +189,19 @@ WordPress port rather than extending this.
 display height, so it stays sharp on retina without carrying 141 KB on every page. It also
 serves as the favicon.
 
-The mark has no wordmark in it, so the header keeps the "Multi Languages Gateway" text
-lockup beside it. The mark is navy and gold, which disappears on the navy footer, so
-`.logo--light .logo__mark` puts it on a white rounded tile there.
+The mark stands alone — there is no text lockup beside it — so its `alt` attribute carries
+"Multi Languages Gateway". Don't blank that alt; it's the only place the brand name appears
+in the header for screen readers and crawlers. The mark is navy and gold, which disappears
+on the navy footer, so `.logo--light .logo__mark` puts it on a white rounded tile there.
 
-The `<img>` carries `width` and `height` attributes; those hold the aspect ratio and stop
-the header reflowing while the logo loads. If you regenerate the file at a different size,
-update those attributes to match.
+**Size the `<img>` itself, never `height: 100%`.** The global `img{max-width:100%}` reset
+can cap the width while a percentage height runs free, which stretches the mark badly out
+of proportion. `.logo__mark img` therefore sets an explicit `height`, `width:auto`,
+`max-width:none` and `object-fit:contain`.
+
+The `<img>` also carries `width` and `height` attributes; those hold the aspect ratio and
+stop the header reflowing while the logo loads. If you regenerate the file at a different
+size, update those attributes to match.
 
 ## Performance budget
 
