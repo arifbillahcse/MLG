@@ -13,14 +13,15 @@
       </ul>
     </div>
 
-    <form class="cta__form reveal" data-delay="1" id="leadForm" data-lead novalidate>
+    <form class="cta__form reveal" data-delay="1" id="leadForm" method="POST" action="{{ route('enquiry.store') }}" data-lead novalidate>
+        @include('partials.form.head', ['form' => 'consultation'])
       <div class="field">
         <label for="c-name">Full name</label>
-        <input type="text" id="c-name" name="name" required autocomplete="name" placeholder="Your name">
+        <input type="text" id="c-name" name="name" @error('name') aria-invalid="true" @enderror required autocomplete="name" placeholder="Your name" value="{{ old('name') }}">
       </div>
       <div class="field">
         <label for="c-phone">Mobile number</label>
-        <input type="tel" id="c-phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" pattern="^01[3-9][0-9]{8}$">
+        <input type="tel" id="c-phone" name="phone" @error('phone') aria-invalid="true" @enderror required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" pattern="^01[3-9][0-9]{8}$" value="{{ old('phone') }}">
       </div>
       <div class="field">
         <label for="c-interest">I want to talk about</label>
@@ -34,7 +35,7 @@
         </select>
       </div>
       <button type="submit" class="btn btn--gold btn--block btn--lg">Book my free session</button>
-      <p class="form__status" id="leadStatus" role="status" aria-live="polite"></p>
+      @include('partials.form.status', ['form' => 'consultation'])
       <p class="cta__privacy">We call once. No spam, no selling your number.</p>
     </form>
   </div>

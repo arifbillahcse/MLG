@@ -100,24 +100,25 @@
         </div>
       </div>
 
-      <form class="contact__form reveal" data-delay="1" id="contactForm" data-lead novalidate>
+      <form class="contact__form reveal" data-delay="1" id="contactForm" method="POST" action="{{ route('enquiry.store') }}" data-lead novalidate>
+        @include('partials.form.head', ['form' => 'contact'])
         <h2>Send us a message</h2>
         <p>We reply within one working day. If it's urgent, call instead.</p>
 
         <div class="field-row">
           <div class="field">
             <label for="k-name">Full name</label>
-            <input type="text" id="k-name" name="name" required autocomplete="name" placeholder="Your name">
+            <input type="text" id="k-name" name="name" @error('name') aria-invalid="true" @enderror required autocomplete="name" placeholder="Your name" value="{{ old('name') }}">
           </div>
           <div class="field">
             <label for="k-phone">Mobile number</label>
-            <input type="tel" id="k-phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX">
+            <input type="tel" id="k-phone" name="phone" @error('phone') aria-invalid="true" @enderror required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" value="{{ old('phone') }}">
           </div>
         </div>
 
         <div class="field">
           <label for="k-email">Email <span style="color:var(--slate-light);font-weight:400">(optional)</span></label>
-          <input type="email" id="k-email" name="email" autocomplete="email" placeholder="you@example.com">
+          <input type="email" id="k-email" name="email" @error('email') aria-invalid="true" @enderror autocomplete="email" placeholder="you@example.com" value="{{ old('email') }}">
         </div>
 
         <div class="field">
@@ -135,11 +136,11 @@
 
         <div class="field">
           <label for="k-message">Your message</label>
-          <textarea id="k-message" name="message" placeholder="Tell us where you are today — your last qualification, budget and the intake you're aiming for."></textarea>
+          <textarea id="k-message" name="message" placeholder="Tell us where you are today — your last qualification, budget and the intake you're aiming for.">{{ old('message') }}</textarea>
         </div>
 
         <button type="submit" class="btn btn--primary btn--block btn--lg">Send message</button>
-        <p class="form__status" role="status" aria-live="polite"></p>
+        @include('partials.form.status', ['form' => 'contact'])
       </form>
 
     </div>

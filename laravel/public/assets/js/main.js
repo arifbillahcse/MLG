@@ -520,52 +520,78 @@
   }
 
   /* ---------- 12. Forms -------------------------------------------
-     Every form carrying data-lead is handled here; its status line is
-     the .form__status inside it. Client-side validation only — wire the
-     fetch() to your CRM, Google Sheet or WordPress REST endpoint. */
+     The forms post natively, so they work with JavaScript off. This
+     upgrades them to fetch() for inline feedback, and falls back to a
+     real submit if anything about the request goes wrong. */
   function initForms() {
-    var bdPhone = /^01[3-9]\d{8}$/;
+    var token = document.querySelector('meta[name="csrf-token"]');
+    token = token ? token.getAttribute('content') : null;
 
     $$('form[data-lead]').forEach(function (form) {
       var status = $('.form__status', form);
-      if (!status) return;
+      if (!status || !token) return;          // no token: leave the native post alone
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        status.className = 'form__status';
-
-        var name = form.querySelector('input[name="name"]');
-        var phone = form.querySelector('input[name="phone"]');
-
-        [name, phone].forEach(function (f) { if (f) f.removeAttribute('aria-invalid'); });
-
-        function fail(field, message) {
-          field.setAttribute('aria-invalid', 'true');
-          field.focus();
-          status.textContent = message;
-          status.classList.add('is-err');
-        }
-
-        if (name && !name.value.trim()) {
-          return fail(name, 'Please enter your name.');
-        }
-        if (phone && !bdPhone.test(phone.value.replace(/[\s-]/g, ''))) {
-          return fail(phone, 'Enter a valid Bangladeshi mobile number, e.g. 01712345678.');
-        }
 
         var btn = form.querySelector('button[type="submit"]');
-        var label = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = 'Sending…';
+        var label = btn ? btn.textContent : '';
 
-        // TODO: replace with a real POST to your endpoint.
-        window.setTimeout(function () {
-          btn.disabled = false;
-          btn.textContent = label;
-          form.reset();
-          status.textContent = 'Thank you. We will call you within one working day.';
-          status.classList.add('is-ok');
-        }, 700);
+        status.className = 'form__status';
+        status.textContent = '';
+        $$('[aria-invalid]', form).forEach(function (f) { f.removeAttribute('aria-invalid'); });
+
+        if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'X-CSRF-TOKEN': token,
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+          },
+          credentials: 'same-origin'
+        })
+          .then(function (res) {
+            return res.json().then(function (body) { return { status: res.status, body: body }; });
+          })
+          .then(function (r) {
+            if (r.status === 200 && r.body.ok) {
+              form.reset();
+              status.textContent = r.body.message;
+              status.classList.add('is-ok');
+              return;
+            }
+
+            if (r.status === 422 && r.body.errors) {
+              var first = Object.keys(r.body.errors)[0];
+              var field = form.querySelector('[name="' + first + '"]');
+              if (field) {
+                field.setAttribute('aria-invalid', 'true');
+                field.focus();
+              }
+              status.textContent = r.body.errors[first][0];
+              status.classList.add('is-err');
+              return;
+            }
+
+            if (r.status === 429) {
+              status.textContent = 'Too many submissions. Please wait a minute and try again.';
+              status.classList.add('is-err');
+              return;
+            }
+
+            throw new Error('unexpected response');
+          })
+          .catch(function () {
+            // Network trouble, an expired session, anything unexpected:
+            // hand it back to the browser rather than losing the enquiry.
+            form.submit();
+          })
+          .finally(function () {
+            if (btn) { btn.disabled = false; btn.textContent = label; }
+          });
       });
     });
   }

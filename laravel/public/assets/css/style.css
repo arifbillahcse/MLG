@@ -1339,6 +1339,9 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 
 .facility--page{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));grid-template-rows:none}
 
+/* honeypot — off-screen rather than display:none, which some bots skip */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
 /* ---------- 27. REDUCED MOTION ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

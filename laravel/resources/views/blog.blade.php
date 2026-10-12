@@ -83,14 +83,15 @@
       </ul>
     </div>
 
-    <form class="cta__form reveal" data-delay="1" id="blogLeadForm" data-lead novalidate>
+    <form class="cta__form reveal" data-delay="1" id="blogLeadForm" method="POST" action="{{ route('enquiry.store') }}" data-lead novalidate>
+        @include('partials.form.head', ['form' => 'consultation'])
       <div class="field">
         <label for="b-name">Full name</label>
-        <input type="text" id="b-name" name="name" required autocomplete="name" placeholder="Your name">
+        <input type="text" id="b-name" name="name" @error('name') aria-invalid="true" @enderror required autocomplete="name" placeholder="Your name" value="{{ old('name') }}">
       </div>
       <div class="field">
         <label for="b-phone">Mobile number</label>
-        <input type="tel" id="b-phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX">
+        <input type="tel" id="b-phone" name="phone" @error('phone') aria-invalid="true" @enderror required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" value="{{ old('phone') }}">
       </div>
       <div class="field">
         <label for="b-interest">I want to talk about</label>
@@ -101,7 +102,7 @@
         </select>
       </div>
       <button type="submit" class="btn btn--gold btn--block btn--lg">Book my free session</button>
-      <p class="form__status" role="status" aria-live="polite"></p>
+      @include('partials.form.status', ['form' => 'consultation'])
       <p class="cta__privacy">We call once. No spam, no selling your number.</p>
     </form>
   </div>

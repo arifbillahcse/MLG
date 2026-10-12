@@ -14,15 +14,16 @@
         </dl>
       </div>
 
-      <form class="seminar__form reveal" data-delay="1" id="seminarForm" data-lead novalidate>
+      <form class="seminar__form reveal" data-delay="1" id="seminarForm" method="POST" action="{{ route('enquiry.store') }}" data-lead novalidate>
+        @include('partials.form.head', ['form' => 'seminar', 'eventId' => \$seminar?->id])
         <h3>Reserve your seat</h3>
         <div class="field">
           <label for="s-name">Full name</label>
-          <input type="text" id="s-name" name="name" required autocomplete="name" placeholder="Md Arif Billah">
+          <input type="text" id="s-name" name="name" @error('name') aria-invalid="true" @enderror required autocomplete="name" placeholder="Md Arif Billah" value="{{ old('name') }}">
         </div>
         <div class="field">
           <label for="s-phone">Mobile number</label>
-          <input type="tel" id="s-phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" pattern="^01[3-9][0-9]{8}$">
+          <input type="tel" id="s-phone" name="phone" @error('phone') aria-invalid="true" @enderror required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" pattern="^01[3-9][0-9]{8}$" value="{{ old('phone') }}">
           <small class="field__hint">We send a reminder SMS 24 hours before.</small>
         </div>
         <div class="field">
@@ -35,7 +36,7 @@
           </select>
         </div>
         <button type="submit" class="btn btn--primary btn--block">Reserve free seat</button>
-        <p class="form__status" id="seminarStatus" role="status" aria-live="polite"></p>
+        @include('partials.form.status', ['form' => 'seminar'])
       </form>
     </div>
   </div>

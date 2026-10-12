@@ -232,9 +232,53 @@ route.
 
 ### Not done here
 
-The eight forms still post nowhere — that is Phase 5. Blog posts, destinations and the
-other courses have no detail route yet — Phase 6.
+Blog posts, destinations and the other courses have no detail route yet — Phase 6.
+
+## Phase 5 — forms and enquiries
+
+All eight forms now post to one endpoint, `POST /enquiry`, and land in the `enquiries`
+table where the admin Enquiries screen already expects them.
+
+| Form | `source_form` | Extra behaviour |
+|---|---|---|
+| Final CTA, About, Blog | `consultation` | — |
+| Contact page | `contact` | carries email + message |
+| Seminar | `seminar` | also creates an **event registration** |
+| Free mock test | `mock_test` | the select posts `event_id`; also registers |
+| Course enrolment | `enrolment` | level → interest, format → details |
+| Placement test | `placement` | prior study → details |
+
+### Progressive enhancement
+
+Every form is a real `method="POST"` form that works with JavaScript disabled. `main.js`
+upgrades the submit to `fetch()` for inline feedback, and on **any** unexpected response
+it calls `form.submit()` and lets the browser do it properly. A network blip or an
+expired session loses feedback, never the enquiry.
+
+Validation errors come back as 422 and are shown inline against the offending field;
+server-rendered failures repopulate with `old()` and mark the field `aria-invalid`.
+
+### Protection
+
+- **CSRF** on every form, via the shared `partials.form.head`.
+- **Honeypot** — a `website` field, positioned off-screen rather than `display:none`
+  (some bots skip hidden fields), with the `prohibited` rule. Anything in it fails.
+- **Rate limit** `throttle:6,1` per IP. A real visitor sends one or two.
+- **Server-side phone validation.** The JS check was never the real one; the regex now
+  lives in `EnquiryRequest`, and the number is normalised first so `+88`, spaces and
+  dashes all pass.
+- `user_agent` is truncated to the column width before storage.
+
+### Notification
+
+A Markdown mailable goes to the `email` setting, with a reply-to of the enquirer when
+they gave one. **The send is wrapped in a try/catch** — the enquiry is already saved, so
+a mail outage must not turn into a lost lead or a 500 for the visitor. Failures are
+logged.
+
+`MAIL_MAILER=log` in `.env.example`, so nothing is sent until you configure a mailer.
 
 ## Next
 
-**Phase 5** — forms and enquiries: validation, storage, notification and the admin inbox.
+**Phase 6** — the missing pages as data: `/courses/{slug}`, `/destinations/{slug}`,
+`/blog/{slug}`, success stories, and the legal pages.

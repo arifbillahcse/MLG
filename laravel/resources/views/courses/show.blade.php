@@ -373,19 +373,20 @@
         </dl>
       </div>
 
-      <form class="seminar__form reveal" data-delay="1" id="japaneseEnrol" data-lead novalidate>
+      <form class="seminar__form reveal" data-delay="1" id="japaneseEnrol" method="POST" action="{{ route('enquiry.store') }}" data-lead novalidate>
+        @include('partials.form.head', ['form' => 'enrolment'])
         <h3>Course registration</h3>
         <div class="field">
           <label for="j-name">Full name</label>
-          <input type="text" id="j-name" name="name" required autocomplete="name" placeholder="Your name">
+          <input type="text" id="j-name" name="name" @error('name') aria-invalid="true" @enderror required autocomplete="name" placeholder="Your name" value="{{ old('name') }}">
         </div>
         <div class="field">
           <label for="j-phone">Mobile number</label>
-          <input type="tel" id="j-phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX">
+          <input type="tel" id="j-phone" name="phone" @error('phone') aria-invalid="true" @enderror required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" value="{{ old('phone') }}">
         </div>
         <div class="field">
           <label for="j-level">Level</label>
-          <select id="j-level" name="level">
+          <select id="j-level" name="interest">
             @foreach ($levels as $level)
               <option>{{ $course->exam_name }} {{ $level->code }} — {{ $level->label }}</option>
             @endforeach
@@ -394,13 +395,13 @@
         </div>
         <div class="field">
           <label for="j-format">Format</label>
-          <select id="j-format" name="format">
+          <select id="j-format" name="details[format]">
             <option>In class — Dhanmondi centre</option>
             <option>Online recorded</option>
           </select>
         </div>
         <button type="submit" class="btn btn--primary btn--block">Register for this course</button>
-        <p class="form__status" role="status" aria-live="polite"></p>
+        @include('partials.form.status', ['form' => 'enrolment'])
       </form>
     </div>
   </div>
@@ -441,18 +442,20 @@
       </ul>
     </div>
 
-    <form class="cta__form reveal" data-delay="1" id="japanesePlacement" data-lead novalidate>
+    <form class="cta__form reveal" data-delay="1" id="japanesePlacement" method="POST" action="{{ route('enquiry.store') }}" data-lead novalidate>
+        @include('partials.form.head', ['form' => 'placement'])
+      <input type="hidden" name="interest" value="{{ $course->name }} placement test">
       <div class="field">
         <label for="p-name">Full name</label>
-        <input type="text" id="p-name" name="name" required autocomplete="name" placeholder="Your name">
+        <input type="text" id="p-name" name="name" @error('name') aria-invalid="true" @enderror required autocomplete="name" placeholder="Your name" value="{{ old('name') }}">
       </div>
       <div class="field">
         <label for="p-phone">Mobile number</label>
-        <input type="tel" id="p-phone" name="phone" required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX">
+        <input type="tel" id="p-phone" name="phone" @error('phone') aria-invalid="true" @enderror required autocomplete="tel" inputmode="tel" placeholder="01XXXXXXXXX" value="{{ old('phone') }}">
       </div>
       <div class="field">
         <label for="p-exp">Any Japanese already?</label>
-        <select id="p-exp" name="experience">
+        <select id="p-exp" name="details[prior_study]">
           <option>None at all</option>
           <option>I know hiragana / katakana</option>
           <option>I have studied N5 before</option>
@@ -460,7 +463,7 @@
         </select>
       </div>
       <button type="submit" class="btn btn--gold btn--block btn--lg">Book free placement test</button>
-      <p class="form__status" role="status" aria-live="polite"></p>
+      @include('partials.form.status', ['form' => 'placement'])
       <p class="cta__privacy">We call once. No spam, no selling your number.</p>
     </form>
   </div>
