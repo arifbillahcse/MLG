@@ -38,7 +38,7 @@ class PageController extends Controller
             'mockTests' => Event::upcoming()->ofType('mock_test')->get(),
             'seminar' => Event::upcoming()->ofType('seminar')->first(),
             'posts' => Post::published()->latestFirst()->with('category')->take(3)->get(),
-            'faqs' => Faq::active()->scope('home')->ordered()->get(),
+            'faqs' => Faq::active()->forScope('home')->ordered()->get(),
             'chairman' => Page::active()->where('slug', 'chairman-message')->first(),
             'mission' => Page::active()->where('slug', 'mission')->first(),
             'vision' => Page::active()->where('slug', 'vision')->first(),
@@ -60,9 +60,16 @@ class PageController extends Controller
 
     public function blog()
     {
+        $featured = Post::published()->where('is_featured', true)
+            ->latestFirst()->with('category')->first();
+
         return view('blog', [
-            'featured' => Post::published()->where('is_featured', true)->latestFirst()->with('category')->first(),
-            'posts' => Post::published()->where('is_featured', false)->latestFirst()->with('category')->paginate(9),
+            'featured' => $featured,
+            // Exclude only the post actually shown above. Excluding every
+            // featured post made a second one disappear from the site.
+            'posts' => Post::published()
+                ->when($featured, fn ($q) => $q->whereKeyNot($featured->getKey()))
+                ->latestFirst()->with('category')->paginate(9),
             'categories' => PostCategory::ordered()->get(),
             'courses' => Course::active()->ordered()->get(),
         ]);
@@ -85,7 +92,7 @@ class PageController extends Controller
         return view('courses.show', [
             'course' => $course,
             'levels' => $course->levels,
-            'faqs' => Faq::active()->scope('course')->where('course_id', $course->id)->ordered()->get(),
+            'faqs' => Faq::active()->forScope('course')->where('course_id', $course->id)->ordered()->get(),
             'faculty' => Faculty::active()->where('course_id', $course->id)->ordered()->get(),
             'results' => Result::publishable()->where('course_id', $course->id)->ordered()->take(4)->get(),
             'batches' => Batch::upcoming()->ordered()
@@ -107,7 +114,7 @@ class PageController extends Controller
                 : ProcessStep::generic()->ordered()->get(),
             'partners' => $destination->partners()->where('is_verified', true)->orderBy('sort')->get(),
             'letters' => AcceptanceLetter::publishable()->where('destination_id', $destination->id)->ordered()->get(),
-            'faqs' => Faq::active()->scope('destination')->where('destination_id', $destination->id)->ordered()->get(),
+            'faqs' => Faq::active()->forScope('destination')->where('destination_id', $destination->id)->ordered()->get(),
             'courses' => Course::active()->ordered()->get(),
         ]);
     }

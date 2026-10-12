@@ -29,9 +29,11 @@
         <div class="field">
           <label for="m-exam">Which test?</label>
           <select id="m-exam" name="event_id">
-            @foreach ($mockTests as $mock)
+            @forelse ($mockTests as $mock)
               <option value="{{ $mock->id }}">{{ $mock->title }}</option>
-            @endforeach
+            @empty
+              <option value="">Tell us which test you need</option>
+            @endforelse
           </select>
         </div>
         <button type="submit" class="btn btn--primary btn--block">Book free mock test</button>

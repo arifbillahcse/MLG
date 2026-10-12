@@ -2,4 +2,5 @@ User-agent: *
 Disallow: /admin
 Disallow: /locale/
 
-Sitemap: /sitemap.xml
+# Replace the host when the domain is live — the spec requires an absolute URL.
+Sitemap: https://mlg.com.bd/sitemap.xml

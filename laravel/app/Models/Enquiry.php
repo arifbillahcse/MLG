@@ -41,7 +41,7 @@ class Enquiry extends Model
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
-    public function scopeNew($q)
+    public function scopeAwaitingContact($q)
     {
         return $q->where('status', 'new');
     }

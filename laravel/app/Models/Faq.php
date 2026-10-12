@@ -41,7 +41,7 @@ class Faq extends Model
         return $this->belongsTo(Destination::class);
     }
 
-    public function scopeScope($q, string $scope)
+    public function scopeForScope($q, string $scope)
     {
         return $q->where('scope', $scope);
     }

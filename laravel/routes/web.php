@@ -26,11 +26,6 @@ Route::get('/success-stories', [PageController::class, 'stories'])->name('storie
 Route::get('/blog',          [PageController::class, 'blog'])->name('blog');
 Route::get('/blog/{post:slug}', [PageController::class, 'post'])->name('blog.show');
 
-// Legal pages are rows in `pages`. Constrained so this cannot swallow
-// every unmatched URL and turn a typo into a 500.
-Route::get('/{page:slug}', [PageController::class, 'page'])
-    ->whereIn('page', ['privacy-policy', 'terms', 'refund-policy'])
-    ->name('pages.show');
 
 Route::get('/sitemap.xml', \App\Http\Controllers\SitemapController::class)->name('sitemap');
 
@@ -41,3 +36,9 @@ Route::get('/locale/{locale}', \App\Http\Controllers\LocaleController::class)
 Route::post('/enquiry', [EnquiryController::class, 'store'])
     ->middleware('throttle:6,1')
     ->name('enquiry.store');
+
+// Legal pages are rows in `pages`. Constrained so this cannot swallow
+// every unmatched URL and turn a typo into a 500.
+Route::get('/{page:slug}', [PageController::class, 'page'])
+    ->whereIn('page', ['privacy-policy', 'terms', 'refund-policy'])
+    ->name('pages.show');

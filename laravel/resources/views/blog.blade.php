@@ -62,9 +62,7 @@
 
     <p class="blog-empty" id="blogEmpty" hidden>No posts in this topic yet.</p>
 
-    <nav class="pagination" aria-label="Pagination">
-      {{ $posts->onEachSide(1)->links() }}
-    </nav>
+    {{ $posts->onEachSide(1)->links() }}
 
   </div>
 </section>

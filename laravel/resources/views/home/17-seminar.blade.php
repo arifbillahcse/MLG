@@ -15,7 +15,7 @@
       </div>
 
       <form class="seminar__form reveal" data-delay="1" id="seminarForm" method="POST" action="{{ route('enquiry.store') }}" data-lead novalidate>
-        @include('partials.form.head', ['form' => 'seminar', 'eventId' => \$seminar?->id])
+        @include('partials.form.head', ['form' => 'seminar', 'eventId' => $seminar?->id])
         <h3>Reserve your seat</h3>
         <div class="field">
           <label for="s-name">Full name</label>
