@@ -38,10 +38,10 @@
            @if ($featured->thumbnail) style="background-image:url('{{ asset('storage/'.$featured->thumbnail) }}');background-size:cover" @endif></div>
       <div>
         <span class="featured__tag">Featured · {{ $featured->category?->name }}</span>
-        <h2><a href="{{ route('blog') }}">{{ $featured->title }}</a></h2>
+        <h2><a href="{{ route('blog.show', $featured) }}">{{ $featured->title }}</a></h2>
         <p class="featured__meta">{{ $featured->read_minutes }} min read · {{ $featured->published_at?->diffForHumans() }}</p>
         <p>{{ $featured->excerpt }}</p>
-        <a href="{{ route('blog') }}" class="btn btn--primary btn--sm">Read the guide</a>
+        <a href="{{ route('blog.show', $featured) }}" class="btn btn--primary btn--sm">Read the guide</a>
       </div>
     </article>
     @endif
@@ -53,7 +53,7 @@
              @if ($post->thumbnail) style="background-image:url('{{ asset('storage/'.$post->thumbnail) }}');background-size:cover" @endif>
           <span class="post__cat">{{ $post->category?->name }}</span>
         </div>
-        <h3><a href="{{ route('blog') }}">{{ $post->title }}</a></h3>
+        <h3><a href="{{ route('blog.show', $post) }}">{{ $post->title }}</a></h3>
         <p class="post__excerpt">{{ $post->excerpt }}</p>
         <p class="post__meta mono">{{ $post->read_minutes }} min read · {{ $post->category?->name }}</p>
       </article>

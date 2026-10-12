@@ -17,7 +17,7 @@
             <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>{{ $highlight }}</li>
           @endforeach
         </ul>
-        <a href="{{ route('contact') }}" class="btn btn--secondary btn--block btn--sm">Explore {{ Str::after($destination->name, 'Study in ') }}</a>
+        <a href="{{ route('destinations.show', $destination) }}" class="btn btn--secondary btn--block btn--sm">Explore {{ Str::after($destination->name, 'Study in ') }}</a>
       </article>
       @endforeach
     </div>

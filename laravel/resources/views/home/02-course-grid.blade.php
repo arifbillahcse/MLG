@@ -34,7 +34,7 @@
         @if ($course->price_from)
           <p class="course__price">From <b>৳ {{ number_format($course->price_from) }}</b></p>
         @endif
-        <a href="{{ route('courses.japanese') }}" class="btn {{ $course->is_test_prep ? 'btn--secondary' : 'btn--primary' }} btn--block btn--sm">Course details</a>
+        <a href="{{ route('courses.show', \$course) }}" class="btn {{ $course->is_test_prep ? 'btn--secondary' : 'btn--primary' }} btn--block btn--sm">Course details</a>
       </article>
       @endforeach
     </div>

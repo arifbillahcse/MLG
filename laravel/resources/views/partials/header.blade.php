@@ -24,7 +24,7 @@
           <div class="submenu submenu--jp">
             <ul>
               @foreach ($navCourses as $navCourse)
-                <li><a href="{{ route('courses.japanese') }}">{{ $navCourse->name }}@if ($navCourse->exam_name) — {{ $navCourse->exam_name }}@endif</a></li>
+                <li><a href="{{ route('courses.show', $navCourse) }}">{{ $navCourse->name }}@if ($navCourse->exam_name) — {{ $navCourse->exam_name }}@endif</a></li>
               @endforeach
               <li><a href="{{ route('home') }}#modes">Online vs In-class</a></li>
               <li><a href="{{ route('home') }}#mock">Book a mock test</a></li>
@@ -40,10 +40,10 @@
           <div class="submenu submenu--gl">
             <ul>
               @foreach ($navDestinations as $navDestination)
-                <li><a href="{{ route('home') }}#destinations"><span class="flag">{{ $navDestination->flag }}</span> {{ $navDestination->name }}</a></li>
+                <li><a href="{{ route('destinations.show', $navDestination) }}"><span class="flag">{{ $navDestination->flag }}</span> {{ $navDestination->name }}</a></li>
               @endforeach
-              <li><a href="{{ route('home') }}#destinations">Scholarships</a></li>
-              <li><a href="{{ route('home') }}#destinations">Visa guidance</a></li>
+              <li><a href="{{ route('scholarships') }}">Scholarships</a></li>
+              <li><a href="{{ route('home') }}#process">Visa guidance</a></li>
               <li><a href="{{ route('contact') }}">Book a 1-on-1 consultation</a></li>
             </ul>
           </div>
@@ -56,11 +56,11 @@
           </button>
           <div class="submenu submenu--gl">
             <ul>
-              <li><a href="#">Top scores</a></li>
-              <li><a href="#">Video testimonials</a></li>
-              <li><a href="#">Written reviews</a></li>
-              <li><a href="#">Acceptance letters</a></li>
-              <li><a href="#">Alumni interviews</a></li>
+              <li><a href="{{ route('stories') }}#results">Top scores</a></li>
+              <li><a href="{{ route('stories') }}#videos">Video testimonials</a></li>
+              <li><a href="{{ route('stories') }}#reviews">Written reviews</a></li>
+              <li><a href="{{ route('stories') }}#letters">Acceptance letters</a></li>
+              <li><a href="{{ route('stories') }}#alumni">Alumni interviews</a></li>
             </ul>
           </div>
         </li>

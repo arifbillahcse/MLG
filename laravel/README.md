@@ -230,9 +230,6 @@ stale in the structured data Google reads.
 anywhere — it renders whatever `$course` it is handed. Phase 6 only has to change the
 route.
 
-### Not done here
-
-Blog posts, destinations and the other courses have no detail route yet — Phase 6.
 
 ## Phase 5 — forms and enquiries
 
@@ -278,7 +275,39 @@ logged.
 
 `MAIL_MAILER=log` in `.env.example`, so nothing is sent until you configure a mailer.
 
+## Phase 6 — the missing pages, as data
+
+The twelve dead menu items are live. **Nine of them are rows, not files.**
+
+| Route | Serves |
+|---|---|
+| `/courses/{slug}` | Japanese, Korean, Chinese, IELTS — one template |
+| `/study-abroad/{slug}` | Japan, Korea, China — one template |
+| `/blog/{slug}` | Every post — one template |
+| `/scholarships` | MEXT, GKS, CSC, grouped by country |
+| `/success-stories` | Scores, videos, reviews, letters, alumni — the five submenu items as anchors on one page |
+| `/privacy-policy`, `/terms`, `/refund-policy` | Rows in `pages` |
+| 404 | `errors/404.blade.php` |
+
+Adding a fifth language is **a record in the admin**, not a deployment. That is the
+return on Phases 2 and 4.
+
+### Notes
+
+**The legal-page route is constrained** with `whereIn`, so `/{page:slug}` cannot swallow
+every unmatched URL and turn a typo into a 500.
+
+**Legal copy is a flagged placeholder.** Each of the three says, in bold, that it must be
+replaced before launch, and lists what the real document has to cover. They are legal
+documents — have them reviewed, do not ship the seeded text.
+
+**`partials.cta`** replaced four near-identical closing CTA blocks, and takes
+`$formId`/`$formSlug` plus optional heading and body overrides.
+
+**Destination pages degrade gracefully** — the universities, visa-guidance, letters,
+partners and FAQ sections each disappear when there is nothing to show, so a
+half-filled country still reads as finished.
+
 ## Next
 
-**Phase 6** — the missing pages as data: `/courses/{slug}`, `/destinations/{slug}`,
-`/blog/{slug}`, success stories, and the legal pages.
+**Phase 7** — bilingual content, image uploads, SEO output, hardening and launch.

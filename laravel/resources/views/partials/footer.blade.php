@@ -2,7 +2,7 @@
 <footer class="footer">
   <div class="wrap footer__grid">
     <div class="footer__brand">
-      <a href="#" class="logo logo--light">
+      <a href="{{ route('home') }}" class="logo logo--light">
         <span class="logo__mark" aria-hidden="true">
           <img src="{{ asset('assets/img/glm-logo-132.png') }}" width="152" height="132" alt="Multi Languages Gateway" decoding="async">
         </span>
@@ -19,7 +19,7 @@
     <nav class="footer__col" aria-label="Courses">
       <h3>Courses</h3>
       @foreach ($navCourses as $navCourse)
-        <a href="{{ route('courses.japanese') }}">{{ $navCourse->name }}@if ($navCourse->exam_name) — {{ $navCourse->exam_name }}@endif</a>
+        <a href="{{ route('courses.show', $navCourse) }}">{{ $navCourse->name }}@if ($navCourse->exam_name) — {{ $navCourse->exam_name }}@endif</a>
       @endforeach
       <a href="{{ route('home') }}#modes">Online vs in class</a>
     </nav>
@@ -27,9 +27,9 @@
     <nav class="footer__col" aria-label="Destinations">
       <h3>Study abroad</h3>
       @foreach ($navDestinations as $navDestination)
-        <a href="{{ route('home') }}#destinations">{{ $navDestination->flag }} {{ $navDestination->name }}</a>
+        <a href="{{ route('destinations.show', $navDestination) }}">{{ $navDestination->flag }} {{ $navDestination->name }}</a>
       @endforeach
-      <a href="{{ route('home') }}#destinations">Scholarships</a>
+      <a href="{{ route('scholarships') }}">Scholarships</a>
       <a href="{{ route('home') }}#mock">Free mock test</a>
     </nav>
 
@@ -47,7 +47,7 @@
 
   <div class="wrap footer__bottom">
     <p>© {{ date('Y') }} {{ $settings['site_name'] ?? 'Multi Languages Gateway' }}. All rights reserved.</p>
-    <p class="footer__legal"><a href="#">Privacy policy</a> · <a href="#">Terms</a> · <a href="#">Refund policy</a></p>
+    <p class="footer__legal"><a href="{{ route('pages.show', 'privacy-policy') }}">Privacy policy</a> · <a href="{{ route('pages.show', 'terms') }}">Terms</a> · <a href="{{ route('pages.show', 'refund-policy') }}">Refund policy</a></p>
   </div>
 </footer>
 

@@ -13,7 +13,7 @@
              @if ($post->thumbnail) style="background-image:url('{{ asset('storage/'.$post->thumbnail) }}');background-size:cover" @endif>
           <span class="post__cat">{{ $post->category?->name }}</span>
         </div>
-        <h3><a href="{{ route('blog') }}">{{ $post->title }}</a></h3>
+        <h3><a href="{{ route('blog.show', $post) }}">{{ $post->title }}</a></h3>
         <p class="post__meta mono">{{ $post->read_minutes }} min read · {{ $post->category?->name }}</p>
       </article>
       @endforeach

@@ -1339,6 +1339,24 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 
 .facility--page{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));grid-template-rows:none}
 
+/* ---------- long-form body copy (blog posts, legal pages) ---------- */
+.prose{max-width:68ch;font-size:17px;color:var(--ink)}
+.prose > * + *{margin-top:var(--s4)}
+.prose p{color:var(--slate)}
+.prose h2{font-size:26px;margin-top:var(--s7)}
+.prose h3{font-size:20px;margin-top:var(--s6)}
+.prose ul,.prose ol{padding-left:22px;color:var(--slate)}
+.prose ul li{list-style:disc}
+.prose ol li{list-style:decimal}
+.prose li{margin-bottom:6px}
+.prose a{color:var(--teal);border-bottom:1px solid currentColor}
+.prose strong{color:var(--ink)}
+.prose blockquote{
+  border-left:3px solid var(--red);padding-left:var(--s4);
+  color:var(--ink);font-size:18px;
+}
+.prose code{font-family:var(--mono);font-size:.9em;background:var(--band);padding:2px 6px;border-radius:4px}
+
 /* honeypot — off-screen rather than display:none, which some bots skip */
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 

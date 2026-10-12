@@ -76,14 +76,11 @@ class PageController extends Controller
         ]);
     }
 
-    /**
-     * Phase 6 replaces this with a {course:slug} route served by the same view.
-     * The data it loads is already keyed off the model, so that is a route
-     * change rather than a template change.
-     */
-    public function japanese()
+    public function course(Course $course)
     {
-        $course = Course::active()->where('slug', 'japanese')->with('levels')->firstOrFail();
+        abort_unless($course->is_active, 404);
+
+        $course->load('levels');
 
         return view('courses.show', [
             'course' => $course,
@@ -94,6 +91,70 @@ class PageController extends Controller
             'batches' => Batch::upcoming()->ordered()
                 ->whereHas('courseLevel', fn ($q) => $q->where('course_id', $course->id))
                 ->with('courseLevel')->get(),
+        ]);
+    }
+
+    public function destination(Destination $destination)
+    {
+        abort_unless($destination->is_active, 404);
+
+        $destination->load(['scholarships' => fn ($q) => $q->where('is_active', true)]);
+
+        return view('destinations.show', [
+            'destination' => $destination,
+            'processSteps' => $destination->processSteps->isNotEmpty()
+                ? $destination->processSteps
+                : ProcessStep::generic()->ordered()->get(),
+            'partners' => $destination->partners()->where('is_verified', true)->orderBy('sort')->get(),
+            'letters' => AcceptanceLetter::publishable()->where('destination_id', $destination->id)->ordered()->get(),
+            'faqs' => Faq::active()->scope('destination')->where('destination_id', $destination->id)->ordered()->get(),
+            'courses' => Course::active()->ordered()->get(),
+        ]);
+    }
+
+    public function scholarships()
+    {
+        return view('scholarships', [
+            'destinations' => Destination::active()->ordered()
+                ->with(['scholarships' => fn ($q) => $q->where('is_active', true)->orderBy('sort')])
+                ->get(),
+            'courses' => Course::active()->ordered()->get(),
+        ]);
+    }
+
+    public function stories()
+    {
+        return view('stories', [
+            'results' => Result::publishable()->ordered()->get(),
+            'videoStories' => Testimonial::publishable()->ofType('video')->ordered()->get(),
+            'reviews' => Testimonial::publishable()->ofType('written')->ordered()->get(),
+            'alumni' => Testimonial::publishable()->ofType('alumni')->ordered()->get(),
+            'letters' => AcceptanceLetter::publishable()->ordered()->with('destination')->get(),
+            'courses' => Course::active()->ordered()->get(),
+        ]);
+    }
+
+    public function post(Post $post)
+    {
+        abort_if($post->published_at === null || $post->published_at->isFuture(), 404);
+
+        return view('blog.show', [
+            'post' => $post->load('category'),
+            'related' => Post::published()
+                ->where('id', '!=', $post->id)
+                ->when($post->post_category_id, fn ($q) => $q->where('post_category_id', $post->post_category_id))
+                ->latestFirst()->with('category')->take(3)->get(),
+            'courses' => Course::active()->ordered()->get(),
+        ]);
+    }
+
+    public function page(Page $page)
+    {
+        abort_unless($page->is_active, 404);
+
+        return view('page', [
+            'page' => $page,
+            'courses' => Course::active()->ordered()->get(),
         ]);
     }
 }

@@ -70,6 +70,18 @@ class ContentSeeder extends Seeder
              "Welcome to Multi Languages Gateway. We founded MLG on a simple conviction: a Bangladeshi student with the ability to study abroad should not be held back by poor guidance, hidden costs or a language barrier nobody helped them cross.\n\nSo we teach the language properly — Japanese, Korean, Chinese and IELTS — and we stay with you through admission, scholarship and visa. One team, start to finish. We publish our fees, we tell you honestly when a plan is not realistic, and we do not take a file we do not believe in."],
             ['methodology', 'Our teaching methodology',
              'Speak from week one. Teach to the exam format. Measure every week. Small batches, real attention.'],
+
+            // Placeholders. These are legal documents — have them reviewed
+            // before launch rather than shipping this text.
+            ['privacy-policy', 'Privacy policy',
+             "<p><strong>This is placeholder text and must be replaced before launch.</strong></p>".
+             "<p>Describe what the enquiry forms collect (name, mobile number, optional email and message), why it is collected, how long it is kept, who inside the organisation can see it, and how someone asks for their record to be deleted. Name the analytics and any third-party embeds the site loads.</p>"],
+            ['terms', 'Terms of service',
+             "<p><strong>This is placeholder text and must be replaced before launch.</strong></p>".
+             "<p>Cover enrolment and what a published fee does and does not include, attendance expectations, what happens if a batch is rescheduled, the limits of what the consultancy can promise about an admission or visa outcome, and how disputes are handled.</p>"],
+            ['refund-policy', 'Refund policy',
+             "<p><strong>This is placeholder text and must be replaced before launch.</strong></p>".
+             "<p>State the refund window after enrolment, what is deducted, how service charges differ from course fees, and what happens when a visa application is refused. If a band-score or success guarantee is ever advertised, its exact terms belong here.</p>"],
         ];
 
         foreach ($pages as [$slug, $title, $body]) {

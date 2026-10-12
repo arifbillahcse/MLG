@@ -29,7 +29,7 @@
             <p class="reviews__score"><b class="mono">{{ $settings['google_rating'] ?? '' }}</b> <span class="stars" aria-label="4.9 out of 5">★★★★★</span></p>
             <p class="reviews__count">Based on {{ $settings['google_reviews'] ?? '0' }} Google reviews</p>
           </div>
-          <a href="#" class="reviews__link">Write a review</a>
+          <a href="{{ \App\Support\Site::get('google_review_url', '#') }}" class="reviews__link" target="_blank" rel="noopener">Write a review</a>
         </div>
 
         <div class="reviews__viewport">

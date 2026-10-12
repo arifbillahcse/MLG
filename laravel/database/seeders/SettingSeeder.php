@@ -25,6 +25,7 @@ class SettingSeeder extends Seeder
             ['social',  'instagram',    'Instagram',        'url',      '#'],
             ['social',  'linkedin',     'LinkedIn',         'url',      '#'],
             ['general', 'site_name',    'Site name',        'text',     'Multi Languages Gateway'],
+            ['general', 'google_review_url', 'Google review link', 'url',  ''],
             ['general', 'google_rating','Google rating',    'text',     '4.9'],
             ['general', 'google_reviews','Google review count','text',  '148'],
             ['general', 'students_taught','Students taught','text',     '1200'],
