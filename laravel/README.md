@@ -135,6 +135,61 @@ The `config/` directory is deliberately absent — Laravel 11+ falls back to the
 framework defaults. Run `php artisan config:publish <name>` if you need to customise
 one.
 
+## Phase 3 — admin panel (Filament)
+
+Login at **`/admin`**. Seeded credentials: `admin@mlg.com.bd` / `ChangeMe!2026`.
+
+```bash
+composer install            # pulls filament/filament ^3.2
+php artisan migrate --seed
+php artisan storage:link    # uploads are served from public/storage
+php artisan serve
+```
+
+17 resources, 3 relation managers, 2 dashboard widgets and a settings screen,
+across six navigation groups.
+
+| Group | Manage |
+|---|---|
+| **Courses** | Courses (levels edit inline) · Batches |
+| **Study Abroad** | Destinations (scholarships inline) · Application process |
+| **Success Stories** | Top scores · Testimonials · Acceptance letters |
+| **Content** | Blog posts · Blog categories · FAQs · Pages |
+| **Enquiries** | Enquiries (with a live count badge) · Seminars & mock tests |
+| **Site** | Team · Universities · Accreditations · Site settings · Users |
+
+### Choices worth knowing
+
+**Filament v3 is pinned**, not v4. v4 moved the actions namespace and replaced `Form`
+with `Schema`, so these resources would need rewriting against it. Upgrade deliberately,
+not by widening the constraint.
+
+**The panel wears the site's colours** — Midnight Indigo primary, Torii Red danger,
+Gateway Teal success, Sunrise Gold warning. The admin looks like the brand it edits.
+
+**Consent is enforced in the UI, not just the schema.** Results, testimonials and
+acceptance letters all show a red/green consent column, and `consent_given` is a required
+toggle on the form.
+
+**Passed batch dates are flagged in red** in the batch table, with "Passed — hidden from
+the site" underneath. The stale-date problem is visible, not just prevented.
+
+**Enquiries cannot be created from the admin** (`canCreate()` returns false) — they
+arrive from the public forms. They can be exported to CSV and bulk-marked as contacted.
+
+**Only administrators see the Users resource** (`UserResource::canAccess()`), so an
+editor account cannot grant itself access.
+
+**Settings are a custom page, not a CRUD table.** They are key/value rows, so the page
+builds its inputs from the rows themselves — adding a setting needs a database row, not
+a code change.
+
+### Still to come
+
+The public site does not read any of this yet — that is Phase 4. The enquiry forms still
+post nowhere, so the Enquiries screen will stay empty until Phase 5.
+
 ## Next
 
-**Phase 3** — admin panel: auth, dashboard, and CRUD over every table above.
+**Phase 4** — replace the hard-coded markup in the section partials with queries, so
+editing a fee in the admin changes it everywhere on the site.
