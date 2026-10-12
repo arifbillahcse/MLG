@@ -9,22 +9,13 @@
 
   <div class="marquee" aria-label="Partner institutions">
     <div class="marquee__track">
-      <span class="marquee__item">Tokyo International University</span>
-      <span class="marquee__item">Kyung Hee University</span>
-      <span class="marquee__item">Zhejiang University</span>
-      <span class="marquee__item">Waseda University</span>
-      <span class="marquee__item">Sejong University</span>
-      <span class="marquee__item">Akamonkai Japanese School</span>
-      <span class="marquee__item">Tsinghua University</span>
-      <span class="marquee__item">Yonsei University</span>
-      <span class="marquee__item" aria-hidden="true">Tokyo International University</span>
-      <span class="marquee__item" aria-hidden="true">Kyung Hee University</span>
-      <span class="marquee__item" aria-hidden="true">Zhejiang University</span>
-      <span class="marquee__item" aria-hidden="true">Waseda University</span>
-      <span class="marquee__item" aria-hidden="true">Sejong University</span>
-      <span class="marquee__item" aria-hidden="true">Akamonkai Japanese School</span>
-      <span class="marquee__item" aria-hidden="true">Tsinghua University</span>
-      <span class="marquee__item" aria-hidden="true">Yonsei University</span>
+      @foreach ($partners as $partner)
+        <span class="marquee__item">{{ $partner->name }}</span>
+      @endforeach
+      {{-- duplicated so the marquee can loop seamlessly --}}
+      @foreach ($partners as $partner)
+        <span class="marquee__item" aria-hidden="true">{{ $partner->name }}</span>
+      @endforeach
     </div>
   </div>
 

@@ -27,71 +27,43 @@
 
     <div class="chips reveal" role="group" aria-label="Filter posts by topic">
       <button type="button" class="chip is-active" data-filter="all">All posts</button>
-      <button type="button" class="chip" data-filter="tips">Language learning tips</button>
-      <button type="button" class="chip" data-filter="news">Study abroad news</button>
-      <button type="button" class="chip" data-filter="visa">Visa &amp; immigration alerts</button>
-      <button type="button" class="chip" data-filter="culture">Cultural insights</button>
-      <button type="button" class="chip" data-filter="exams">Exam strategies</button>
+      @foreach ($categories as $category)
+        <button type="button" class="chip" data-filter="{{ $category->slug }}">{{ $category->name }}</button>
+      @endforeach
     </div>
 
-    <article class="featured reveal" data-cat="visa">
-      <div class="featured__thumb"></div>
+    @if ($featured)
+    <article class="featured reveal" data-cat="{{ $featured->category?->slug }}">
+      <div class="featured__thumb"
+           @if ($featured->thumbnail) style="background-image:url('{{ asset('storage/'.$featured->thumbnail) }}');background-size:cover" @endif></div>
       <div>
-        <span class="featured__tag">Featured · Visa</span>
-        <h2><a href="#">The 7 most common COE rejection reasons — and how to avoid each one</a></h2>
-        <p class="featured__meta">8 min read · Updated this intake</p>
-        <p>Most rejections come down to paperwork, not the student. Financial sponsor mismatches, an unexplained study gap, an inconsistent statement of purpose — every one is preventable if you catch it before filing. We go through all seven with the fix for each.</p>
-        <a href="#" class="btn btn--primary btn--sm">Read the guide</a>
+        <span class="featured__tag">Featured · {{ $featured->category?->name }}</span>
+        <h2><a href="{{ route('blog') }}">{{ $featured->title }}</a></h2>
+        <p class="featured__meta">{{ $featured->read_minutes }} min read · {{ $featured->published_at?->diffForHumans() }}</p>
+        <p>{{ $featured->excerpt }}</p>
+        <a href="{{ route('blog') }}" class="btn btn--primary btn--sm">Read the guide</a>
       </div>
     </article>
+    @endif
 
     <div class="posts" id="postGrid">
-      <article class="post reveal" data-delay="1" data-cat="visa">
-        <div class="post__thumb post__thumb--4"><span class="post__cat">Visa</span></div>
-        <h3><a href="#">Six documents that decide your COE application</a></h3>
-        <p class="post__excerpt">Immigration reads your financial papers before anything else. Here is exactly what they look for, in the order they look.</p>
-        <p class="post__meta mono">9 min read · Visa</p>
+      @foreach ($posts as $i => $post)
+      <article class="post reveal" data-delay="{{ ($i % 3) + 1 }}" data-cat="{{ $post->category?->slug }}">
+        <div class="post__thumb post__thumb--{{ $post->thumb_variant ?: '1' }}"
+             @if ($post->thumbnail) style="background-image:url('{{ asset('storage/'.$post->thumbnail) }}');background-size:cover" @endif>
+          <span class="post__cat">{{ $post->category?->name }}</span>
+        </div>
+        <h3><a href="{{ route('blog') }}">{{ $post->title }}</a></h3>
+        <p class="post__excerpt">{{ $post->excerpt }}</p>
+        <p class="post__meta mono">{{ $post->read_minutes }} min read · {{ $post->category?->name }}</p>
       </article>
-      <article class="post reveal" data-delay="2" data-cat="news">
-        <div class="post__thumb post__thumb--5"><span class="post__cat">Cost</span></div>
-        <h3><a href="#">Part-time work in Japan: the 28-hour rule explained</a></h3>
-        <p class="post__excerpt">What you can legally earn, what the permission endorsement is, and why students lose their status over this.</p>
-        <p class="post__meta mono">7 min read · Cost</p>
-      </article>
-      <article class="post reveal" data-delay="3" data-cat="exams">
-        <div class="post__thumb post__thumb--6"><span class="post__cat">JLPT</span></div>
-        <h3><a href="#">JLPT vs NAT-TEST: which one should you sit?</a></h3>
-        <p class="post__excerpt">Both are accepted by most language schools. The difference is timing, and it can cost you an intake.</p>
-        <p class="post__meta mono">5 min read · JLPT</p>
-      </article>
-      <article class="post reveal" data-delay="1" data-cat="culture">
-        <div class="post__thumb post__thumb--7"><span class="post__cat">Life</span></div>
-        <h3><a href="#">Your first week in Japan: residence card, bank, phone</a></h3>
-        <p class="post__excerpt">The three errands every new student has to run, and the order that saves you a second trip.</p>
-        <p class="post__meta mono">8 min read · Life</p>
-      </article>
-      <article class="post reveal" data-delay="2" data-cat="exams">
-        <div class="post__thumb post__thumb--8"><span class="post__cat">IELTS</span></div>
-        <h3><a href="#">Why most Bangladeshi students plateau at band 6.5</a></h3>
-        <p class="post__excerpt">It is almost never grammar. It is fluency under time pressure — and that is trainable.</p>
-        <p class="post__meta mono">6 min read · IELTS</p>
-      </article>
-      <article class="post reveal" data-delay="3" data-cat="visa">
-        <div class="post__thumb post__thumb--9"><span class="post__cat">Visa</span></div>
-        <h3><a href="#">Study gap explained: how to write it so immigration accepts it</a></h3>
-        <p class="post__excerpt">A gap is not a rejection. An unexplained gap is. A template and two real examples.</p>
-        <p class="post__meta mono">10 min read · Visa</p>
-      </article>
+      @endforeach
     </div>
 
     <p class="blog-empty" id="blogEmpty" hidden>No posts in this topic yet.</p>
 
     <nav class="pagination" aria-label="Pagination">
-      <span class="is-disabled" aria-hidden="true">←</span>
-      <span class="is-current" aria-current="page">1</span>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">→</a>
+      {{ $posts->onEachSide(1)->links() }}
     </nav>
 
   </div>
@@ -123,10 +95,9 @@
       <div class="field">
         <label for="b-interest">I want to talk about</label>
         <select id="b-interest" name="interest">
-          <option>Japanese language course</option>
-          <option>Japan student visa</option>
-          <option>IELTS preparation</option>
-          <option>Other study destinations</option>
+          @foreach ($courses as $course)
+            <option>{{ $course->name }}@if ($course->exam_name) ({{ $course->exam_name }})@endif</option>
+          @endforeach
         </select>
       </div>
       <button type="submit" class="btn btn--gold btn--block btn--lg">Book my free session</button>

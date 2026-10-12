@@ -189,7 +189,52 @@ a code change.
 The public site does not read any of this yet — that is Phase 4. The enquiry forms still
 post nowhere, so the Enquiries screen will stay empty until Phase 5.
 
+## Phase 4 — the site reads from the database
+
+Every repeated block is now a loop. Change a fee in the admin and it updates on the
+course card, the course page, the comparison table and the fee table at once.
+
+### What drives what
+
+| Source | Appears in |
+|---|---|
+| `courses` + `course_levels` | Course grid, course pages, both fee tables, every "interest" dropdown, hero language count |
+| `destinations` | Destination cards, the Study Abroad menu, footer |
+| `batches` | Batch cards **and the countdown**, course page schedule |
+| `results` / `testimonials` / `acceptance_letters` | Scores board, stories, letters — `publishable()` only |
+| `partners` | Universities marquee — `verified()` only |
+| `faculty` | Homepage team, About (split instructor/counsellor), course page |
+| `posts` + `post_categories` | Blog listing, filter chips, homepage preview |
+| `faqs` | Homepage FAQ (`scope=home`) and course FAQ (`scope=course`) |
+| `pages` | Chairman's message, mission, vision |
+| `events` | Seminar block, mock-test options |
+| `settings` | Topbar, footer, contact page, map embed, **and the JSON-LD** |
+
+### How it is held together
+
+**`App\Support\Site`** caches settings and the nav lists forever, and
+`AppServiceProvider` flushes that cache whenever a Setting, Course or Destination is
+saved. No per-request settings query, but an admin edit still shows immediately.
+
+**`ChromeComposer`** binds the topbar, header and footer, so the menus build themselves
+from the course and destination tables. Adding a course in the admin adds it to the menu.
+
+**The countdown reads `data-starts`** off `#countdown`, set from the featured batch. No
+featured batch, or the date has passed, and the counter hides itself instead of counting
+into the negative. `main.js` no longer carries a date at all.
+
+**JSON-LD reads the same settings the page does**, so a changed phone number cannot go
+stale in the structured data Google reads.
+
+**`japanese.blade.php` became `courses/show.blade.php`** and no longer mentions Japanese
+anywhere — it renders whatever `$course` it is handed. Phase 6 only has to change the
+route.
+
+### Not done here
+
+The eight forms still post nowhere — that is Phase 5. Blog posts, destinations and the
+other courses have no detail route yet — Phase 6.
+
 ## Next
 
-**Phase 4** — replace the hard-coded markup in the section partials with queries, so
-editing a fee in the admin changes it everywhere on the site.
+**Phase 5** — forms and enquiries: validation, storage, notification and the admin inbox.

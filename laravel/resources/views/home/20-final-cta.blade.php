@@ -25,13 +25,12 @@
       <div class="field">
         <label for="c-interest">I want to talk about</label>
         <select id="c-interest" name="interest">
-          <option>Japanese (JLPT)</option>
-          <option>Korean (TOPIK)</option>
-          <option>Chinese (HSK)</option>
-          <option>IELTS preparation</option>
-          <option>Study abroad — Japan</option>
-          <option>Study abroad — Korea</option>
-          <option>Study abroad — China</option>
+          @foreach ($courses as $course)
+            <option>{{ $course->name }}@if ($course->exam_name) ({{ $course->exam_name }})@endif</option>
+          @endforeach
+          @foreach ($destinations as $destination)
+            <option>{{ $destination->name }}</option>
+          @endforeach
         </select>
       </div>
       <button type="submit" class="btn btn--gold btn--block btn--lg">Book my free session</button>

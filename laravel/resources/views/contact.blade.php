@@ -14,13 +14,13 @@
 {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
-  "name": "Multi Languages Gateway",
+  "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
   "url": "https://example.com/",
-  "telephone": "+8801700000000",
-  "email": "info@mlg.com.bd",
+  "telephone": "{{ \App\Support\Site::get('phone_raw') }}",
+  "email": "{{ \App\Support\Site::get('email') }}",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "House 00, Road 00, Dhanmondi",
+    "streetAddress": "{{ \App\Support\Site::get('address_line1') }}",
     "addressLocality": "Dhaka",
     "postalCode": "1205",
     "addressCountry": "BD"
@@ -60,8 +60,8 @@
           <div>
             <h3>Dhaka office</h3>
             <address>
-              House 00, Road 00, Dhanmondi<br>
-              Dhaka 1205, Bangladesh
+              {{ $settings['address_line1'] ?? '' }}<br>
+              {{ $settings['address_line2'] ?? '' }}
             </address>
           </div>
         </div>
@@ -73,8 +73,8 @@
           <div>
             <h3>Phone &amp; WhatsApp</h3>
             <p>
-              <a href="tel:+8801700000000" class="mono">+880 1700-000000</a><br>
-              <a href="https://wa.me/8801700000000" target="_blank" rel="noopener">Message us on WhatsApp</a>
+              <a href="tel:{{ $settings['phone_raw'] ?? '' }}" class="mono">{{ $settings['phone'] ?? '' }}</a><br>
+              <a href="https://wa.me/{{ $settings['whatsapp'] ?? '' }}" target="_blank" rel="noopener">Message us on WhatsApp</a>
             </p>
           </div>
         </div>
@@ -85,7 +85,7 @@
           </span>
           <div>
             <h3>Email</h3>
-            <p><a href="mailto:info@mlg.com.bd">info@mlg.com.bd</a></p>
+            <p><a href="mailto:{{ $settings['email'] ?? '' }}">{{ $settings['email'] ?? '' }}</a></p>
           </div>
         </div>
 
@@ -95,8 +95,7 @@
           </span>
           <div>
             <h3>Office hours</h3>
-            <p>Saturday – Thursday, 10:00 AM – 8:00 PM<br>
-            <span style="color:var(--slate-light)">Closed on Friday</span></p>
+            <p>{{ $settings['office_hours'] ?? '' }}</p>
           </div>
         </div>
       </div>
@@ -124,10 +123,12 @@
         <div class="field">
           <label for="k-interest">What can we help with?</label>
           <select id="k-interest" name="interest">
-            <option>Japanese language course</option>
-            <option>Japan student visa / COE</option>
-            <option>IELTS preparation</option>
-            <option>Other study destinations</option>
+            @foreach ($courses as $course)
+              <option>{{ $course->name }}@if ($course->exam_name) ({{ $course->exam_name }})@endif</option>
+            @endforeach
+            @foreach ($destinations as $destination)
+              <option>{{ $destination->name }}</option>
+            @endforeach
             <option>Something else</option>
           </select>
         </div>
@@ -153,15 +154,18 @@
       <p class="sec-head__lede">Two minutes from Dhanmondi 27. Walk-ins welcome during office hours, though a booked slot means a counsellor is waiting for you.</p>
     </header>
 
-    <div class="map reveal" data-delay="1">
-      <div>
-        <span class="map__pin">
-          <svg viewBox="0 0 24 24" class="ic"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        </span>
-        <p><b>Map placeholder</b><br>
-        Replace this block with a Google Maps <code>&lt;iframe&gt;</code> or a static map image.<br>
-        Add <code>loading="lazy"</code> so it never blocks first paint.</p>
+    @if (!empty($settings['map_embed']))
+      <div class="map reveal" data-delay="1" style="padding:0">{!! $settings['map_embed'] !!}</div>
+    @else
+      <div class="map reveal" data-delay="1">
+        <div>
+          <span class="map__pin">
+            <svg viewBox="0 0 24 24" class="ic"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </span>
+          <p><b>Map not set</b><br>Paste a Google Maps embed into Site settings.</p>
+        </div>
       </div>
+    @endif
     </div>
   </div>
 </section>

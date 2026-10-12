@@ -30,22 +30,12 @@
     </div>
 
     <div class="badges reveal" data-delay="4" id="badges" style="margin-top:var(--s8)">
+      @foreach ($accreditations as $accreditation)
       <span class="badge">
         <span class="badge__ic"><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg></span>
-        Government-registered training centre
+        {{ $accreditation->title }}
       </span>
-      <span class="badge">
-        <span class="badge__ic"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="8" r="5"/><path d="m8.5 12.5-1.5 8 5-3 5 3-1.5-8"/></svg></span>
-        JLPT &amp; NAT-TEST preparation centre
-      </span>
-      <span class="badge">
-        <span class="badge__ic"><svg viewBox="0 0 24 24" class="ic"><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6z"/></svg></span>
-        Registered study-abroad consultancy
-      </span>
-      <span class="badge">
-        <span class="badge__ic"><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg></span>
-        IELTS registration support
-      </span>
+      @endforeach
     </div>
     <p class="partners__note">Replace these with the accreditations you can evidence, and link each to its certificate.</p>
   </div>

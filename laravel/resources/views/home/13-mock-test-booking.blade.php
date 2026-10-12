@@ -7,10 +7,9 @@
         <h2 data-en="Find out your real level first" data-bn="আগে নিজের আসল লেভেল জানুন">Find out your real level first</h2>
         <p class="sec-head__lede">Sit a full-length mock before you pay for anything. You get a written score breakdown and an honest recommendation on which level to start at — even if that answer is "you don't need our course yet".</p>
         <dl class="seminar__meta">
-          <div><dt>IELTS</dt><dd>Full 4-module mock</dd></div>
-          <div><dt>JLPT</dt><dd>N5 / N4 paper</dd></div>
-          <div><dt>TOPIK</dt><dd>TOPIK I placement</dd></div>
-          <div><dt>HSK</dt><dd>HSK 1–3 placement</dd></div>
+          @foreach ($mockTests as $mock)
+            <div><dt>{{ Str::of($mock->title)->after('Free ')->before(' ')->upper() }}</dt><dd>{{ Str::of($mock->title)->after('Free ') }}</dd></div>
+          @endforeach
         </dl>
       </div>
 
@@ -28,10 +27,9 @@
         <div class="field">
           <label for="m-exam">Which test?</label>
           <select id="m-exam" name="exam">
-            <option>IELTS — full mock</option>
-            <option>JLPT — N5 / N4</option>
-            <option>TOPIK — placement</option>
-            <option>HSK — placement</option>
+            @foreach ($mockTests as $mock)
+              <option>{{ $mock->title }}</option>
+            @endforeach
           </select>
         </div>
         <button type="submit" class="btn btn--primary btn--block">Book free mock test</button>

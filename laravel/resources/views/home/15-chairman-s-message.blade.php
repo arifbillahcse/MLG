@@ -21,15 +21,9 @@
         <p class="eyebrow" data-en="Message from the Chairman" data-bn="চেয়ারম্যানের বার্তা">Message from the Chairman</p>
         <h2 data-en="Guiding your path, whichever country you choose" data-bn="আপনি যে দেশই বেছে নিন, পথ দেখাব আমরা">Guiding your path, whichever country you choose</h2>
 
-        <p class="chairman__text">Welcome to Multi Languages Gateway. We founded MLG on a
-        simple conviction: a Bangladeshi student with the ability to study abroad should not
-        be held back by poor guidance, hidden costs or a language barrier nobody helped them
-        cross.</p>
-
-        <p class="chairman__text">So we teach the language properly — Japanese, Korean,
-        Chinese and IELTS — and we stay with you through admission, scholarship and visa.
-        One team, start to finish. We publish our fees, we tell you honestly when a plan is
-        not realistic, and we do not take a file we do not believe in.</p>
+        @foreach (preg_split('/\n\s*\n/', (string) ($chairman->body ?? '')) as $para)
+          <p class="chairman__text">{{ trim($para) }}</p>
+        @endforeach
 
         <div class="chairman__sign">
           <div>

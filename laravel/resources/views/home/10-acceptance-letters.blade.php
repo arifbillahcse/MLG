@@ -8,31 +8,17 @@
     </header>
 
     <div class="letters">
-      <article class="letter reveal" data-delay="1">
-        <div class="letter__redact" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <p class="letter__uni">Tokyo International University</p>
-        <p class="letter__meta">🇯🇵 April 2025 intake</p>
+      @foreach ($letters as $i => $letter)
+      <article class="letter reveal" data-delay="{{ $i + 1 }}">
+        @if ($letter->image)
+          <img src="{{ asset('storage/'.$letter->image) }}" alt="Offer letter from {{ $letter->university }}" style="flex:1;object-fit:cover;border-radius:6px;margin-bottom:var(--s3)">
+        @else
+          <div class="letter__redact" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+        @endif
+        <p class="letter__uni">{{ $letter->university }}</p>
+        <p class="letter__meta">{{ $letter->destination?->flag }} {{ $letter->intake }}</p>
       </article>
-      <article class="letter reveal" data-delay="2">
-        <div class="letter__redact" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <p class="letter__uni">Kyung Hee University</p>
-        <p class="letter__meta">🇰🇷 March 2025 intake</p>
-      </article>
-      <article class="letter reveal" data-delay="3">
-        <div class="letter__redact" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <p class="letter__uni">Zhejiang University</p>
-        <p class="letter__meta">🇨🇳 September 2025 · CSC</p>
-      </article>
-      <article class="letter reveal" data-delay="4">
-        <div class="letter__redact" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <p class="letter__uni">Akamonkai Japanese School</p>
-        <p class="letter__meta">🇯🇵 July 2025 intake</p>
-      </article>
-      <article class="letter reveal" data-delay="5">
-        <div class="letter__redact" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <p class="letter__uni">Sejong University</p>
-        <p class="letter__meta">🇰🇷 September 2025 intake</p>
-      </article>
+      @endforeach
     </div>
   </div>
 </section>

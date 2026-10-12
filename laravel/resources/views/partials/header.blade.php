@@ -23,12 +23,11 @@
           </button>
           <div class="submenu submenu--jp">
             <ul>
-              <li><a href="{{ route('courses.japanese') }}">Japanese — JLPT N5, N4</a></li>
-              <li><a href="#">Korean — TOPIK</a></li>
-              <li><a href="#">Chinese — HSK</a></li>
-              <li><a href="#">IELTS Preparation</a></li>
-              <li><a href="#">Online vs In-class</a></li>
-              <li><a href="#">Book a mock test</a></li>
+              @foreach ($navCourses as $navCourse)
+                <li><a href="{{ route('courses.japanese') }}">{{ $navCourse->name }}@if ($navCourse->exam_name) — {{ $navCourse->exam_name }}@endif</a></li>
+              @endforeach
+              <li><a href="{{ route('home') }}#modes">Online vs In-class</a></li>
+              <li><a href="{{ route('home') }}#mock">Book a mock test</a></li>
             </ul>
           </div>
         </li>
@@ -40,11 +39,11 @@
           </button>
           <div class="submenu submenu--gl">
             <ul>
-              <li><a href="#"><span class="flag">🇯🇵</span> Study in Japan</a></li>
-              <li><a href="#"><span class="flag">🇰🇷</span> Study in Korea</a></li>
-              <li><a href="#"><span class="flag">🇨🇳</span> Study in China</a></li>
-              <li><a href="#">Scholarships</a></li>
-              <li><a href="#">Visa guidance</a></li>
+              @foreach ($navDestinations as $navDestination)
+                <li><a href="{{ route('home') }}#destinations"><span class="flag">{{ $navDestination->flag }}</span> {{ $navDestination->name }}</a></li>
+              @endforeach
+              <li><a href="{{ route('home') }}#destinations">Scholarships</a></li>
+              <li><a href="{{ route('home') }}#destinations">Visa guidance</a></li>
               <li><a href="{{ route('contact') }}">Book a 1-on-1 consultation</a></li>
             </ul>
           </div>
@@ -89,9 +88,9 @@
 
       <div class="nav__foot">
         <a href="{{ route('contact') }}" class="btn btn--primary btn--block" data-en="Free Consultation" data-bn="ফ্রি কনসালটেশন">Free Consultation</a>
-        <a href="tel:+8801700000000" class="nav__foot-call">
+        <a href="tel:{{ $settings['phone_raw'] ?? '' }}" class="nav__foot-call">
           <svg viewBox="0 0 24 24" class="ic" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
-          +880 1700-000000
+          {{ $settings['phone'] ?? '' }}
         </a>
       </div>
     </nav>

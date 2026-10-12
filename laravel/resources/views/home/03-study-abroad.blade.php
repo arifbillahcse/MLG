@@ -8,41 +8,18 @@
     </header>
 
     <div class="dest">
-      <article class="dest__card reveal" data-delay="1">
-        <span class="dest__flag" aria-hidden="true">🇯🇵</span>
-        <h3>Study in Japan</h3>
+      @foreach ($destinations as $i => $destination)
+      <article class="dest__card reveal" data-delay="{{ $i + 1 }}">
+        <span class="dest__flag" aria-hidden="true">{{ $destination->flag }}</span>
+        <h3>{{ $destination->name }}</h3>
         <ul class="dest__list">
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>University &amp; language school list</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Step-by-step application process</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>MEXT and university scholarships</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>COE and student visa guidance</li>
+          @foreach ($destination->highlights ?? [] as $highlight)
+            <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>{{ $highlight }}</li>
+          @endforeach
         </ul>
-        <a href="#contact" class="btn btn--secondary btn--block btn--sm">Explore Japan</a>
+        <a href="{{ route('contact') }}" class="btn btn--secondary btn--block btn--sm">Explore {{ Str::after($destination->name, 'Study in ') }}</a>
       </article>
-
-      <article class="dest__card reveal" data-delay="2">
-        <span class="dest__flag" aria-hidden="true">🇰🇷</span>
-        <h3>Study in Korea</h3>
-        <ul class="dest__list">
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>University &amp; college list</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Step-by-step application process</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>GKS and university scholarships</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>D-2 / D-4 visa guidance</li>
-        </ul>
-        <a href="#contact" class="btn btn--secondary btn--block btn--sm">Explore Korea</a>
-      </article>
-
-      <article class="dest__card reveal" data-delay="3">
-        <span class="dest__flag" aria-hidden="true">🇨🇳</span>
-        <h3>Study in China</h3>
-        <ul class="dest__list">
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>University &amp; college list</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Step-by-step application process</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>CSC and provincial scholarships</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>X1 / X2 student visa guidance</li>
-        </ul>
-        <a href="#contact" class="btn btn--secondary btn--block btn--sm">Explore China</a>
-      </article>
+      @endforeach
     </div>
   </div>
 </section>

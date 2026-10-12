@@ -16,15 +16,15 @@
 {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
-  "name": "Multi Languages Gateway",
+  "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
   "alternateName": "MLG",
   "description": "Language institute and study-abroad consultancy in Dhaka, Bangladesh — Japanese, Korean, Chinese and IELTS courses with admission and visa support for Japan, Korea and China.",
   "url": "https://example.com/",
-  "telephone": "+8801XXXXXXXXX",
-  "email": "info@example.com",
+  "telephone": "{{ \App\Support\Site::get('phone_raw') }}",
+  "email": "{{ \App\Support\Site::get('email') }}",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "House 00, Road 00, Dhanmondi",
+    "streetAddress": "{{ \App\Support\Site::get('address_line1') }}",
     "addressLocality": "Dhaka",
     "postalCode": "1205",
     "addressCountry": "BD"

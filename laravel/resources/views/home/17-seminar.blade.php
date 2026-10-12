@@ -4,13 +4,13 @@
     <div class="seminar">
       <div class="seminar__copy reveal">
         <p class="eyebrow">Free seminar</p>
-        <h2 data-en="Study, Work &amp; Settle Abroad" data-bn="বিদেশে পড়াশোনা, কাজ ও বসবাস">Study, Work &amp; Settle Abroad</h2>
+        <h2>{{ $seminar->title ?? "Study, Work &amp; Settle Abroad" }}</h2>
         <p class="sec-head__lede">Ninety minutes, no sales pitch. Japan, Korea and China side by side — real cost breakdown, part-time work rules, visa rejection reasons and a live Q&amp;A with students who flew last year.</p>
         <dl class="seminar__meta">
-          <div><dt>Date</dt><dd class="mono">4 October, Saturday</dd></div>
-          <div><dt>Time</dt><dd class="mono">4:00 PM</dd></div>
-          <div><dt>Venue</dt><dd>MLG Dhanmondi office</dd></div>
-          <div><dt>Seats</dt><dd class="mono">60 (free)</dd></div>
+          <div><dt>Date</dt><dd class="mono">{{ $seminar?->starts_at?->format('j F, l') ?? 'To be announced' }}</dd></div>
+          <div><dt>Time</dt><dd class="mono">{{ $seminar?->starts_at?->format('g:i A') ?? '—' }}</dd></div>
+          <div><dt>Venue</dt><dd>{{ $seminar->venue ?? '' }}</dd></div>
+          <div><dt>Seats</dt><dd class="mono">{{ $seminar->seats ?? '—' }}{{ $seminar?->is_free ? ' (free)' : '' }}</dd></div>
         </dl>
       </div>
 
@@ -28,10 +28,9 @@
         <div class="field">
           <label for="s-interest">I'm interested in</label>
           <select id="s-interest" name="interest">
-            <option>Japanese (JLPT)</option>
-            <option>Korean (TOPIK)</option>
-            <option>Chinese (HSK)</option>
-            <option>IELTS</option>
+            @foreach ($courses as $course)
+              <option>{{ $course->name }}@if ($course->exam_name) ({{ $course->exam_name }})@endif</option>
+            @endforeach
             <option>Study abroad &amp; visa</option>
           </select>
         </div>

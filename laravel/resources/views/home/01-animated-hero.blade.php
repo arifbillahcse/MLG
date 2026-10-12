@@ -30,15 +30,15 @@
 
       <ul class="trust reveal" data-delay="4">
         <li class="trust__item">
-          <span class="trust__num"><span class="count" data-target="4.9" data-decimals="1">0</span><span class="trust__unit">★</span></span>
+          <span class="trust__num"><span class="count" data-target="{{ $settings['google_rating'] ?? '0' }}" data-decimals="1">0</span><span class="trust__unit">★</span></span>
           <span class="trust__label">Google rating</span>
         </li>
         <li class="trust__item">
-          <span class="trust__num"><span class="count" data-target="1200">0</span><span class="trust__unit">+</span></span>
+          <span class="trust__num"><span class="count" data-target="{{ $settings['students_taught'] ?? '0' }}">0</span><span class="trust__unit">+</span></span>
           <span class="trust__label">Students taught</span>
         </li>
         <li class="trust__item">
-          <span class="trust__num"><span class="count" data-target="4">0</span></span>
+          <span class="trust__num"><span class="count" data-target="{{ $courses->count() }}">0</span></span>
           <span class="trust__label">Languages offered</span>
         </li>
       </ul>

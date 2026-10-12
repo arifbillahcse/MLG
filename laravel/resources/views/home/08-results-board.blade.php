@@ -8,36 +8,12 @@
     </header>
 
     <div class="results">
-      <div class="result reveal" data-delay="1">
-        <span class="result__exam">IELTS</span>
-        <p class="result__score">8.0</p>
-        <p class="result__name">Nusrat Jahan</p>
-        <p class="result__meta">Academic · 2025</p>
+      @foreach ($results as $i => $result)
+      <div class="result reveal" data-delay="{{ intdiv($i, 2) + 1 }}">
+        <span class="result__exam">{{ $result->exam }}</span>
+        <p class="result__score">{{ $result->score }}</p>
+        <p class="result__name">{{ $result->student_name }}</p>
+        <p class="result__meta">{{ $result->meta }}</p>
       </div>
-      <div class="result reveal" data-delay="1">
-        <span class="result__exam">IELTS</span>
-        <p class="result__score">7.5</p>
-        <p class="result__name">Tanvir Ahmed</p>
-        <p class="result__meta">Academic · 2025</p>
-      </div>
-      <div class="result reveal" data-delay="2">
-        <span class="result__exam">JLPT</span>
-        <p class="result__score">N4</p>
-        <p class="result__name">Rahat Hossain</p>
-        <p class="result__meta">Passed in 7 months</p>
-      </div>
-      <div class="result reveal" data-delay="2">
-        <span class="result__exam">TOPIK</span>
-        <p class="result__score">4</p>
-        <p class="result__name">Sadia Islam</p>
-        <p class="result__meta">TOPIK II · 2025</p>
-      </div>
-      <div class="result reveal" data-delay="3">
-        <span class="result__exam">HSK</span>
-        <p class="result__score">3</p>
-        <p class="result__name">Mahmudul Karim</p>
-        <p class="result__meta">Passed first attempt</p>
-      </div>
-    </div>
-  </div>
+      @endforeach
 </section>

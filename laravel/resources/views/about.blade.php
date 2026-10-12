@@ -17,13 +17,13 @@
   "name": "About Multi Languages Gateway",
   "mainEntity": {
     "@type": "EducationalOrganization",
-    "name": "Multi Languages Gateway",
+    "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
     "alternateName": "MLG",
     "description": "Language institute and study-abroad consultancy in Dhaka, Bangladesh — Japanese, Korean, Chinese and IELTS, with admission, scholarship and visa support for Japan, Korea and China.",
     "founder": { "@type": "Person", "name": "A. K. M. Rahman", "jobTitle": "Chairman & Founder" },
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "House 00, Road 00, Dhanmondi",
+      "streetAddress": "{{ \App\Support\Site::get('address_line1') }}",
       "addressLocality": "Dhaka",
       "postalCode": "1205",
       "addressCountry": "BD"
@@ -78,15 +78,9 @@
         <p class="eyebrow" data-en="Message from the Chairman" data-bn="চেয়ারম্যানের বার্তা">Message from the Chairman</p>
         <h2 data-en="Guiding your path, whichever country you choose" data-bn="আপনি যে দেশই বেছে নিন, পথ দেখাব আমরা">Guiding your path, whichever country you choose</h2>
 
-        <p class="chairman__text">Welcome to Multi Languages Gateway. We founded MLG on a
-        simple conviction: a Bangladeshi student with the ability to study abroad should not
-        be held back by poor guidance, hidden costs or a language barrier nobody helped them
-        cross.</p>
-
-        <p class="chairman__text">So we teach the language properly — Japanese, Korean,
-        Chinese and IELTS — and we stay with you through admission, scholarship and visa.
-        One team, start to finish. We publish our fees, we tell you honestly when a plan is
-        not realistic, and we do not take a file we do not believe in.</p>
+        @foreach (preg_split('/\n\s*\n/', (string) ($chairman->body ?? '')) as $para)
+          <p class="chairman__text">{{ trim($para) }}</p>
+        @endforeach
 
         <div class="chairman__sign">
           <div>
@@ -113,12 +107,12 @@
 
         <div class="mv">
           <div class="mv__item">
-            <h3>Our mission</h3>
-            <p>To make studying abroad reachable for Bangladeshi students who have the ability but not the guidance — by teaching the language properly and telling the truth about cost, timeline and odds.</p>
+            <h3>{{ $mission->title ?? 'Our mission' }}</h3>
+            <p>{{ $mission->body ?? '' }}</p>
           </div>
           <div class="mv__item">
-            <h3>Our vision</h3>
-            <p>To be the institute Bangladeshi families name first when a student says they want to study in Japan, Korea or China.</p>
+            <h3>{{ $vision->title ?? 'Our vision' }}</h3>
+            <p>{{ $vision->body ?? '' }}</p>
           </div>
         </div>
       </div>
@@ -192,34 +186,19 @@
         <p>Language and exam preparation</p>
       </div>
       <div class="faculty">
-        <article class="fac reveal" data-delay="1">
-          <span class="fac__avatar fac__avatar--r" aria-hidden="true">SR</span>
-          <h3>Shahriar Rahman</h3>
-          <p class="fac__role">Japanese · JLPT</p>
-          <p class="fac__cred">JLPT N1 · 6 years in Tokyo</p>
-          <p class="fac__quote">"Speak from day one. Perfect grammar with no confidence gets you nowhere at the embassy."</p>
-        </article>
-        <article class="fac reveal" data-delay="2">
-          <span class="fac__avatar" aria-hidden="true">JH</span>
-          <h3>Jinhee Park</h3>
-          <p class="fac__role">Korean · TOPIK</p>
-          <p class="fac__cred">Native speaker · 8 years teaching</p>
-          <p class="fac__quote">"TOPIK rewards pattern recognition. We drill the patterns until they're automatic."</p>
-        </article>
-        <article class="fac reveal" data-delay="3">
-          <span class="fac__avatar" aria-hidden="true">LW</span>
-          <h3>Li Wei</h3>
-          <p class="fac__role">Chinese · HSK</p>
-          <p class="fac__cred">HSK examiner training · 5 years</p>
-          <p class="fac__quote">"Tones first. Every hour on tones early saves ten hours of correction later."</p>
-        </article>
-        <article class="fac reveal" data-delay="4">
-          <span class="fac__avatar fac__avatar--t" aria-hidden="true">FA</span>
-          <h3>Farhana Akter</h3>
-          <p class="fac__role">IELTS</p>
-          <p class="fac__cred">Band 8.5 · 7 years coaching</p>
-          <p class="fac__quote">"Most students plateau at 6.5 on fluency, not grammar. That's what we train."</p>
-        </article>
+        @foreach ($instructors as $i => $member)
+          <article class="fac reveal" data-delay="{{ $i + 1 }}">
+            @if ($member->photo)
+              <img class="fac__avatar" src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" width="84" height="84">
+            @else
+              <span class="fac__avatar fac__avatar--{{ $member->avatar_variant }}" aria-hidden="true">{{ $member->initials }}</span>
+            @endif
+            <h3>{{ $member->name }}</h3>
+            <p class="fac__role">{{ $member->role }}</p>
+            <p class="fac__cred">{{ $member->credential }}</p>
+            <p class="fac__quote">{{ $member->quote }}</p>
+          </article>
+          @endforeach
       </div>
     </div>
 
@@ -229,27 +208,19 @@
         <p>Admission, scholarship and visa</p>
       </div>
       <div class="faculty">
-        <article class="fac reveal" data-delay="1">
-          <span class="fac__avatar" aria-hidden="true">AH</span>
-          <h3>Ashraful Haque</h3>
-          <p class="fac__role">Japan desk</p>
-          <p class="fac__cred">COE &amp; student visa · 5 years</p>
-          <p class="fac__quote">"Most rejections are paperwork, not the student. That is fixable before filing."</p>
-        </article>
-        <article class="fac reveal" data-delay="2">
-          <span class="fac__avatar fac__avatar--t" aria-hidden="true">RN</span>
-          <h3>Rubaiya Nasrin</h3>
-          <p class="fac__role">Korea &amp; China desk</p>
-          <p class="fac__cred">GKS and CSC applications</p>
-          <p class="fac__quote">"Scholarship deadlines close months before admission does. We plan backwards from them."</p>
-        </article>
-        <article class="fac reveal" data-delay="3">
-          <span class="fac__avatar fac__avatar--r" aria-hidden="true">TI</span>
-          <h3>Tanjim Islam</h3>
-          <p class="fac__role">Student counselling</p>
-          <p class="fac__cred">First consultation &amp; planning</p>
-          <p class="fac__quote">"My job in the first meeting is to be honest, even when the honest answer is no."</p>
-        </article>
+        @foreach ($counsellors as $i => $member)
+          <article class="fac reveal" data-delay="{{ $i + 1 }}">
+            @if ($member->photo)
+              <img class="fac__avatar" src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" width="84" height="84">
+            @else
+              <span class="fac__avatar fac__avatar--{{ $member->avatar_variant }}" aria-hidden="true">{{ $member->initials }}</span>
+            @endif
+            <h3>{{ $member->name }}</h3>
+            <p class="fac__role">{{ $member->role }}</p>
+            <p class="fac__cred">{{ $member->credential }}</p>
+            <p class="fac__quote">{{ $member->quote }}</p>
+          </article>
+          @endforeach
       </div>
     </div>
   </div>
@@ -265,22 +236,16 @@
     </header>
 
     <div class="certs">
-      <article class="cert reveal" data-delay="1">
+      @foreach ($accreditations as $i => $accreditation)
+      <article class="cert reveal" data-delay="{{ $i + 1 }}">
         <span class="cert__seal"><svg viewBox="0 0 24 24" class="ic"><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6z"/></svg></span>
-        <div><h3>Government-registered training centre</h3><p>Registered as a private language training institute.</p><p class="cert__ref">Reg. no. — to be supplied</p></div>
+        <div>
+          <h3>{{ $accreditation->title }}</h3>
+          <p>{{ $accreditation->description }}</p>
+          <p class="cert__ref">{{ $accreditation->reference ?? 'Reference — to be supplied' }}</p>
+        </div>
       </article>
-      <article class="cert reveal" data-delay="2">
-        <span class="cert__seal"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="8" r="5"/><path d="m8.5 12.5-1.5 8 5-3 5 3-1.5-8"/></svg></span>
-        <div><h3>JLPT &amp; NAT-TEST preparation centre</h3><p>Registered to prepare and submit candidates for both Japanese proficiency examinations.</p><p class="cert__ref">Centre code — to be supplied</p></div>
-      </article>
-      <article class="cert reveal" data-delay="3">
-        <span class="cert__seal"><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg></span>
-        <div><h3>Registered study-abroad consultancy</h3><p>Licensed to process student admission and visa applications.</p><p class="cert__ref">Licence no. — to be supplied</p></div>
-      </article>
-      <article class="cert reveal" data-delay="4">
-        <span class="cert__seal"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 10h8M8 14h5"/></svg></span>
-        <div><h3>IELTS registration support</h3><p>We handle candidate registration and venue booking on your behalf.</p><p class="cert__ref">Partner reference — to be supplied</p></div>
-      </article>
+      @endforeach
     </div>
 
     <p class="partners__note" style="text-align:left;margin-top:var(--s5)">Replace each reference number with the real one, and link it to a scan of the certificate. An accreditation a visitor cannot verify is worth less than one you leave out.</p>
@@ -311,7 +276,7 @@
         </span>
         <div>
           <h3>Dhaka office</h3>
-          <address>House 00, Road 00, Dhanmondi<br>Dhaka 1205, Bangladesh</address>
+          <address>{{ $settings['address_line1'] ?? '' }}<br>{{ $settings['address_line2'] ?? '' }}</address>
           <p style="margin-top:8px"><a href="{{ route('contact') }}">See full contact details and map &rarr;</a></p>
         </div>
       </div>
@@ -346,13 +311,9 @@
       <div class="field">
         <label for="a-interest">I want to talk about</label>
         <select id="a-interest" name="interest">
-          <option>Japanese (JLPT)</option>
-          <option>Korean (TOPIK)</option>
-          <option>Chinese (HSK)</option>
-          <option>IELTS preparation</option>
-          <option>Study abroad &mdash; Japan</option>
-          <option>Study abroad &mdash; Korea</option>
-          <option>Study abroad &mdash; China</option>
+          @foreach ($courses as $course)
+            <option>{{ $course->name }}@if ($course->exam_name) ({{ $course->exam_name }})@endif</option>
+          @endforeach
         </select>
       </div>
       <button type="submit" class="btn btn--gold btn--block btn--lg">Book my free session</button>

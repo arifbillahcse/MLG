@@ -22,13 +22,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Japanese</th><td>JLPT N5</td><td>4 months</td><td class="ta-r mono">৳ 12,000</td><td class="ta-r mono">৳ 8,500</td></tr>
-            <tr><th scope="row">Japanese</th><td>JLPT N4</td><td>5 months</td><td class="ta-r mono">৳ 15,000</td><td class="ta-r mono">৳ 10,500</td></tr>
-            <tr><th scope="row">Korean</th><td>TOPIK I</td><td>4 months</td><td class="ta-r mono">৳ 11,000</td><td class="ta-r mono">৳ 8,000</td></tr>
-            <tr><th scope="row">Korean</th><td>TOPIK II</td><td>5 months</td><td class="ta-r mono">৳ 14,000</td><td class="ta-r mono">৳ 10,000</td></tr>
-            <tr><th scope="row">Chinese</th><td>HSK 1–2</td><td>4 months</td><td class="ta-r mono">৳ 11,000</td><td class="ta-r mono">৳ 8,000</td></tr>
-            <tr><th scope="row">Chinese</th><td>HSK 3</td><td>4 months</td><td class="ta-r mono">৳ 13,000</td><td class="ta-r mono">৳ 9,500</td></tr>
-            <tr><th scope="row">IELTS</th><td>Academic / General</td><td>8 weeks</td><td class="ta-r mono">৳ 9,500</td><td class="ta-r mono">৳ 7,000</td></tr>
+            @foreach ($courses as $course)
+              @foreach ($course->levels as $level)
+                <tr>
+                  <th scope="row">{{ $course->name }}</th>
+                  <td>{{ $level->code }}</td>
+                  <td>{{ $level->months }} months</td>
+                  <td class="ta-r mono">৳ {{ number_format($level->fee_in_class) }}</td>
+                  <td class="ta-r mono">৳ {{ number_format($level->fee_online) }}</td>
+                </tr>
+              @endforeach
+            @endforeach
           </tbody>
         </table>
       </div>

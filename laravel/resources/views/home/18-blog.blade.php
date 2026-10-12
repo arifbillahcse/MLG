@@ -7,21 +7,16 @@
     </header>
 
     <div class="posts">
-      <article class="post reveal" data-delay="1">
-        <div class="post__thumb post__thumb--1"><span class="post__cat">Visa</span></div>
-        <h3><a href="{{ route('blog') }}">The 7 most common COE rejection reasons — and how to avoid each one</a></h3>
-        <p class="post__meta mono">8 min read · Visa process</p>
+      @foreach ($posts as $i => $post)
+      <article class="post reveal" data-delay="{{ $i + 1 }}">
+        <div class="post__thumb post__thumb--{{ $post->thumb_variant ?: '1' }}"
+             @if ($post->thumbnail) style="background-image:url('{{ asset('storage/'.$post->thumbnail) }}');background-size:cover" @endif>
+          <span class="post__cat">{{ $post->category?->name }}</span>
+        </div>
+        <h3><a href="{{ route('blog') }}">{{ $post->title }}</a></h3>
+        <p class="post__meta mono">{{ $post->read_minutes }} min read · {{ $post->category?->name }}</p>
       </article>
-      <article class="post reveal" data-delay="2">
-        <div class="post__thumb post__thumb--2"><span class="post__cat">Cost</span></div>
-        <h3><a href="{{ route('blog') }}">What a Bangladeshi student actually spends per month in Tokyo</a></h3>
-        <p class="post__meta mono">11 min read · Cost of living</p>
-      </article>
-      <article class="post reveal" data-delay="3">
-        <div class="post__thumb post__thumb--3"><span class="post__cat">JLPT</span></div>
-        <h3><a href="{{ route('blog') }}">N5 to N4 in six months: a realistic weekly study plan</a></h3>
-        <p class="post__meta mono">6 min read · Language</p>
-      </article>
+      @endforeach
     </div>
   </div>
 </section>

@@ -9,12 +9,12 @@
 
         <div class="mv">
           <div class="mv__item">
-            <h3>Our mission</h3>
-            <p>To make studying abroad reachable for Bangladeshi students who have the ability but not the guidance — by teaching the language properly and telling the truth about cost, timeline and odds.</p>
+            <h3>{{ $mission->title ?? 'Our mission' }}</h3>
+            <p>{{ $mission->body ?? '' }}</p>
           </div>
           <div class="mv__item">
-            <h3>Our vision</h3>
-            <p>To be the institute Bangladeshi families name first when a student says they want to study in Japan, Korea or China.</p>
+            <h3>{{ $vision->title ?? 'Our vision' }}</h3>
+            <p>{{ $vision->body ?? '' }}</p>
           </div>
         </div>
       </div>

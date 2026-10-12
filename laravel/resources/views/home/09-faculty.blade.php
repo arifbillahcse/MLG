@@ -8,34 +8,19 @@
     </header>
 
     <div class="faculty">
-      <article class="fac reveal" data-delay="1">
-        <span class="fac__avatar fac__avatar--r" aria-hidden="true">SR</span>
-        <h3>Shahriar Rahman</h3>
-        <p class="fac__role">Japanese · JLPT</p>
-        <p class="fac__cred">N1 · 6 years in Tokyo</p>
-        <p class="fac__quote">"Speak from day one. Perfect grammar with no confidence gets you nowhere at the embassy."</p>
+      @foreach ($faculty as $i => $member)
+      <article class="fac reveal" data-delay="{{ $i + 1 }}">
+        @if ($member->photo)
+          <img class="fac__avatar" src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" width="84" height="84">
+        @else
+          <span class="fac__avatar fac__avatar--{{ $member->avatar_variant }}" aria-hidden="true">{{ $member->initials }}</span>
+        @endif
+        <h3>{{ $member->name }}</h3>
+        <p class="fac__role">{{ $member->role }}</p>
+        <p class="fac__cred">{{ $member->credential }}</p>
+        <p class="fac__quote">{{ $member->quote }}</p>
       </article>
-      <article class="fac reveal" data-delay="2">
-        <span class="fac__avatar" aria-hidden="true">JH</span>
-        <h3>Jinhee Park</h3>
-        <p class="fac__role">Korean · TOPIK</p>
-        <p class="fac__cred">Native speaker · 8 years teaching</p>
-        <p class="fac__quote">"TOPIK rewards pattern recognition. We drill the patterns until they're automatic."</p>
-      </article>
-      <article class="fac reveal" data-delay="3">
-        <span class="fac__avatar" aria-hidden="true">LW</span>
-        <h3>Li Wei</h3>
-        <p class="fac__role">Chinese · HSK</p>
-        <p class="fac__cred">HSK examiner training · 5 years</p>
-        <p class="fac__quote">"Tones first. Every hour spent on tones early saves ten hours of correction later."</p>
-      </article>
-      <article class="fac reveal" data-delay="4">
-        <span class="fac__avatar fac__avatar--t" aria-hidden="true">FA</span>
-        <h3>Farhana Akter</h3>
-        <p class="fac__role">IELTS</p>
-        <p class="fac__cred">Band 8.5 · 7 years coaching</p>
-        <p class="fac__quote">"Most students plateau at 6.5 on fluency, not grammar. That's what we train."</p>
-      </article>
+      @endforeach
     </div>
   </div>
 </section>

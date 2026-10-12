@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Japanese Language Course in Dhaka — JLPT N5 &amp; N4 | Multi Languages Gateway')
-@section('description', 'JLPT N5 and N4 Japanese course in Dhaka. 4–5 months per level, online recorded or in class, from ৳8,500. Native-level instructors, mock papers included, fees published.')
+@section('title', $course->meta_title ?: $course->name.' Course in Dhaka — '.$course->exam_name.' | Multi Languages Gateway')
+@section('description', $course->meta_description ?: $course->description)
 
 @section('og')
     <meta property="og:type" content="website">
@@ -18,7 +18,7 @@
   "description": "JLPT N5 and N4 preparation in Dhaka. Hiragana and katakana to elementary grammar, taught live in class or as a recorded online course.",
   "provider": {
     "@type": "EducationalOrganization",
-    "name": "Multi Languages Gateway",
+    "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
     "sameAs": "https://example.com/"
   },
   "inLanguage": "en",
@@ -50,18 +50,18 @@
       <span aria-hidden="true">/</span>
       <a href="{{ route('home') }}#courses">Language Courses</a>
       <span aria-hidden="true">/</span>
-      <span aria-current="page">Japanese</span>
+      <span aria-current="page">{{ $course->name }}</span>
     </nav>
-    <p class="eyebrow reveal">日本語 · JLPT N5 &amp; N4</p>
-    <h1 class="reveal" data-delay="1" data-en="Japanese language course" data-bn="জাপানিজ ভাষা কোর্স">Japanese language course</h1>
+    <p class="eyebrow reveal">{{ $course->native_name }} · {{ $course->exam_name }} {{ $levels->pluck('code')->join(' & ') }}</p>
+    <h1 class="reveal" data-delay="1">{{ $course->name }} language course</h1>
     <p class="page-head__lede reveal" data-delay="2">From your first hiragana character to JLPT N4 — the level Japanese language schools and most employers actually ask for. Taught live at our Dhanmondi centre or as a recorded online course, same syllabus either way.</p>
 
     <dl class="facts reveal" data-delay="3">
-      <div class="fact"><dt>Levels</dt><dd>N5 → N4</dd></div>
-      <div class="fact"><dt>Duration</dt><dd>4–5 months per level</dd></div>
-      <div class="fact"><dt>Format</dt><dd>Online or in class</dd></div>
-      <div class="fact"><dt>Exam</dt><dd>JLPT / NAT-TEST</dd></div>
-      <div class="fact"><dt>Fee from</dt><dd class="mono">৳ 8,500</dd></div>
+      <div class="fact"><dt>Levels</dt><dd>{{ $levels->pluck('code')->join(' → ') }}</dd></div>
+      <div class="fact"><dt>Duration</dt><dd>{{ $levels->min('months') }}–{{ $levels->max('months') }} months per level</dd></div>
+      <div class="fact"><dt>Format</dt><dd>@if ($course->offers_online && $course->offers_in_class)Online or in class @elseif ($course->offers_online)Online @else In class @endif</dd></div>
+      <div class="fact"><dt>Exam</dt><dd>{{ $course->exam_name }}</dd></div>
+      <div class="fact"><dt>Fee from</dt><dd class="mono">৳ {{ number_format($levels->min('fee_online') ?: $course->price_from) }}</dd></div>
     </dl>
 
     <div class="hero__actions reveal" data-delay="4" style="margin-top:var(--s6);margin-bottom:0">
@@ -81,59 +81,39 @@
     </header>
 
     <div class="lvls">
-      <article class="lvl reveal" data-delay="1">
-        <span class="lvl__badge">N5</span>
-        <h3>Beginner</h3>
-        <p class="lvl__sub">No prior Japanese needed. Start from the alphabet.</p>
+      @foreach ($levels as $i => $level)
+      <article class="lvl{{ $loop->last && $levels->count() > 1 ? ' lvl--next' : '' }} reveal" data-delay="{{ $i + 1 }}">
+        <span class="lvl__badge">{{ $level->code }}</span>
+        <h3>{{ $level->label }}</h3>
+        <p class="lvl__sub">{{ $level->subtitle }}</p>
 
         <div class="lvl__stats">
-          <div class="lvl__stat"><b>4</b><span>months</span></div>
-          <div class="lvl__stat"><b>48</b><span>classes</span></div>
-          <div class="lvl__stat"><b>~800</b><span>vocabulary</span></div>
-          <div class="lvl__stat"><b>~100</b><span>kanji</span></div>
+          <div class="lvl__stat"><b>{{ $level->months }}</b><span>months</span></div>
+          <div class="lvl__stat"><b>{{ $level->classes }}</b><span>classes</span></div>
+          @if ($level->vocabulary)
+            <div class="lvl__stat"><b>{{ $level->vocabulary }}</b><span>vocabulary</span></div>
+          @endif
+          @if ($level->characters)
+            <div class="lvl__stat"><b>{{ $level->characters }}</b><span>characters</span></div>
+          @endif
         </div>
 
-        <p class="lvl__what">What you'll be able to do</p>
-        <ul class="lvl__list">
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Read and write hiragana and katakana fluently</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Hold basic conversations — introductions, directions, shopping</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Understand slow, everyday speech on familiar topics</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Meet the entry requirement for most Japanese language schools</li>
-        </ul>
+        @if ($level->outcomes)
+          <p class="lvl__what">What you'll be able to do</p>
+          <ul class="lvl__list">
+            @foreach ($level->outcomes as $outcome)
+              <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>{{ $outcome }}</li>
+            @endforeach
+          </ul>
+        @endif
 
         <div class="lvl__fees">
-          <div class="lvl__fee"><span>In class</span><b class="mono">৳ 12,000</b></div>
-          <div class="lvl__fee"><span>Online</span><b class="mono">৳ 8,500</b></div>
+          <div class="lvl__fee"><span>In class</span><b class="mono">৳ {{ number_format($level->fee_in_class) }}</b></div>
+          <div class="lvl__fee"><span>Online</span><b class="mono">৳ {{ number_format($level->fee_online) }}</b></div>
         </div>
-        <a href="#enrol" class="btn btn--primary btn--block">Enrol in N5</a>
+        <a href="#enrol" class="btn btn--primary btn--block">Enrol in {{ $level->code }}</a>
       </article>
-
-      <article class="lvl lvl--next reveal" data-delay="2">
-        <span class="lvl__badge">N4</span>
-        <h3>Elementary</h3>
-        <p class="lvl__sub">Follows N5. The level most schools and employers look for.</p>
-
-        <div class="lvl__stats">
-          <div class="lvl__stat"><b>5</b><span>months</span></div>
-          <div class="lvl__stat"><b>60</b><span>classes</span></div>
-          <div class="lvl__stat"><b>~1,500</b><span>vocabulary</span></div>
-          <div class="lvl__stat"><b>~300</b><span>kanji</span></div>
-        </div>
-
-        <p class="lvl__what">What you'll be able to do</p>
-        <ul class="lvl__list">
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Handle everyday conversation at natural speed</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Read short passages written in basic kanji</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Manage a part-time job interview and workplace instructions</li>
-          <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>Present a noticeably stronger student visa file</li>
-        </ul>
-
-        <div class="lvl__fees">
-          <div class="lvl__fee"><span>In class</span><b class="mono">৳ 15,000</b></div>
-          <div class="lvl__fee"><span>Online</span><b class="mono">৳ 10,500</b></div>
-        </div>
-        <a href="#enrol" class="btn btn--primary btn--block">Enrol in N4</a>
-      </article>
+      @endforeach
     </div>
   </div>
 </section>
@@ -202,7 +182,7 @@
           <div class="compare__row"><span>Doubt-solving</span><b>Weekly live group session</b></div>
           <div class="compare__row"><span>Kaiwa practice</span><b>Scheduled 1-to-1 calls</b></div>
           <div class="compare__row"><span>Mock papers</span><b class="yes">Included</b></div>
-          <div class="compare__row"><span>N5 fee</span><b class="mono">৳ 8,500</b></div>
+          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">৳ {{ number_format($levels->first()?->fee_online) }}</b></div>
         </div>
       </div>
 
@@ -222,7 +202,7 @@
           <div class="compare__row"><span>Doubt-solving</span><b>Every class</b></div>
           <div class="compare__row"><span>Kaiwa practice</span><b>Daily with classmates</b></div>
           <div class="compare__row"><span>Mock papers</span><b class="yes">Included, on paper</b></div>
-          <div class="compare__row"><span>N5 fee</span><b class="mono">৳ 12,000</b></div>
+          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">৳ {{ number_format($levels->first()?->fee_in_class) }}</b></div>
         </div>
       </div>
     </div>
@@ -246,11 +226,17 @@
             <tr><th scope="col">Batch</th><th scope="col">Level</th><th scope="col">Days</th><th scope="col">Time</th><th scope="col">Format</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Morning</th><td>N5</td><td>Sat · Mon · Wed</td><td class="mono">10:00 AM – 11:30 AM</td><td>In class</td></tr>
-            <tr><th scope="row">Afternoon</th><td>N5</td><td>Sun · Tue · Thu</td><td class="mono">3:00 PM – 4:30 PM</td><td>In class</td></tr>
-            <tr><th scope="row">Evening</th><td>N4</td><td>Sat · Mon · Wed</td><td class="mono">6:30 PM – 8:00 PM</td><td>In class</td></tr>
-            <tr><th scope="row">Self-paced</th><td>N5 · N4</td><td>Any</td><td class="mono">Enrol any time</td><td>Online</td></tr>
-            <tr><th scope="row">Live doubt session</th><td>N5 · N4</td><td>Friday</td><td class="mono">8:00 PM – 9:00 PM</td><td>Online</td></tr>
+            @forelse ($batches as $batch)
+              <tr>
+                <th scope="row">{{ $batch->title }}</th>
+                <td>{{ $batch->courseLevel?->code }}</td>
+                <td>{{ $batch->days }}</td>
+                <td class="mono">{{ $batch->time_label }}</td>
+                <td>{{ $batch->mode === 'online' ? 'Online' : 'In class' }}</td>
+              </tr>
+            @empty
+              <tr><td colspan="5">No batches scheduled right now — ask us about the next one.</td></tr>
+            @endforelse
           </tbody>
         </table>
       </div>
@@ -266,9 +252,15 @@
             <tr><th scope="col">Level</th><th scope="col">Duration</th><th scope="col">Classes</th><th scope="col" class="ta-r">In class</th><th scope="col" class="ta-r">Online</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">JLPT N5</th><td>4 months</td><td class="mono">48</td><td class="ta-r mono">৳ 12,000</td><td class="ta-r mono">৳ 8,500</td></tr>
-            <tr><th scope="row">JLPT N4</th><td>5 months</td><td class="mono">60</td><td class="ta-r mono">৳ 15,000</td><td class="ta-r mono">৳ 10,500</td></tr>
-            <tr><th scope="row">N5 + N4 together</th><td>9 months</td><td class="mono">108</td><td class="ta-r mono">৳ 24,000</td><td class="ta-r mono">৳ 17,000</td></tr>
+            @foreach ($levels as $level)
+              <tr>
+                <th scope="row">{{ $course->exam_name }} {{ $level->code }}</th>
+                <td>{{ $level->months }} months</td>
+                <td class="mono">{{ $level->classes }}</td>
+                <td class="ta-r mono">৳ {{ number_format($level->fee_in_class) }}</td>
+                <td class="ta-r mono">৳ {{ number_format($level->fee_online) }}</td>
+              </tr>
+            @endforeach
           </tbody>
         </table>
       </div>
@@ -286,27 +278,19 @@
     </header>
 
     <div class="faculty">
-      <article class="fac reveal" data-delay="1">
-        <span class="fac__avatar fac__avatar--r" aria-hidden="true">SR</span>
-        <h3>Shahriar Rahman</h3>
-        <p class="fac__role">Lead instructor · JLPT</p>
-        <p class="fac__cred">JLPT N1 · 6 years in Tokyo</p>
-        <p class="fac__quote">"Speak from day one. Perfect grammar with no confidence gets you nowhere at the embassy."</p>
+      @foreach ($faculty as $i => $member)
+      <article class="fac reveal" data-delay="{{ $i + 1 }}">
+        @if ($member->photo)
+          <img class="fac__avatar" src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" width="84" height="84">
+        @else
+          <span class="fac__avatar fac__avatar--{{ $member->avatar_variant }}" aria-hidden="true">{{ $member->initials }}</span>
+        @endif
+        <h3>{{ $member->name }}</h3>
+        <p class="fac__role">{{ $member->role }}</p>
+        <p class="fac__cred">{{ $member->credential }}</p>
+        <p class="fac__quote">{{ $member->quote }}</p>
       </article>
-      <article class="fac reveal" data-delay="2">
-        <span class="fac__avatar" aria-hidden="true">MK</span>
-        <h3>Mahfuza Khatun</h3>
-        <p class="fac__role">Instructor · N5 batches</p>
-        <p class="fac__cred">JLPT N2 · 4 years teaching</p>
-        <p class="fac__quote">"Beginners quit over kanji. Teach the radicals first and it stops being memorisation."</p>
-      </article>
-      <article class="fac reveal" data-delay="3">
-        <span class="fac__avatar fac__avatar--t" aria-hidden="true">YT</span>
-        <h3>Yuki Tanaka</h3>
-        <p class="fac__role">Kaiwa sessions</p>
-        <p class="fac__cred">Native speaker · Weekly conversation</p>
-        <p class="fac__quote">"Students understand more than they can say. Conversation class is for closing that gap."</p>
-      </article>
+      @endforeach
     </div>
   </div>
 </section>
@@ -321,32 +305,14 @@
     </header>
 
     <div class="results">
-      <div class="result reveal" data-delay="1">
-        <span class="result__exam">JLPT</span>
-        <p class="result__score">N4</p>
-        <p class="result__name">Rahat Hossain</p>
-        <p class="result__meta">Passed in 7 months</p>
+      @foreach ($results as $i => $result)
+      <div class="result reveal" data-delay="{{ intdiv($i, 2) + 1 }}">
+        <span class="result__exam">{{ $result->exam }}</span>
+        <p class="result__score">{{ $result->score }}</p>
+        <p class="result__name">{{ $result->student_name }}</p>
+        <p class="result__meta">{{ $result->meta }}</p>
       </div>
-      <div class="result reveal" data-delay="1">
-        <span class="result__exam">JLPT</span>
-        <p class="result__score">N5</p>
-        <p class="result__name">Ayesha Siddiqua</p>
-        <p class="result__meta">First attempt · 2025</p>
-      </div>
-      <div class="result reveal" data-delay="2">
-        <span class="result__exam">NAT</span>
-        <p class="result__score">N5</p>
-        <p class="result__name">Imran Kabir</p>
-        <p class="result__meta">Online course · 2025</p>
-      </div>
-      <div class="result reveal" data-delay="2">
-        <span class="result__exam">JLPT</span>
-        <p class="result__score">N4</p>
-        <p class="result__name">Sumaiya Haque</p>
-        <p class="result__meta">First attempt · 2025</p>
-      </div>
-    </div>
-  </div>
+      @endforeach
 </section>
 
 <!-- ═══════ WHERE IT LEADS ═══════ -->
@@ -420,9 +386,9 @@
         <div class="field">
           <label for="j-level">Level</label>
           <select id="j-level" name="level">
-            <option>JLPT N5 — beginner</option>
-            <option>JLPT N4 — elementary</option>
-            <option>N5 + N4 together</option>
+            @foreach ($levels as $level)
+              <option>{{ $course->exam_name }} {{ $level->code }} — {{ $level->label }}</option>
+            @endforeach
             <option>Not sure — book a placement test</option>
           </select>
         </div>
@@ -449,50 +415,15 @@
     </header>
 
     <div class="faq">
+      @foreach ($faqs as $faq)
       <div class="faq__item reveal">
         <button type="button" class="faq__q" aria-expanded="false">
-          <span>I know nothing at all. Can I still join?</span>
+          <span>{{ $faq->question }}</span>
           <span class="faq__icon" aria-hidden="true"></span>
         </button>
-        <div class="faq__a"><p>Yes — N5 assumes zero Japanese. Month one is the two alphabets, taught from scratch. Roughly four in five of our N5 students have never seen a Japanese character before their first class.</p></div>
+        <div class="faq__a"><p>{{ $faq->answer }}</p></div>
       </div>
-      <div class="faq__item reveal">
-        <button type="button" class="faq__q" aria-expanded="false">
-          <span>How long until I can apply to a language school?</span>
-          <span class="faq__icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq__a"><p>Four months of N5, then the exam. JLPT is held twice a year (July and December), so the exam date usually decides your timeline rather than the course length. NAT-TEST runs more often and is accepted by most schools — we plan around whichever fits your intake.</p></div>
-      </div>
-      <div class="faq__item reveal">
-        <button type="button" class="faq__q" aria-expanded="false">
-          <span>Is the online course really the same?</span>
-          <span class="faq__icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq__a"><p>Same syllabus, same instructor, same mock papers, same certificate. What differs is live interaction: the online course gives you a weekly group doubt session and scheduled one-to-one kaiwa calls, where in class you get that every session. Online access lasts twelve months.</p></div>
-      </div>
-      <div class="faq__item reveal">
-        <button type="button" class="faq__q" aria-expanded="false">
-          <span>What if I miss classes?</span>
-          <span class="faq__icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq__a"><p>Every in-class session is recorded and appears in your online account within 24 hours, included in the fee. If you miss more than four consecutive classes we will move you to the next batch rather than let you fall behind.</p></div>
-      </div>
-      <div class="faq__item reveal">
-        <button type="button" class="faq__q" aria-expanded="false">
-          <span>Do you register me for the JLPT exam?</span>
-          <span class="faq__icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq__a"><p>We handle the paperwork and remind you of the deadline, but the registration fee is paid directly to the exam body and is not part of the course fee. Registration closes months before the exam, and missing it costs you half a year.</p></div>
-      </div>
-      <div class="faq__item reveal">
-        <button type="button" class="faq__q" aria-expanded="false">
-          <span>Can I pay in instalments?</span>
-          <span class="faq__icon" aria-hidden="true"></span>
-        </button>
-        <div class="faq__a"><p>Yes, in two instalments — half at enrolment, half at the midpoint of the course. Ask the counsellor at registration; there is no extra charge for it.</p></div>
-      </div>
-    </div>
-  </div>
+      @endforeach
 </section>
 
 <!-- ═══════ FINAL CTA ═══════ -->

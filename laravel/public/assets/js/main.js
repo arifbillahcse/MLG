@@ -231,19 +231,18 @@
   }
 
   /* ---------- 6. Batch countdown ----------------------------------
-     Counts to the next batch date. Change BATCH_START to the real
-     date, or render it from a CMS field — never hardcode a past date. */
+     The date comes from the featured batch via data-starts on #countdown.
+     No date attribute means no upcoming batch, so the counter hides itself
+     rather than displaying a dead date. */
   function initCountdown() {
     var box = $('#countdown');
     if (!box) return;
 
-    var BATCH_START = new Date('2026-10-12T10:00:00+06:00');
+    var iso = box.getAttribute('data-starts');
+    if (!iso) { box.hidden = true; return; }
 
-    // If the date has passed, roll forward a month so the demo never
-    // shows a dead counter. In production, pull the next real batch.
-    while (BATCH_START.getTime() < Date.now()) {
-      BATCH_START.setMonth(BATCH_START.getMonth() + 1);
-    }
+    var target = new Date(iso).getTime();
+    if (isNaN(target)) { box.hidden = true; return; }
 
     var out = {
       d: $('[data-cd="d"]', box),
@@ -254,8 +253,18 @@
 
     function pad(n) { return String(n).padStart(2, '0'); }
 
+    var timer = setInterval(tick, 1000);
+
     function tick() {
-      var diff = Math.max(0, BATCH_START.getTime() - Date.now());
+      var diff = target - Date.now();
+
+      if (diff <= 0) {
+        // the batch has started — stop rather than count upward
+        clearInterval(timer);
+        box.hidden = true;
+        return;
+      }
+
       var secs = Math.floor(diff / 1000);
       out.d.textContent = pad(Math.floor(secs / 86400));
       out.h.textContent = pad(Math.floor(secs / 3600) % 24);
@@ -264,7 +273,6 @@
     }
 
     tick();
-    setInterval(tick, 1000);
   }
 
   /* ---------- 7. Sakura petals (hero canvas) ---------- */
