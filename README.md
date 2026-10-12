@@ -13,7 +13,8 @@ python3 -m http.server 8080
 ## Files
 
 ```
-index.html            Homepage — all 21 sections
+index.html            Homepage — all 22 sections
+about.html            About Us — chairman, mission, methodology, team, accreditations, facility
 japanese.html         Japanese course — JLPT N5 & N4
 contact.html          Contact page — form, office info, map slot, next steps
 blog.html             Blog index — featured post, filterable grid, pagination
@@ -37,6 +38,23 @@ delivery mode, so Google can show it as a course result.
 
 To build Korean, Chinese or IELTS, copy this file and swap the content — the components
 (`.lvl`, `.facts`, `.compare`, `.tbl`, `.fac`, `.results`, `.faq`) are all generic.
+
+### About page
+
+Carries the PDF's whole About section: chairman's message, mission and vision, teaching
+methodology, team split into instructors and counsellors, accreditations, and the facility.
+The chairman block is shared verbatim with the homepage — edit both.
+
+**Two placeholders that must not ship as-is:**
+
+- The chairman's name is `A. K. M. Rahman`, a placeholder. Replace it in `index.html`,
+  `about.html` and the `about.html` JSON-LD `founder` field.
+- The portrait is an SVG silhouette. Replace the whole `.chairman__photo` inner markup with
+  the real photograph — the `<img>` tag to use is in an HTML comment right there. Keep
+  `object-fit: cover` and `object-position: top center` so faces don't get cropped at the chin.
+
+Accreditation reference numbers read "to be supplied". Fill them in or remove the rows —
+an accreditation a visitor cannot verify is worth less than one you leave out.
 
 ### Contact page
 

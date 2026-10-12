@@ -1244,7 +1244,102 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
   .lvls{grid-template-columns:1fr}
 }
 
-/* ---------- 26. REDUCED MOTION ---------- */
+/* ---------- 26. CHAIRMAN MESSAGE ---------- */
+.chairman{
+  display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,1.22fr);
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  overflow:hidden;box-shadow:var(--shadow);
+}
+.chairman__photo{
+  position:relative;min-height:420px;
+  background:linear-gradient(165deg,#24406F 0%,#152B52 45%,#0D1B3E 100%);
+  display:grid;place-items:end center;overflow:hidden;
+}
+.chairman__photo img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+/* placeholder silhouette, shown until a real photograph is dropped in */
+.chairman__silhouette{width:72%;max-width:260px;opacity:.5;display:block}
+.chairman__swap{
+  position:absolute;top:14px;left:14px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(255,255,255,.14);color:#fff;padding:4px 9px;border-radius:5px;
+  backdrop-filter:blur(4px);
+}
+.chairman__body{
+  position:relative;padding:var(--s7) var(--s7) var(--s6);
+  border-left:4px solid var(--red);
+  display:flex;flex-direction:column;
+}
+.chairman__quote{
+  position:absolute;top:var(--s5);right:var(--s6);
+  font-family:Georgia,serif;font-size:96px;line-height:1;color:var(--band);
+  pointer-events:none;user-select:none;
+}
+.chairman__body .eyebrow{position:relative;z-index:1}
+.chairman__body h2{
+  font-size:clamp(25px,2.9vw,34px);line-height:1.22;margin-bottom:var(--s4);
+  position:relative;z-index:1;
+}
+.chairman__text{color:var(--slate);font-size:16px;margin-bottom:var(--s3)}
+.chairman__sign{
+  margin-top:auto;padding-top:var(--s5);border-top:1px solid var(--line);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s5);flex-wrap:wrap;
+}
+.chairman__name{font-family:var(--display);font-weight:700;font-size:18px;line-height:1.3}
+.chairman__role{font-size:13.5px;font-weight:600;color:var(--red)}
+.chairman__jp{
+  font-family:var(--display);font-size:15px;color:var(--slate-light);white-space:nowrap;
+}
+
+@media (max-width:860px){
+  .chairman{grid-template-columns:1fr}
+  .chairman__photo{min-height:300px}
+  .chairman__body{border-left:none;border-top:4px solid var(--red);padding:var(--s6) var(--s5)}
+  .chairman__quote{font-size:70px;top:var(--s3);right:var(--s4)}
+}
+@media (max-width:560px){
+  .chairman__sign{flex-direction:column;align-items:flex-start;gap:var(--s3)}
+  .chairman__jp{white-space:normal}
+}
+
+/* ---------- 26b. ABOUT PAGE ---------- */
+.stat-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;
+}
+.stat{background:var(--surface);padding:var(--s5) var(--s4);text-align:center}
+.stat__num{
+  font-family:var(--display);font-weight:900;font-size:34px;line-height:1;
+  color:var(--ink);font-variant-numeric:tabular-nums;
+}
+.stat__num .trust__unit{font-size:22px}
+.stat__label{font-size:13px;color:var(--slate);margin-top:7px}
+
+.team-group{margin-bottom:var(--s8)}
+.team-group:last-child{margin-bottom:0}
+.team-group__head{
+  display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;
+  margin-bottom:var(--s5);padding-bottom:var(--s3);border-bottom:1px solid var(--line);
+}
+.team-group__head h3{font-size:21px}
+.team-group__head p{font-size:14.5px;color:var(--slate)}
+
+.certs{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:var(--s4)}
+.cert{
+  display:flex;gap:var(--s4);align-items:flex-start;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:var(--s5);
+}
+.cert__seal{
+  width:44px;height:44px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:var(--gold-soft);color:#8A5D12;
+}
+.cert__seal .ic{width:21px;height:21px}
+.cert h3{font-size:16px;margin-bottom:5px}
+.cert p{font-size:14px;color:var(--slate)}
+.cert__ref{font-family:var(--mono);font-size:12px;color:var(--slate-light);margin-top:8px}
+
+.facility--page{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));grid-template-rows:none}
+
+/* ---------- 27. REDUCED MOTION ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{
@@ -1256,7 +1351,7 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
   .hero__petals,.cta__stars{display:none}
 }
 
-/* ---------- 27. PRINT ---------- */
+/* ---------- 28. PRINT ---------- */
 @media print{
   .topbar,.header,.wa,.mobile-bar,.totop,.hero__petals,.hero__blob,.cta__stars{display:none !important}
   body{background:#fff;font-size:12pt}
