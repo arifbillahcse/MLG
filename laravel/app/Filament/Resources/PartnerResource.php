@@ -28,7 +28,11 @@ class PartnerResource extends Resource
             Forms\Components\TextInput::make('name')->required(),
             Forms\Components\Select::make('destination_id')->relationship('destination', 'name')->label('Country'),
             Forms\Components\TextInput::make('url')->url(),
-            Forms\Components\FileUpload::make('logo')->image()->directory('partners'),
+            Forms\Components\FileUpload::make('logo')->image()->directory('partners')
+                ->maxSize(4096)
+                ->imageResizeMode('contain')
+                ->imageResizeTargetWidth(1600)
+                ->imageResizeUpscale(false),
             Forms\Components\Toggle::make('is_verified')->label('Partnership can be evidenced')
                 ->helperText('Only verified institutions appear in the public list.'),
             Forms\Components\TextInput::make('sort')->numeric()->default(0)->helperText('Lower numbers appear first.'),

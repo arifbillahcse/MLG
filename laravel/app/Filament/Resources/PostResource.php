@@ -34,7 +34,11 @@ class PostResource extends Resource
                     ->fileAttachmentsDirectory('posts/attachments'),
             ]),
             Forms\Components\Section::make('Publishing')->columns(3)->schema([
-                Forms\Components\FileUpload::make('thumbnail')->image()->directory('posts')->imageEditor(),
+                Forms\Components\FileUpload::make('thumbnail')->image()->directory('posts')->imageEditor()
+                ->maxSize(4096)
+                ->imageResizeMode('contain')
+                ->imageResizeTargetWidth(1600)
+                ->imageResizeUpscale(false),
                 Forms\Components\TextInput::make('read_minutes')->numeric()->label('Read time (minutes)'),
                 Forms\Components\DateTimePicker::make('published_at')->seconds(false)
                     ->helperText('Leave blank to keep it as a draft.'),

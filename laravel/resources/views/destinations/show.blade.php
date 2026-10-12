@@ -14,8 +14,8 @@
       <span aria-current="page">{{ $destination->name }}</span>
     </nav>
     <p class="eyebrow reveal">{{ $destination->flag }} Study abroad</p>
-    <h1 class="reveal" data-delay="1">{{ $destination->name }}</h1>
-    <p class="page-head__lede reveal" data-delay="2">{{ $destination->intro }}</p>
+    <h1 class="reveal" data-delay="1">{{ $destination->t('name') }}</h1>
+    <p class="page-head__lede reveal" data-delay="2">{{ $destination->t('intro') }}</p>
 
     <div class="hero__actions reveal" data-delay="3" style="margin-top:var(--s6);margin-bottom:0">
       <a href="{{ route('contact') }}" class="btn btn--primary btn--lg">Book a free consultation</a>
@@ -68,8 +68,8 @@
         <li class="timeline__step reveal" data-delay="{{ $i + 1 }}">
           <span class="timeline__dot{{ $loop->last ? ' timeline__dot--end' : '' }}"></span>
           <span class="timeline__month mono">{{ $step->step_label }}</span>
-          <h3>{{ $step->title }}</h3>
-          <p>{{ $step->body }}</p>
+          <h3>{{ $step->t('title') }}</h3>
+          <p>{{ $step->t('body') }}</p>
         </li>
       @endforeach
     </ol>
@@ -168,10 +168,10 @@
       @foreach ($faqs as $faq)
         <div class="faq__item reveal">
           <button type="button" class="faq__q" aria-expanded="false">
-            <span>{{ $faq->question }}</span>
+            <span>{{ $faq->t('question') }}</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
-          <div class="faq__a"><p>{{ $faq->answer }}</p></div>
+          <div class="faq__a"><p>{{ $faq->t('answer') }}</p></div>
         </div>
       @endforeach
     </div>

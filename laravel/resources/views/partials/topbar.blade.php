@@ -15,8 +15,10 @@
 
     <div class="topbar__right">
       <div class="lang" role="group" aria-label="Language">
-        <button type="button" class="lang__btn is-active" data-lang="en">EN</button>
-        <button type="button" class="lang__btn" data-lang="bn">বাংলা</button>
+        <a class="lang__btn @if (app()->getLocale() === 'en') is-active @endif"
+           href="{{ route('locale.switch', 'en') }}" hreflang="en">EN</a>
+        <a class="lang__btn @if (app()->getLocale() === 'bn') is-active @endif"
+           href="{{ route('locale.switch', 'bn') }}" hreflang="bn">বাংলা</a>
       </div>
       <div class="socials">
         <a href="{{ $settings['facebook'] ?? '#' }}" aria-label="Facebook"><svg viewBox="0 0 24 24" class="ic ic--fill"><path d="M14 9h3V6h-3c-2 0-3.5 1.6-3.5 3.5V12H8v3h2.5v7h3v-7H16l.5-3h-3v-2c0-.6.4-1 .5-1z"/></svg></a>

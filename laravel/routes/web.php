@@ -32,6 +32,12 @@ Route::get('/{page:slug}', [PageController::class, 'page'])
     ->whereIn('page', ['privacy-policy', 'terms', 'refund-policy'])
     ->name('pages.show');
 
+Route::get('/sitemap.xml', \App\Http\Controllers\SitemapController::class)->name('sitemap');
+
+Route::get('/locale/{locale}', \App\Http\Controllers\LocaleController::class)
+    ->whereIn('locale', \App\Http\Middleware\SetLocale::SUPPORTED)
+    ->name('locale.switch');
+
 Route::post('/enquiry', [EnquiryController::class, 'store'])
     ->middleware('throttle:6,1')
     ->name('enquiry.store');

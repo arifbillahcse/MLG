@@ -419,10 +419,10 @@
       @foreach ($faqs as $faq)
       <div class="faq__item reveal">
         <button type="button" class="faq__q" aria-expanded="false">
-          <span>{{ $faq->question }}</span>
+          <span>{{ $faq->t('question') }}</span>
           <span class="faq__icon" aria-hidden="true"></span>
         </button>
-        <div class="faq__a"><p>{{ $faq->answer }}</p></div>
+        <div class="faq__a"><p>{{ $faq->t('answer') }}</p></div>
       </div>
       @endforeach
 </section>

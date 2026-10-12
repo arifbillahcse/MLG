@@ -29,7 +29,11 @@ class AcceptanceLetterResource extends Resource
                 Forms\Components\TextInput::make('intake')->placeholder('April 2025 intake'),
                 Forms\Components\TextInput::make('sort')->numeric()->default(0)->helperText('Lower numbers appear first.'),
                 Forms\Components\FileUpload::make('image')->image()->directory('letters')->imageEditor()
-                    ->helperText('Redact the student name and ID before uploading.')->columnSpanFull(),
+                    ->helperText('Redact the student name and ID before uploading.')->columnSpanFull()
+                ->maxSize(4096)
+                ->imageResizeMode('contain')
+                ->imageResizeTargetWidth(1600)
+                ->imageResizeUpscale(false),
             ]),
             Forms\Components\Toggle::make('consent_given')->label('Student has given permission to publish')->required(),
         ]);

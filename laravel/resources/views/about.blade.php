@@ -107,12 +107,12 @@
 
         <div class="mv">
           <div class="mv__item">
-            <h3>{{ $mission->title ?? 'Our mission' }}</h3>
-            <p>{{ $mission->body ?? '' }}</p>
+            <h3>{{ $mission?->t('title') ?? 'Our mission' }}</h3>
+            <p>{{ $mission?->t('body') ?? '' }}</p>
           </div>
           <div class="mv__item">
-            <h3>{{ $vision->title ?? 'Our vision' }}</h3>
-            <p>{{ $vision->body ?? '' }}</p>
+            <h3>{{ $vision?->t('title') ?? 'Our vision' }}</h3>
+            <p>{{ $vision?->t('body') ?? '' }}</p>
           </div>
         </div>
       </div>
@@ -240,8 +240,8 @@
       <article class="cert reveal" data-delay="{{ $i + 1 }}">
         <span class="cert__seal"><svg viewBox="0 0 24 24" class="ic"><path d="M12 2 4 6v6c0 5 3.4 8.6 8 10 4.6-1.4 8-5 8-10V6z"/></svg></span>
         <div>
-          <h3>{{ $accreditation->title }}</h3>
-          <p>{{ $accreditation->description }}</p>
+          <h3>{{ $accreditation->t('title') }}</h3>
+          <p>{{ $accreditation->t('description') }}</p>
           <p class="cert__ref">{{ $accreditation->reference ?? 'Reference — to be supplied' }}</p>
         </div>
       </article>

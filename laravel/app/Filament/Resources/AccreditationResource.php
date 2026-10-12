@@ -28,7 +28,8 @@ class AccreditationResource extends Resource
             Forms\Components\TextInput::make('reference')->label('Registration / licence number')
                 ->helperText('An accreditation a visitor cannot verify is worth less than one you leave out.'),
             Forms\Components\FileUpload::make('certificate')->directory('accreditations')
-                ->helperText('Upload the certificate so the number can be checked.'),
+                ->helperText('Upload the certificate so the number can be checked.')
+                ->maxSize(4096),
             Forms\Components\Section::make('Bengali')->collapsed()->schema([
                 Forms\Components\TextInput::make('title_bn')->label('Title (বাংলা)'),
                 Forms\Components\Textarea::make('description_bn')->label('Description (বাংলা)')->rows(2),

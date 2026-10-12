@@ -32,7 +32,11 @@ class TestimonialResource extends Resource
                 Forms\Components\Textarea::make('quote')->rows(4)->columnSpanFull(),
                 Forms\Components\TextInput::make('video_url')->url()->label('Video URL')
                     ->visible(fn (Forms\Get $get) => in_array($get('type'), ['video', 'alumni'])),
-                Forms\Components\FileUpload::make('thumbnail')->image()->directory('testimonials')->imageEditor(),
+                Forms\Components\FileUpload::make('thumbnail')->image()->directory('testimonials')->imageEditor()
+                ->maxSize(4096)
+                ->imageResizeMode('contain')
+                ->imageResizeTargetWidth(1600)
+                ->imageResizeUpscale(false),
                 Forms\Components\TextInput::make('rating')->numeric()->minValue(1)->maxValue(5)->default(5),
                 Forms\Components\TextInput::make('sort')->numeric()->default(0)->helperText('Lower numbers appear first.'),
             ]),

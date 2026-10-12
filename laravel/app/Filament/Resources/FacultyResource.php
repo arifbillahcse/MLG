@@ -35,7 +35,11 @@ class FacultyResource extends Resource
                 Forms\Components\TextInput::make('credential')->placeholder('JLPT N1 · 6 years in Tokyo'),
                 Forms\Components\Select::make('course_id')->relationship('course', 'name')->label('Course')->searchable(),
                 Forms\Components\TextInput::make('initials')->maxLength(4)->helperText('Shown if there is no photograph.'),
-                Forms\Components\FileUpload::make('photo')->image()->directory('faculty')->imageEditor()->avatar(),
+                Forms\Components\FileUpload::make('photo')->image()->directory('faculty')->imageEditor()->avatar()
+                ->maxSize(4096)
+                ->imageResizeMode('contain')
+                ->imageResizeTargetWidth(1600)
+                ->imageResizeUpscale(false),
                 Forms\Components\Textarea::make('quote')->rows(2)->label('Teaching philosophy')->columnSpanFull(),
                 Forms\Components\Textarea::make('bio')->rows(4)->columnSpanFull(),
                 Forms\Components\TextInput::make('sort')->numeric()->default(0)->helperText('Lower numbers appear first.'),

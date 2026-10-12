@@ -308,6 +308,44 @@ documents — have them reviewed, do not ship the seeded text.
 partners and FAQ sections each disappear when there is nothing to show, so a
 half-filled country still reads as finished.
 
-## Next
+## Phase 7 — bilingual, SEO, hardening, launch
 
-**Phase 7** — bilingual content, image uploads, SEO output, hardening and launch.
+### Bilingual
+
+The `*_bn` columns added in Phase 2 are now live. `HasTranslations` gives seven models a
+`->t('field')` helper that returns the Bengali when the locale is `bn` **and the field is
+filled**, and the English otherwise.
+
+That fallback is the point: the client translates gradually instead of all at once, and a
+half-translated record never renders as an empty heading.
+
+The EN/বাংলা switch is a real link to `/locale/{locale}` that stores the choice in the
+session and returns you to the same page. `main.js` no longer owns the decision — it just
+swaps the fixed interface strings to match whatever locale the server rendered, and the
+`localStorage` copy is gone, so the two can no longer disagree.
+
+### SEO
+
+- `/sitemap.xml` built from the database — courses, destinations, posts and pages, with
+  `lastmod` from `updated_at`
+- `robots.txt` disallowing `/admin`
+- Canonical URL, `hreflang`, `og:url`, `og:site_name`, `og:image` and a Twitter card on
+  every page
+
+### Hardening
+
+`SecurityHeaders` sets `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` and
+`Permissions-Policy` on every response, plus HSTS **only over HTTPS** so local
+development is unaffected.
+
+Every Filament upload is capped at 4 MB, and images are resized to 1600px on the long
+edge without upscaling — one 12-megapixel phone photo should not be the thing that blows
+the performance budget.
+
+### Launch
+
+**`DEPLOY.md`** covers first deploy, routine deploys, the cPanel document-root trap, and
+a launch checklist split into content, technical and handover.
+
+The one that matters most: **the document root must be `laravel/public`**, not the
+project root. Getting it wrong exposes `.env`.

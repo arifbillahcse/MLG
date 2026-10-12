@@ -33,7 +33,7 @@
       @foreach ($accreditations as $accreditation)
       <span class="badge">
         <span class="badge__ic"><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg></span>
-        {{ $accreditation->title }}
+        {{ $accreditation->t('title') }}
       </span>
       @endforeach
     </div>

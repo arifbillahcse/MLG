@@ -492,31 +492,16 @@
     });
   }
 
-  /* ---------- 11. EN / বাংলা toggle -------------------------------
-     Swaps any element carrying data-en and data-bn. Extend coverage by
-     adding the pair of attributes to more elements — no JS change needed. */
+  /* ---------- 11. Static string language ---------------------------
+     Database content is translated server-side. These are the fixed
+     interface strings, swapped to match whatever locale the server
+     rendered. The switch itself is a link now, not a JS toggle. */
   function initLang() {
-    var buttons = $$('.lang__btn');
-    if (!buttons.length) return;
+    if (document.documentElement.lang !== 'bn') return;
 
-    function apply(lang) {
-      $$('[data-en][data-bn]').forEach(function (el) {
-        var value = el.dataset[lang];
-        if (!value) return;
-        el.textContent = value;
-      });
-      document.documentElement.lang = lang === 'bn' ? 'bn' : 'en';
-      buttons.forEach(function (b) { b.classList.toggle('is-active', b.dataset.lang === lang); });
-      try { localStorage.setItem('mlg-lang', lang); } catch (err) { /* private mode */ }
-    }
-
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () { apply(btn.dataset.lang); });
+    $$('[data-en][data-bn]').forEach(function (el) {
+      if (el.dataset.bn) el.textContent = el.dataset.bn;
     });
-
-    var saved;
-    try { saved = localStorage.getItem('mlg-lang'); } catch (err) { saved = null; }
-    if (saved === 'bn') apply('bn');
   }
 
   /* ---------- 12. Forms -------------------------------------------

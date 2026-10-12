@@ -12,12 +12,12 @@
       <article class="course{{ $course->is_test_prep ? ' course--test' : '' }} reveal" data-delay="{{ $i + 1 }}">
         <span class="course__rail" aria-hidden="true"></span>
         <span class="course__glyph">{{ $course->glyph }}</span>
-        <h3>{{ $course->name }}</h3>
+        <h3>{{ $course->t('name') }}</h3>
         <p class="course__native">{{ $course->native_name }}</p>
         @if ($course->exam_name)
           <span class="course__exam">{{ $course->exam_name }}</span>
         @endif
-        <p class="course__desc">{{ $course->description }}</p>
+        <p class="course__desc">{{ $course->t('description') }}</p>
         <div class="course__levels">
           @foreach ($course->levels as $level)
             <span class="level">{{ $level->code }}</span>

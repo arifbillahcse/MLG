@@ -11,7 +11,7 @@
       @foreach ($destinations as $i => $destination)
       <article class="dest__card reveal" data-delay="{{ $i + 1 }}">
         <span class="dest__flag" aria-hidden="true">{{ $destination->flag }}</span>
-        <h3>{{ $destination->name }}</h3>
+        <h3>{{ $destination->t('name') }}</h3>
         <ul class="dest__list">
           @foreach ($destination->highlights ?? [] as $highlight)
             <li><svg viewBox="0 0 24 24" class="ic"><path d="M20 6 9 17l-5-5"/></svg>{{ $highlight }}</li>

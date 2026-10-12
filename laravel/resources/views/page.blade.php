@@ -11,7 +11,7 @@
       <span aria-hidden="true">/</span>
       <span aria-current="page">{{ $page->title }}</span>
     </nav>
-    <h1 class="reveal">{{ $page->title }}</h1>
+    <h1 class="reveal">{{ $page->t('title') }}</h1>
     <p class="page-head__lede reveal" data-delay="1">Last updated {{ $page->updated_at?->format('j F Y') }}.</p>
   </div>
 </section>
@@ -19,7 +19,7 @@
 <section class="section">
   <div class="wrap wrap--narrow">
     <div class="prose reveal">
-      {!! $page->body !!}
+      {!! $page->t('body') !!}
     </div>
   </div>
 </section>

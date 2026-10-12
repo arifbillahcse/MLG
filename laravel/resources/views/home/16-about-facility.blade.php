@@ -9,12 +9,12 @@
 
         <div class="mv">
           <div class="mv__item">
-            <h3>{{ $mission->title ?? 'Our mission' }}</h3>
-            <p>{{ $mission->body ?? '' }}</p>
+            <h3>{{ $mission?->t('title') ?? 'Our mission' }}</h3>
+            <p>{{ $mission?->t('body') ?? '' }}</p>
           </div>
           <div class="mv__item">
-            <h3>{{ $vision->title ?? 'Our vision' }}</h3>
-            <p>{{ $vision->body ?? '' }}</p>
+            <h3>{{ $vision?->t('title') ?? 'Our vision' }}</h3>
+            <p>{{ $vision?->t('body') ?? '' }}</p>
           </div>
         </div>
       </div>

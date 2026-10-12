@@ -12,8 +12,8 @@
       <li class="timeline__step reveal" data-delay="{{ $i + 1 }}">
         <span class="timeline__dot{{ $loop->last ? ' timeline__dot--end' : '' }}"></span>
         <span class="timeline__month mono">{{ $step->step_label }}</span>
-        <h3>{{ $step->title }}</h3>
-        <p>{{ $step->body }}</p>
+        <h3>{{ $step->t('title') }}</h3>
+        <p>{{ $step->t('body') }}</p>
       </li>
       @endforeach
     </ol>
