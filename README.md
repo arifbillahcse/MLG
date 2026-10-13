@@ -1,250 +1,240 @@
-# Multi Languages Gateway — Homepage
+# Multi Languages Gateway (MLG)
 
-Static homepage for MLG (Japanese language, IELTS and Japan student visa services, Dhaka).
-Plain HTML, CSS and vanilla JavaScript — no build step, no dependencies, no framework.
+Website for **Multi Languages Gateway** — a language institute and study-abroad
+consultancy in Dhaka. Japanese, Korean, Chinese and IELTS courses; student visa and
+university placement for Japan, Korea and China.
 
-Open `index.html` in a browser, or serve the folder:
+Built by [Softorio](https://softorio.com). Custom coded — no CMS, no page builder, no
+theme. Demo: `https://demo.softorio.com/mlg`
+
+---
+
+## What is in this repository
+
+Two deployable things, in one repo, on purpose.
+
+| | Path | What it is | Status |
+|---|---|---|---|
+| **Static site** | repository root | Hand-written HTML/CSS/JS, 5 pages, zero dependencies | The live client demo |
+| **Laravel app** | `laravel/` | The same site, database-driven, with a Filament admin panel | Built, never executed |
+
+The static site is what the client has been shown and signed off on. The Laravel app is
+the dynamic build quoted separately in the proposal: same design, same markup, but every
+repeated block comes out of the database and is editable from `/admin`.
+
+Nothing in `laravel/` affects the static site. You can deploy either one on its own.
+
+> **Read this before you deploy the Laravel app.** Its `vendor/` has never been
+> installed and no page has ever been rendered — the environment it was written in had no
+> network access to packagist. Structure is statically verified (schema ↔ models ↔
+> seeders, Filament resources ↔ columns, Blade variables ↔ controller payloads, all
+> clean), but runtime behaviour is not, and Filament v3's API details in particular have
+> never been exercised. Expect the first `composer install` and the first page load to
+> surface real problems. Stage it before it touches the client's domain.
+
+---
+
+## Track 1 — the static site
+
+No build step. No npm. No dependencies. Open it.
 
 ```bash
-python3 -m http.server 8080
-# http://localhost:8080
+python3 -m http.server 8080      # then http://localhost:8080
 ```
 
-## Files
+### Pages
+
+| File | Page |
+|---|---|
+| `index.html` | Homepage — 20 sections |
+| `about.html` | About us, team, chairman's message, facility |
+| `japanese.html` | Japanese course — JLPT N5–N1 |
+| `blog.html` | Blog listing with category filters |
+| `contact.html` | Contact, map, enquiry form |
+
+### Assets
 
 ```
-index.html            Homepage — all 22 sections
-about.html            About Us — chairman, mission, methodology, team, accreditations, facility
-japanese.html         Japanese course — JLPT N5 & N4
-contact.html          Contact page — form, office info, map slot, next steps
-blog.html             Blog index — featured post, filterable grid, pagination
-assets/img/           Logo files
-assets/css/style.css  Design tokens + every component
-assets/js/main.js     Animations, countdown, carousel, forms, filter, language toggle
+assets/
+├── css/style.css          ~1,360 lines, design tokens at the top
+├── js/main.js             ~650 lines, vanilla, no libraries
+└── img/
+    ├── glm-logo.png       387×337 master
+    └── glm-logo-132.png   152×132, used site-wide + favicon
 ```
 
-All pages share the topbar, header and footer markup verbatim. There is no templating
-here, so **a change to the header or footer must be copied into every page file** — the
-first thing the WordPress port fixes.
+Deploy by uploading the root of this repo (minus `laravel/`) to `public_html`. That is
+the whole procedure.
 
-### Japanese course page
+---
 
-The template for the other three course pages (Korean, Chinese, IELTS). Sections: page
-head with a quick-facts strip, two level cards (N5, N4) with vocabulary/kanji counts and
-both fee columns, a month-by-month syllabus, the online vs in-class comparison, batch
-schedule and fee tables, instructors, recent passes, what the level unlocks, a registration
-form, and a course FAQ. Carries `Course` JSON-LD with a `hasCourseInstance` for each
-delivery mode, so Google can show it as a course result.
+## Track 2 — the Laravel app
 
-To build Korean, Chinese or IELTS, copy this file and swap the content — the components
-(`.lvl`, `.facts`, `.compare`, `.tbl`, `.fac`, `.results`, `.faq`) are all generic.
+Laravel 11/12 + Filament v3 + MySQL. Full detail in **[`laravel/README.md`](laravel/README.md)**;
+deployment in **[`laravel/DEPLOY.md`](laravel/DEPLOY.md)**.
 
-### About page
+```bash
+cd laravel
+composer install
+cp .env.example .env
+php artisan key:generate
+# set DB_* in .env, then:
+php artisan migrate --seed
+php artisan storage:link
+php artisan serve                # http://localhost:8000
+```
 
-Carries the PDF's whole About section: chairman's message, mission and vision, teaching
-methodology, team split into instructors and counsellors, accreditations, and the facility.
-The chairman block is shared verbatim with the homepage — edit both.
+Admin panel at **`/admin`**. Seeded login: `admin@mlg.com.bd` / `ChangeMe!2026` —
+**change it on first login.** Those credentials are in a public git branch.
 
-**Two placeholders that must not ship as-is:**
+### By the numbers
 
-- The chairman's name is `A. K. M. Rahman`, a placeholder. Replace it in `index.html`,
-  `about.html` and the `about.html` JSON-LD `founder` field.
-- The portrait is an SVG silhouette. Replace the whole `.chairman__photo` inner markup with
-  the real photograph — the `<img>` tag to use is in an HTML comment right there. Keep
-  `object-fit: cover` and `object-position: top center` so faces don't get cropped at the chin.
+| | |
+|---|---|
+| Migrations | 23 |
+| Eloquent models | 21 |
+| Seeders | 9 |
+| Blade views | 42 (homepage = 20 numbered section partials) |
+| Filament resources | 17, plus 3 relation managers, 2 widgets, 1 settings page |
+| Public routes | 13 |
 
-Accreditation reference numbers read "to be supplied". Fill them in or remove the rows —
-an accreditation a visitor cannot verify is worth less than one you leave out.
+### What the client can edit without a developer
 
-### Contact page
+Courses and levels · batch dates and the homepage countdown · destinations and
+scholarships · application process steps · faculty · top scores · testimonials ·
+acceptance letters · partner universities · accreditations · blog posts and categories ·
+FAQs · legal pages · seminars and mock tests · site settings (phone, email, address,
+socials, map) · and every enquiry that comes in.
 
-Office info cards, a five-field message form, a map placeholder and a four-step
-"what happens next" sequence. Replace the `.map` block with a Google Maps `<iframe>`
-(add `loading="lazy"`). Carries `EducationalOrganization` JSON-LD with
-`openingHoursSpecification`.
+Adding a fifth language is a record in the admin, not a deployment.
 
-### Blog page
+### Design decisions worth knowing before you touch it
 
-One featured post plus a six-card grid, filterable by topic. Filtering is client-side:
-each card carries `data-cat`, each chip carries `data-filter`, and the handler hides
-non-matching cards and shows an empty state. Pagination is static markup — wire it to
-real paging when the posts become a CMS collection.
+- **Consent is a column, not a convention.** `testimonials`, `results` and
+  `acceptance_letters` carry `consent_given` (default false) behind a `publishable()`
+  scope. A student's name and score cannot reach a public page unless someone ticked the
+  box. `partners.is_verified` works the same way for institutional claims.
+- **`batches.starts_at` is a real datetime** with an `upcoming()` scope. No featured
+  batch, or a date in the past, and the countdown hides itself instead of counting into
+  the negative. The stale "NEXT BATCH — 12 October" that makes a competitor's homepage
+  look abandoned is structurally impossible here.
+- **Bengali lives in sibling columns** (`name_bn`, `description_bn`, …) with a
+  `->t('field')` helper that falls back to English when the Bengali is empty. The client
+  can translate gradually; a half-translated record never renders as a blank heading.
+- **Forms work without JavaScript.** All eight post to `POST /enquiry` as real forms;
+  `main.js` upgrades them to `fetch()` for inline feedback and falls back to
+  `form.submit()` on any unexpected response. A network blip loses the feedback, never
+  the lead.
+- **Filament v3 is pinned, not v4.** v4 moved the actions namespace and replaced `Form`
+  with `Schema`. Upgrade deliberately, not by widening the constraint.
+- **`config/` is deliberately absent** — Laravel 11+ falls back to framework defaults.
+  Use `php artisan config:publish <name>` when you genuinely need to override one.
 
-## Design tokens
+### The assets have diverged, on purpose
 
-Defined once at the top of `style.css` under `:root`. Change them there and the
-whole page follows.
+`laravel/public/assets/` started as a byte-for-byte copy of `assets/` and has since
+gained `.prose` typography for blog and legal pages, a honeypot rule, and a countdown
+that reads `data-starts` instead of a hardcoded date. **A CSS or JS fix belongs in both
+copies** until the static demo is retired. Diff them before you assume they match:
 
-| Token | Value | Role |
+```bash
+diff assets/css/style.css laravel/public/assets/css/style.css
+diff assets/js/main.js    laravel/public/assets/js/main.js
+```
+
+---
+
+## Brand
+
+| Token | Hex | Used for |
 |---|---|---|
-| `--ink` | `#0D1B3E` | Midnight Indigo — nav, footer, headings |
-| `--red` | `#D3372B` | Torii Red — primary CTA, **language courses** |
-| `--teal` | `#0B7A70` | Gateway Teal — secondary CTA, **test prep &amp; study abroad** |
-| `--gold` | `#E8A33D` | Sunrise Gold — ratings, badges, counters (navy grounds only) |
-| `--paper` / `--band` | `#F5F6FA` / `#EEF0F7` | Page ground and alternating section bands |
-| `--slate` | `#5A6478` | Body copy |
+| Midnight Indigo | `#0D1B3E` | Nav, footer, headings — the institutional voice |
+| Torii Red | `#D3372B` | Primary CTA, language courses |
+| Gateway Teal | `#0B7A70` | Secondary CTA, test prep and study abroad |
+| Sunrise Gold | `#E8A33D` | Ratings and badges, on navy grounds only |
+| Paper / Band | `#F5F6FA` / `#EEF0F7` | Page and section backgrounds |
+| Slate | `#5A6478` | Body copy |
 
-Red and teal encode the two halves of the business: red is "learn a language with us",
-teal is "go somewhere with us". With four language lines, resist giving each its own
-accent — four accents plus navy plus gold is more palette than a page can hold. Languages
-are distinguished by their glyph (あ / 한 / 中 / IELTS), not by colour.
+Neutrals are biased toward indigo rather than pure grey, so nothing on the page reads as
+a default. Type: **Zen Kaku Gothic New** for display (carries Japanese glyphs natively),
+**Hind Siliguri** for body (carries Bengali natively) — one font stack covers all three
+scripts the site needs. Spacing is a fixed 4/8/12/16/24/32/48/64/96 scale.
 
-Spacing uses a fixed scale (`--s1`…`--s9` = 4/8/12/16/24/32/48/64/96). Don't introduce
-values off the scale.
+**Known mismatch:** the supplied logo samples as navy `#16324A` with gold `#B89A50` and
+contains no red at all. Torii Red is a deliberate addition for CTA contrast, not a colour
+taken from the mark. If the client wants strict logo fidelity, `--red` is the one token to
+change and everything downstream follows.
 
-**Type:** Zen Kaku Gothic New for headings (covers Latin *and* kana/kanji, so Japanese
-course names never fall back), Hind Siliguri for body (covers Latin *and* Bengali, so the
-EN/বাংলা toggle doesn't switch typeface), system monospace for figures.
+---
 
-## Sections
+## Accessibility and performance
 
-Built to the client requirements PDF (four course lines, three destinations).
+- WCAG AA contrast on every text/background pair in the token set
+- Skip link, visible focus rings, `aria-expanded` on the nav, `aria-live` on form status
+- Every animation respects `prefers-reduced-motion`
+- Scroll reveals are primed on load, so above-the-fold content is never hidden waiting
+  for an observer to fire
+- No webfonts beyond the two above, no framework, no bundler
 
-1. Utility bar — phone, email, EN/বাংলা toggle, socials
-2. Sticky header — Language Courses / Study Abroad / Success Stories / About Us / Blog / Contact
-3. Animated hero — sakura canvas, orbiting destinations, rotating country name, floating cards
-4. **Course grid** — Japanese (JLPT), Korean (TOPIK), Chinese (HSK), IELTS, each with online/in-class chips
-5. **Study abroad** — Japan, Korea, China destination cards
-6. Application process — six steps, country-agnostic
-7. **Online recorded vs in class** — side-by-side comparison
-8. Batch schedule — four batches with live countdown
-9. Why choose us + **accreditation badges**
-10. **Results board** — IELTS bands, JLPT/TOPIK/HSK passes
-11. **Faculty** — four instructor cards
-12. **Acceptance letters** — redacted offer-letter gallery
-13. Success stories — video cards + review carousel
-14. Universities marquee
-15. **Free mock test booking** — IELTS / JLPT / TOPIK / HSK
-16. Pricing — fee table with separate in-class and online columns
-17. **About** — mission, vision, facility photos
-18. Free seminar + registration
-19. Blog / resources
-20. FAQ accordion
-21. Final CTA band + mega footer
+---
 
-Plus a floating WhatsApp button, a sticky mobile call/WhatsApp bar, and back-to-top —
-all three hide themselves while the mobile drawer is open.
+## Deployment
 
-**Menu links are mostly placeholders.** Submenu items point at `href="#"` until their page
-exists. Live so far: Japanese, Blog, Contact and the Free Consultation CTA. When a page is built, replace its
-placeholder in the nav of **all** page files — the header markup is duplicated, not shared.
-Body CTAs (hero buttons, course cards) still use in-page anchors on purpose; those scroll
-to sections that exist.
+- **Laravel on cPanel:** [`laravel/DEPLOY.md`](laravel/DEPLOY.md)
+- **The one that matters:** the document root must be **`laravel/public`**, never the
+  project root. Point it at the project root and `https://domain/.env` serves your
+  database and mail credentials to anyone who asks.
+- `APP_DEBUG=false` in production. With it on, any error page prints `.env`.
+- After **every** `.env` edit on a cached deploy, re-run `php artisan config:cache` —
+  once config is cached, Laravel stops reading `.env` entirely.
 
-**Mobile header notes:**
+---
 
-- `.header__cta` needs `margin-left: auto` at mobile widths. `.nav` is `position: fixed`
-  there, so it no longer occupies flow space and stops pushing the burger to the right edge.
-- The topbar is `flex-wrap: nowrap` under 760px. Left wrapping, it became two rows and
-  doubled the bar's height on phones.
-- Hero float cards are hidden under 980px. They are absolutely positioned and collide with
-  each other and the orbit at that width; the copy above already states what they say.
-- `.hero__art` must not be re-ordered before `.hero__copy` on mobile — it pushes the
-  headline and primary CTA below the fold.
+## Before launch — still outstanding
 
-**Navigation note:** `.header` must not carry `backdrop-filter` at mobile widths. A
-filtered ancestor becomes the containing block for `position: fixed`, which traps the
-drawer inside the 72px header bar instead of filling the viewport. The mobile media query
-turns it off deliberately — don't add it back.
+These are content and legal items the client has to supply. Some are risk, not polish.
 
-Each submenu is a `<div class="submenu">` wrapping a single `<ul>`. The mobile collapse
-uses `grid-template-rows: 0fr → 1fr`, which only sizes the **first** row track, so the
-submenu needs exactly one child element to collapse fully.
+- [ ] **Chairman's name and photo.** The site carries the placeholder
+      `A. K. M. Rahman`. It must be replaced — a real institute cannot launch with an
+      invented chairman.
+- [ ] **Tick `consent_given`** per testimonial, score and acceptance letter, after
+      obtaining written consent. Nothing renders until you do, which is the intent.
+- [ ] **Tick `is_verified`** only on partnerships that can be documented.
+- [ ] **Accreditation reference numbers** — real numbers, or remove the badges.
+- [ ] **Privacy policy, terms, refund policy.** Seeded with bold placeholder warnings.
+      These need a qualified reviewer, not a developer.
+- [ ] **Band Score Guarantee terms** — whatever is promised must be written and
+      honourable.
+- [ ] **Real contact details.** The client's brief gave a Gmail address; use
+      `info@mlg.com.bd` so mail passes SPF/DMARC instead of landing in spam.
+- [ ] Real photographs, Google reviews widget.
+- [ ] **Change the seeded admin password.**
+- [ ] On the static site only, Korean / Chinese / IELTS pages do not exist. In Laravel
+      they are rows served by `/courses/{slug}`.
 
-## Animations
+---
 
-| Effect | Where |
-|---|---|
-| Sakura petal canvas | Hero — pauses when scrolled out of view |
-| Orbiting destination nodes | Hero — CSS `@keyframes`, counter-rotated so flags stay upright |
-| Rotating headline word | "Japan" → "Korea" → "China" |
-| Drifting gradient blobs | Hero background |
-| Scroll reveal | Every section, staggered via `data-delay="1…6"` |
-| Counting statistics | Hero trust strip |
-| Live countdown | Next batch section |
-| Blog topic filter | Blog page chips, client-side |
-| Star-field canvas | Final CTA — pauses when out of view |
-| Marquee | Partner wall, pauses on hover |
+## Repository
 
-Two things make these safe in production:
+```
+MLG/
+├── index.html  about.html  japanese.html  blog.html  contact.html
+├── assets/                      css · js · img
+├── laravel/
+│   ├── app/                     Http · Models · Filament · Support · View
+│   ├── database/                migrations · seeders
+│   ├── resources/views/         layouts · partials · home/01–20 · courses · errors
+│   ├── routes/web.php
+│   ├── public/                  ← the web root
+│   ├── README.md                architecture, phase by phase
+│   └── DEPLOY.md                cPanel deployment + launch checklist
+└── README.md                    this file
+```
 
-- **Nothing depends on JS to be readable.** `.reveal` elements are visible by default;
-  JS adds `.anim-ready` to arm the animation. Script blocked → full page still renders.
-- **`prefers-reduced-motion: reduce` is respected** — canvases are removed and all
-  animation and transition durations collapse to zero.
+Branch: `claude/mlg-competitor-analysis-gva4p4`
 
-## Before launch — replace these
+---
 
-| What | Where |
-|---|---|
-| Phone number `+8801700000000` | `index.html` (topbar, footer, WhatsApp links, mobile bar) |
-| Email, address, office hours | topbar and footer |
-| `BATCH_START` date | `assets/js/main.js` § 6 — **drive this from a CMS field, never hardcode a past date** |
-| Seat counts and `--fill` percentages | batch cards in `index.html` |
-| Partner names | marquee in `index.html` — only institutions you can substantiate |
-| Google review text and count | `#reviewTrack`, or drop in a live reviews widget |
-| Video testimonial thumbnails | `.vcard__thumb` gradients are placeholders for real stills |
-| Blog post thumbnails | `.post__thumb` gradients on `index.html` and `blog.html` |
-| Map embed | `.map` block in `contact.html` |
-| Blog post URLs | every `href="#"` in `blog.html` |
-| Form submission | `assets/js/main.js` § 12 — replace the `setTimeout` with a real `fetch()` POST |
-| JSON-LD `url`, `telephone`, `email`, `sameAs` | `<head>` of `index.html` |
+## Licence
 
-Form validation currently checks a Bangladeshi mobile pattern (`01[3-9]XXXXXXXX`)
-client-side only. Validate server-side too.
-
-## Language toggle
-
-Any element carrying both `data-en` and `data-bn` is swapped by the toggle. To extend
-coverage, add the attribute pair to more elements — no JavaScript change needed. The
-choice persists in `localStorage`. For a full bilingual site, use Polylang or WPML on the
-WordPress port rather than extending this.
-
-## Logo
-
-`assets/img/glm-logo.png` (387×337, 141 KB) is the master file as supplied. Pages use
-`glm-logo-132.png` (152×132, 28 KB) — a box-filtered downsample at roughly 3× the 42px
-display height, so it stays sharp on retina without carrying 141 KB on every page. It also
-serves as the favicon.
-
-The mark stands alone — there is no text lockup beside it — so its `alt` attribute carries
-"Multi Languages Gateway". Don't blank that alt; it's the only place the brand name appears
-in the header for screen readers and crawlers. The mark is navy and gold, which disappears
-on the navy footer, so `.logo--light .logo__mark` puts it on a white rounded tile there.
-
-**Size the `<img>` itself, never `height: 100%`.** The global `img{max-width:100%}` reset
-can cap the width while a percentage height runs free, which stretches the mark badly out
-of proportion. `.logo__mark img` therefore sets an explicit `height`, `width:auto`,
-`max-width:none` and `object-fit:contain`.
-
-The `<img>` also carries `width` and `height` attributes; those hold the aspect ratio and
-stop the header reflowing while the logo loads. If you regenerate the file at a different
-size, update those attributes to match.
-
-## Performance budget
-
-Targets for Bangladeshi mobile: LCP under 2.0s on 4G, total homepage weight under 500KB,
-zero carousels above the fold, all images WebP with explicit width/height.
-
-Current page ships no images and no libraries. Before launch:
-
-- Self-host both fonts as subset `woff2` (Latin + Bengali + kana) instead of the Google
-  Fonts link — removes two round trips to `fonts.gstatic.com`.
-- Add `width`/`height` on every image you introduce, and `loading="lazy"` below the fold.
-- Minify `style.css` and `main.js`.
-- Re-export the logo as SVG if the designer has vector source — it would drop 28 KB to
-  about 3 KB and stay sharp at any size.
-
-## Porting to WordPress
-
-Map the tokens above into `theme.json` on a lightweight base theme (GeneratePress or
-Blocksy), then rebuild these sections as blocks or Elementor templates. Batch schedule,
-seminar and blog become custom post types so the dates stay live. Reach for Elementor only
-where the client genuinely needs to edit visually.
-
-## Accessibility
-
-Skip link, visible focus rings, labelled form fields, `aria-expanded` on every disclosure,
-`aria-live` form status, semantic landmarks, and a `prefers-reduced-motion` path.
-Colour pairs meet WCAG AA except Sunrise Gold, which is restricted to fills, icons and
-navy grounds.
+Proprietary. Built for Multi Languages Gateway by Softorio. Not for redistribution.
