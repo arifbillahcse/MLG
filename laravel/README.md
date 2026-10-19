@@ -3,8 +3,9 @@
 Phase 1 of the Laravel migration: the static site ported to Blade. Every page renders
 exactly as before, but the header and footer exist once instead of five times.
 
-The static site at the repository root is untouched and still deployable — it is the
-live demo. Nothing here affects it.
+The static site this was ported from has since been removed from the branch — this app
+superseded it. It remains in git history if you ever need it back:
+`git show 1ec96b8:index.html`.
 
 ## Running it
 
