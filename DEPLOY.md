@@ -1,7 +1,7 @@
 # Deploying MLG
 
 PHP 8.2+, Composer, MySQL 5.7+ / MariaDB 10.3+, and a web server whose document
-root is **`laravel/public`** — not the project root. Getting that wrong exposes
+root is the **`public/`** folder — not the project root. Getting that wrong exposes
 `.env`, and it is the single most common mistake when putting Laravel on shared
 hosting.
 
@@ -41,7 +41,7 @@ stay live and the change looks like it did nothing.
 ## cPanel / shared hosting
 
 If the host will not let you move the document root, put the contents of
-`laravel/public` in `public_html` and edit its `index.php` so both requires
+`public/` in `public_html` and edit its `index.php` so both requires
 point up at the application directory. Keep the application **outside**
 `public_html`.
 

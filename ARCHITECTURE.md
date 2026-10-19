@@ -10,7 +10,6 @@ superseded it. It remains in git history if you ever need it back:
 ## Running it
 
 ```bash
-cd laravel
 composer install            # needs network; writes vendor/
 cp .env.example .env
 php artisan key:generate
@@ -348,5 +347,5 @@ the performance budget.
 **`DEPLOY.md`** covers first deploy, routine deploys, the cPanel document-root trap, and
 a launch checklist split into content, technical and handover.
 
-The one that matters most: **the document root must be `laravel/public`**, not the
+The one that matters most: **the document root must be the `public/` folder**, not the
 project root. Getting it wrong exposes `.env`.

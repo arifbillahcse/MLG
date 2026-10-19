@@ -38,7 +38,8 @@ That last row is deliberate and worth knowing before you deploy: this is Laravel
 ## Running it
 
 ```bash
-cd laravel
+git clone https://github.com/arifbillahcse/MLG.git
+cd MLG
 composer install
 cp .env.example .env
 php artisan key:generate
@@ -51,8 +52,8 @@ php artisan serve                # http://localhost:8000
 Admin panel at **`/admin`**. Seeded login: `admin@mlg.com.bd` / `ChangeMe!2026` —
 **change it on first login.** Those credentials are in a public git branch.
 
-Architecture in detail: **[`laravel/README.md`](laravel/README.md)**
-Deployment: **[`laravel/DEPLOY.md`](laravel/DEPLOY.md)**
+Architecture in detail: **[`ARCHITECTURE.md`](ARCHITECTURE.md)**
+Deployment: **[`DEPLOY.md`](DEPLOY.md)**
 
 ---
 
@@ -117,7 +118,7 @@ Adding a fifth language is a record in the admin, not a deployment.
 | Paper / Band | `#F5F6FA` / `#EEF0F7` | Page and section backgrounds |
 | Slate | `#5A6478` | Body copy |
 
-Tokens live in `:root` at the top of `laravel/public/assets/css/style.css`. Neutrals are
+Tokens live in `:root` at the top of `public/assets/css/style.css`. Neutrals are
 biased toward indigo rather than pure grey, so nothing reads as a default. Type: **Zen
 Kaku Gothic New** for display (carries Japanese glyphs natively), **Hind Siliguri** for
 body (carries Bengali natively) — one stack covers all three scripts. Spacing is a fixed
@@ -143,12 +144,12 @@ to change and everything downstream follows.
 
 ## Deployment
 
-Full guide: [`laravel/DEPLOY.md`](laravel/DEPLOY.md). The three rules that actually break
+Full guide: [`DEPLOY.md`](DEPLOY.md). The three rules that actually break
 deploys:
 
-1. **The document root must be `laravel/public`**, never the project root. Point it at
-   the project root and `https://domain/.env` serves your database and mail credentials
-   to anyone who asks.
+1. **The document root must be the `public/` folder**, never the project root. Point it
+   at the project root and `https://domain/.env` serves your database and mail
+   credentials to anyone who asks.
 2. **`APP_DEBUG=false`** in production. With it on, any error page prints `.env`.
 3. **Re-run `php artisan config:cache` after every `.env` edit.** Once config is cached,
    Laravel stops reading `.env` at all — a changed password will silently do nothing.
@@ -181,29 +182,34 @@ Content and legal items the client has to supply. Some are risk, not polish.
 ## Repository
 
 ```
-MLG/
-├── laravel/
-│   ├── app/
-│   │   ├── Http/          Controllers · Requests · Middleware
-│   │   ├── Models/        21 models + Concerns/HasTranslations
-│   │   ├── Filament/      17 resources · 3 relation managers · 2 widgets · settings
-│   │   ├── Support/Site   cached settings + nav
-│   │   └── View/Composers ChromeComposer — topbar, header, footer
-│   ├── database/          23 migrations · 9 seeders
-│   ├── resources/views/   layouts · partials · home/01–20 · courses · errors
-│   ├── routes/web.php     13 named routes
-│   ├── public/            ← the web root. Point the document root HERE
-│   ├── README.md          architecture, phase by phase
-│   └── DEPLOY.md          cPanel deployment + launch checklist
+MLG/                       ← a standard Laravel project. Clone it and run it.
+├── app/
+│   ├── Http/              Controllers · Requests · Middleware
+│   ├── Models/            21 models + Concerns/HasTranslations
+│   ├── Filament/          17 resources · 3 relation managers · 2 widgets · settings
+│   ├── Support/Site.php   cached settings + nav
+│   └── View/Composers/    ChromeComposer — topbar, header, footer
+├── bootstrap/app.php      middleware + provider registration
+├── database/              23 migrations · 9 seeders
+├── resources/views/       layouts · partials · home/01–20 · courses · errors
+├── routes/web.php         13 named routes
+├── public/                ← the web root. Point the document root HERE
+├── artisan
+├── composer.json
+├── ARCHITECTURE.md        how it is built, phase by phase
+├── DEPLOY.md              cPanel deployment + launch checklist
 └── README.md              this file
 ```
+
+`config/` is intentionally absent — Laravel 11+ falls back to framework defaults. Run
+`php artisan config:publish <name>` only when you genuinely need to override one.
 
 ### The static prototype
 
 The first build was a hand-written static site (`index.html`, `assets/`, no framework) —
 the client demo at `demo.softorio.com/mlg`. It was removed from the branch once the
 Laravel app superseded it. It is **not lost**: it lives in git history, and the CSS and
-JS were carried into `laravel/public/assets/` and have since moved on from it.
+JS were carried into `public/assets/` and have since moved on from it.
 
 ```bash
 git show 1ec96b8:index.html > index.html        # recover any file
