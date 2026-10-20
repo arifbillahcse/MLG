@@ -36,12 +36,30 @@ composer check-platform-reqs      # every line must say "success"
 ```
 
 If Composer's error names `/opt/alt/php82/etc/php.ini`, the web is on alt-php.
-Enable extensions in **cPanel → Select PHP Version** (the CloudLinux PHP Selector,
-not MultiPHP Manager), and point your shell at the same binary:
+
+**PHP Selector does not work while PHP-FPM is enabled.** Ticking an extension
+appears to do nothing, and an unrelated box such as `memcached` gets stuck ticked
+and will not clear — that stuck box is the symptom, not a separate fault. Do not
+fight the UI, and never press "Reset PHP Extensions to default".
+
+The fastest way out is usually to stop using alt-php for the domain. EA-PHP ships
+`intl` and `fileinfo` already, so check it first:
 
 ```bash
-echo 'alias php=/opt/alt/php82/usr/bin/php' >> ~/.bashrc && source ~/.bashrc
+/opt/cpanel/ea-php82/root/usr/bin/php -m | grep -E 'intl|fileinfo'
 ```
+
+Both printed? Then **cPanel → MultiPHP Manager** → the domain → `ea-php82` → Apply,
+and point the shell at the same binary:
+
+```bash
+sed -i '/alias php=/d' ~/.bashrc
+echo 'alias php=/opt/cpanel/ea-php82/root/usr/bin/php' >> ~/.bashrc && source ~/.bashrc
+```
+
+That also ends the PHP Selector problem, since the Selector no longer governs the
+domain. If EA-PHP lacks the extensions too, turn **PHP-FPM off** for the domain
+instead — the Selector then applies — at the cost of some performance.
 
 Never `rm -rf vendor` before `composer check-platform-reqs` passes — a failed
 reinstall takes the site down until it is fixed. To recover, install with
