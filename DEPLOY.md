@@ -15,13 +15,38 @@ bcmath  ctype  curl  dom  fileinfo  gd  intl  mbstring
 openssl  pdo_mysql  tokenizer  xml  zip
 ```
 
-`intl` is the one that is routinely off on shared hosting, and it does not fail at
-install time — it fails later, at runtime, the first time something formats a number
-or a currency. Verify it:
+`intl` and `fileinfo` are the two that are routinely off on shared hosting. Filament
+requires `intl`; file uploads need `fileinfo`.
+
+### The two-PHP trap on cPanel + CloudLinux
+
+A CloudLinux box has **two** PHP 8.2 installs, and they do not share extensions:
+
+| | Path | Used by |
+|---|---|---|
+| EA-PHP | `/opt/cpanel/ea-php82/` | whatever `php` resolves to by default |
+| alt-php | `/opt/alt/php82/` | Composer, and the web server |
+
+So `php -m | grep intl` can print `intl` while the site still throws
+"The intl PHP extension is required" — you checked the wrong PHP. Trust this
+instead, which reads the same vendor directory the site loads:
 
 ```bash
-php -m | grep -E 'intl|bcmath|gd|zip'
+composer check-platform-reqs      # every line must say "success"
 ```
+
+If Composer's error names `/opt/alt/php82/etc/php.ini`, the web is on alt-php.
+Enable extensions in **cPanel → Select PHP Version** (the CloudLinux PHP Selector,
+not MultiPHP Manager), and point your shell at the same binary:
+
+```bash
+echo 'alias php=/opt/alt/php82/usr/bin/php' >> ~/.bashrc && source ~/.bashrc
+```
+
+Never `rm -rf vendor` before `composer check-platform-reqs` passes — a failed
+reinstall takes the site down until it is fixed. To recover, install with
+`--ignore-platform-req=ext-intl --ignore-platform-req=ext-fileinfo`, then enable the
+extensions and reinstall cleanly.
 
 ## First deploy
 
