@@ -114,15 +114,16 @@
         @endif
 
         <div class="lvl__fees">
-          @if ($level->fee_in_class)
+          @if ($level->regular_fee)
             <div class="lvl__fee">
-              <span>In class</span>
-              <b class="mono">
-                @if ($level->hasDiscount())
-                  <s class="lvl__was">৳ {{ number_format($level->fee_before) }}</s>
-                @endif
-                ৳ {{ number_format($level->fee_in_class) }}
-              </b>
+              <span>Price</span>
+              <b class="mono {{ $level->hasDiscount() ? 'is-struck' : '' }}">৳ {{ number_format($level->regular_fee) }}</b>
+            </div>
+          @endif
+          @if ($level->hasDiscount())
+            <div class="lvl__fee lvl__fee--now">
+              <span>Discount price</span>
+              <b class="mono">৳ {{ number_format($level->fee_in_class) }}</b>
             </div>
           @endif
           @if ($level->fee_online)
@@ -270,7 +271,14 @@
         <table class="tbl">
           <caption class="sr-only">Japanese course fees</caption>
           <thead>
-            <tr><th scope="col">Level</th><th scope="col">Duration</th><th scope="col">Classes</th><th scope="col" class="ta-r">In class</th><th scope="col" class="ta-r">Online</th></tr>
+            <tr>
+              <th scope="col">Level</th><th scope="col">Duration</th><th scope="col">Classes</th>
+              <th scope="col" class="ta-r">Price</th>
+              <th scope="col" class="ta-r">Discount price</th>
+              @if ($levels->whereNotNull('fee_online')->isNotEmpty())
+                <th scope="col" class="ta-r">Online</th>
+              @endif
+            </tr>
           </thead>
           <tbody>
             @foreach ($levels as $level)
@@ -278,13 +286,15 @@
                 <th scope="row">{{ $course->exam_name }} {{ $level->code }}</th>
                 <td>{{ $level->months_label }} months</td>
                 <td class="mono">{{ $level->classes }}</td>
-                <td class="ta-r mono">
-                  @if ($level->hasDiscount())
-                    <s class="lvl__was">৳ {{ number_format($level->fee_before) }}</s>
-                  @endif
-                  {{ $level->fee_in_class ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                <td class="ta-r mono {{ $level->hasDiscount() ? 'is-struck' : '' }}">
+                  {{ $level->regular_fee ? '৳ '.number_format($level->regular_fee) : '—' }}
                 </td>
-                <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>
+                <td class="ta-r mono">
+                  {{ $level->hasDiscount() ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                </td>
+                @if ($levels->whereNotNull('fee_online')->isNotEmpty())
+                  <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>
+                @endif
               </tr>
             @endforeach
           </tbody>

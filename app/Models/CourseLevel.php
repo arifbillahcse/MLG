@@ -73,6 +73,16 @@ class CourseLevel extends Model
         return $parts ? implode(' · ', $parts) : null;
     }
 
+    /**
+     * The headline price — the pre-discount figure when an offer is running,
+     * otherwise simply the fee. Never null when a fee exists, so the "Price"
+     * column always has something to show.
+     */
+    public function getRegularFeeAttribute(): ?int
+    {
+        return $this->fee_before ?: $this->fee_in_class;
+    }
+
     /** Only a real saving counts — a "discount" that is not one is not shown. */
     public function hasDiscount(): bool
     {

@@ -7,6 +7,12 @@
       <p class="sec-head__lede">No competitor in this market publishes a number. We do — it saves your time and ours.</p>
     </header>
 
+    @php
+      // The online column only earns its place when some level actually has
+      // an online fee. Otherwise it is a column of dashes.
+      $showOnline = $courses->pluck('levels')->flatten()->whereNotNull('fee_online')->isNotEmpty();
+    @endphp
+
     <div class="fee-table reveal" data-delay="1">
       <h3 class="fee-table__title">Course fees</h3>
       <div class="tbl-scroll">
@@ -17,8 +23,11 @@
               <th scope="col">Course</th>
               <th scope="col">Level</th>
               <th scope="col">Duration</th>
-              <th scope="col" class="ta-r">In class</th>
-              <th scope="col" class="ta-r">Online</th>
+              <th scope="col" class="ta-r">Price</th>
+              <th scope="col" class="ta-r">Discount price</th>
+              @if ($showOnline)
+                <th scope="col" class="ta-r">Online</th>
+              @endif
             </tr>
           </thead>
           <tbody>
@@ -28,13 +37,15 @@
                   <th scope="row">{{ $course->name }}</th>
                   <td>{{ $level->code }}</td>
                   <td>{{ $level->months_label }} months</td>
-                  <td class="ta-r mono">
-                    @if ($level->hasDiscount())
-                      <s class="lvl__was">৳ {{ number_format($level->fee_before) }}</s>
-                    @endif
-                    {{ $level->fee_in_class ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                  <td class="ta-r mono {{ $level->hasDiscount() ? 'is-struck' : '' }}">
+                    {{ $level->regular_fee ? '৳ '.number_format($level->regular_fee) : '—' }}
                   </td>
-                  <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>
+                  <td class="ta-r mono">
+                    {{ $level->hasDiscount() ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                  </td>
+                  @if ($showOnline)
+                    <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>
+                  @endif
                 </tr>
               @endforeach
             @endforeach
