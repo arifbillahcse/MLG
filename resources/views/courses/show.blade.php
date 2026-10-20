@@ -61,7 +61,7 @@
       <div class="fact"><dt>Duration</dt><dd>{{ $levels->min('months') }}–{{ $levels->max('months') }} months per level</dd></div>
       <div class="fact"><dt>Format</dt><dd>@if ($course->offers_online && $course->offers_in_class)Online or in class @elseif ($course->offers_online)Online @else In class @endif</dd></div>
       <div class="fact"><dt>Exam</dt><dd>{{ $course->exam_name }}</dd></div>
-      <div class="fact"><dt>Fee from</dt><dd class="mono">৳ {{ number_format($levels->min('fee_online') ?: $course->price_from) }}</dd></div>
+      <div class="fact"><dt>Fee from</dt><dd class="mono">৳ {{ number_format($levels->whereNotNull('fee_in_class')->min('fee_in_class') ?: $course->price_from) }}</dd></div>
     </dl>
 
     <div class="hero__actions reveal" data-delay="4" style="margin-top:var(--s6);margin-bottom:0">
@@ -88,8 +88,14 @@
         <p class="lvl__sub">{{ $level->subtitle }}</p>
 
         <div class="lvl__stats">
-          <div class="lvl__stat"><b>{{ $level->months }}</b><span>months</span></div>
+          <div class="lvl__stat"><b>{{ $level->months_label }}</b><span>months</span></div>
           <div class="lvl__stat"><b>{{ $level->classes }}</b><span>classes</span></div>
+          @if ($level->days_per_week)
+            <div class="lvl__stat"><b>{{ $level->days_per_week }}</b><span>days a week</span></div>
+          @endif
+          @if ($level->hours_per_day)
+            <div class="lvl__stat"><b>{{ rtrim(rtrim(number_format($level->hours_per_day, 1), '0'), '.') }}</b><span>hours a day</span></div>
+          @endif
           @if ($level->vocabulary)
             <div class="lvl__stat"><b>{{ $level->vocabulary }}</b><span>vocabulary</span></div>
           @endif
@@ -108,9 +114,24 @@
         @endif
 
         <div class="lvl__fees">
-          <div class="lvl__fee"><span>In class</span><b class="mono">৳ {{ number_format($level->fee_in_class) }}</b></div>
-          <div class="lvl__fee"><span>Online</span><b class="mono">৳ {{ number_format($level->fee_online) }}</b></div>
+          @if ($level->fee_in_class)
+            <div class="lvl__fee">
+              <span>In class</span>
+              <b class="mono">
+                @if ($level->hasDiscount())
+                  <s class="lvl__was">৳ {{ number_format($level->fee_before) }}</s>
+                @endif
+                ৳ {{ number_format($level->fee_in_class) }}
+              </b>
+            </div>
+          @endif
+          @if ($level->fee_online)
+            <div class="lvl__fee"><span>Online</span><b class="mono">৳ {{ number_format($level->fee_online) }}</b></div>
+          @endif
         </div>
+        @if ($level->hasDiscount())
+          <p class="lvl__save">Save ৳ {{ number_format($level->fee_before - $level->fee_in_class) }} — limited-time offer</p>
+        @endif
         <a href="#enrol" class="btn btn--primary btn--block">Enrol in {{ $level->code }}</a>
       </article>
       @endforeach
@@ -182,7 +203,7 @@
           <div class="compare__row"><span>Doubt-solving</span><b>Weekly live group session</b></div>
           <div class="compare__row"><span>Kaiwa practice</span><b>Scheduled 1-to-1 calls</b></div>
           <div class="compare__row"><span>Mock papers</span><b class="yes">Included</b></div>
-          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">৳ {{ number_format($levels->first()?->fee_online) }}</b></div>
+          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">{{ $levels->first()?->fee_online ? '৳ '.number_format($levels->first()->fee_online) : 'Ask us' }}</b></div>
         </div>
       </div>
 
@@ -202,7 +223,7 @@
           <div class="compare__row"><span>Doubt-solving</span><b>Every class</b></div>
           <div class="compare__row"><span>Kaiwa practice</span><b>Daily with classmates</b></div>
           <div class="compare__row"><span>Mock papers</span><b class="yes">Included, on paper</b></div>
-          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">৳ {{ number_format($levels->first()?->fee_in_class) }}</b></div>
+          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">{{ $levels->first()?->fee_in_class ? '৳ '.number_format($levels->first()->fee_in_class) : 'Ask us' }}</b></div>
         </div>
       </div>
     </div>
@@ -255,10 +276,15 @@
             @foreach ($levels as $level)
               <tr>
                 <th scope="row">{{ $course->exam_name }} {{ $level->code }}</th>
-                <td>{{ $level->months }} months</td>
+                <td>{{ $level->months_label }} months</td>
                 <td class="mono">{{ $level->classes }}</td>
-                <td class="ta-r mono">৳ {{ number_format($level->fee_in_class) }}</td>
-                <td class="ta-r mono">৳ {{ number_format($level->fee_online) }}</td>
+                <td class="ta-r mono">
+                  @if ($level->hasDiscount())
+                    <s class="lvl__was">৳ {{ number_format($level->fee_before) }}</s>
+                  @endif
+                  {{ $level->fee_in_class ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                </td>
+                <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>
               </tr>
             @endforeach
           </tbody>

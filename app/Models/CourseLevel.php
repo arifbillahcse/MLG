@@ -19,9 +19,12 @@ class CourseLevel extends Model
         'subtitle',
         'months',
         'classes',
+        'days_per_week',
+        'hours_per_day',
         'vocabulary',
         'characters',
         'outcomes',
+        'fee_before',
         'fee_in_class',
         'fee_online',
         'sort',
@@ -32,12 +35,50 @@ class CourseLevel extends Model
     {
         return [
             'outcomes' => 'array',
-            'months' => 'integer',
+            'months' => 'float',
             'classes' => 'integer',
+            'days_per_week' => 'integer',
+            'hours_per_day' => 'float',
+            'fee_before' => 'integer',
             'fee_in_class' => 'integer',
             'fee_online' => 'integer',
             'is_active' => 'boolean',
         ];
+    }
+
+    /** "3.5" stays 3.5, but "3.0" reads as 3. */
+    public function getMonthsLabelAttribute(): ?string
+    {
+        if (blank($this->months)) {
+            return null;
+        }
+
+        return rtrim(rtrim(number_format((float) $this->months, 1), '0'), '.');
+    }
+
+    /** "4 days a week · 2 hours a day", skipping whatever is not set. */
+    public function getScheduleLabelAttribute(): ?string
+    {
+        $parts = [];
+
+        if ($this->days_per_week) {
+            $parts[] = $this->days_per_week.' days a week';
+        }
+
+        if ($this->hours_per_day) {
+            $hours = rtrim(rtrim(number_format((float) $this->hours_per_day, 1), '0'), '.');
+            $parts[] = $hours.' hours a day';
+        }
+
+        return $parts ? implode(' · ', $parts) : null;
+    }
+
+    /** Only a real saving counts — a "discount" that is not one is not shown. */
+    public function hasDiscount(): bool
+    {
+        return filled($this->fee_before)
+            && filled($this->fee_in_class)
+            && $this->fee_before > $this->fee_in_class;
     }
 
     public function course(): BelongsTo

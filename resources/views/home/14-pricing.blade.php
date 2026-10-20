@@ -27,9 +27,14 @@
                 <tr>
                   <th scope="row">{{ $course->name }}</th>
                   <td>{{ $level->code }}</td>
-                  <td>{{ $level->months }} months</td>
-                  <td class="ta-r mono">৳ {{ number_format($level->fee_in_class) }}</td>
-                  <td class="ta-r mono">৳ {{ number_format($level->fee_online) }}</td>
+                  <td>{{ $level->months_label }} months</td>
+                  <td class="ta-r mono">
+                    @if ($level->hasDiscount())
+                      <s class="lvl__was">৳ {{ number_format($level->fee_before) }}</s>
+                    @endif
+                    {{ $level->fee_in_class ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                  </td>
+                  <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>
                 </tr>
               @endforeach
             @endforeach

@@ -14,13 +14,14 @@ class CourseSeeder extends Seeder
                 'slug' => 'japanese', 'name' => 'Japanese', 'name_bn' => 'জাপানিজ',
                 'native_name' => '日本語', 'glyph' => 'あ', 'exam_name' => 'JLPT',
                 'description' => 'Hiragana to elementary grammar with native-level instructors and weekly kaiwa practice.',
-                'is_test_prep' => false, 'price_from' => 12000, 'sort' => 1,
+                'is_test_prep' => false, 'price_from' => 15000, 'sort' => 1,
                 'levels' => [
                     [
                         'code' => 'N5', 'label' => 'Beginner',
                         'subtitle' => 'No prior Japanese needed. Start from the alphabet.',
-                        'months' => 4, 'classes' => 48, 'vocabulary' => '~800', 'characters' => '~100',
-                        'fee_in_class' => 12000, 'fee_online' => 8500, 'sort' => 1,
+                        'months' => 3, 'classes' => 48, 'days_per_week' => 4, 'hours_per_day' => 2,
+                        'vocabulary' => '~800', 'characters' => '~100',
+                        'fee_before' => 20000, 'fee_in_class' => 15000, 'fee_online' => null, 'sort' => 1,
                         'outcomes' => [
                             'Read and write hiragana and katakana fluently',
                             'Hold basic conversations — introductions, directions, shopping',
@@ -29,10 +30,11 @@ class CourseSeeder extends Seeder
                         ],
                     ],
                     [
-                        'code' => 'N4', 'label' => 'Elementary',
-                        'subtitle' => 'Follows N5. The level most schools and employers look for.',
-                        'months' => 5, 'classes' => 60, 'vocabulary' => '~1,500', 'characters' => '~300',
-                        'fee_in_class' => 15000, 'fee_online' => 10500, 'sort' => 2,
+                        'code' => 'N4', 'label' => 'Elementary — N4 / JFT',
+                        'subtitle' => 'Follows N5, and covers JFT-Basic. The level most schools and employers look for.',
+                        'months' => 3.5, 'classes' => 56, 'days_per_week' => 4, 'hours_per_day' => 2,
+                        'vocabulary' => '~1,500', 'characters' => '~300',
+                        'fee_before' => 25000, 'fee_in_class' => 20000, 'fee_online' => null, 'sort' => 2,
                         'outcomes' => [
                             'Handle everyday conversation at natural speed',
                             'Read short passages written in basic kanji',
