@@ -61,7 +61,8 @@ class CourseResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable()->weight('bold'),
                 Tables\Columns\TextColumn::make('exam_name')->label('Exam')->badge(),
                 Tables\Columns\TextColumn::make('levels_count')->counts('levels')->label('Levels'),
-                Tables\Columns\TextColumn::make('price_from')->money('BDT')->label('From'),
+                Tables\Columns\TextColumn::make('price_from')->label('From')
+                    ->formatStateUsing(fn ($state) => filled($state) ? '৳'.number_format((float) $state) : '—'),
                 Tables\Columns\IconColumn::make('is_active')->boolean()->label('Live'),
             ])
             ->filters([

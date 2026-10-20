@@ -45,8 +45,10 @@ class LevelsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('label'),
                 Tables\Columns\TextColumn::make('months')->suffix(' months'),
                 Tables\Columns\TextColumn::make('classes'),
-                Tables\Columns\TextColumn::make('fee_in_class')->money('BDT')->label('In class'),
-                Tables\Columns\TextColumn::make('fee_online')->money('BDT')->label('Online'),
+                Tables\Columns\TextColumn::make('fee_in_class')->label('In class')
+                    ->formatStateUsing(fn ($state) => filled($state) ? '৳'.number_format((float) $state) : '—'),
+                Tables\Columns\TextColumn::make('fee_online')->label('Online')
+                    ->formatStateUsing(fn ($state) => filled($state) ? '৳'.number_format((float) $state) : '—'),
                 Tables\Columns\IconColumn::make('is_active')->boolean()->label('Live'),
             ])
             ->headerActions([

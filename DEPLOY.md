@@ -5,10 +5,28 @@ root is the **`public/`** folder — not the project root. Getting that wrong ex
 `.env`, and it is the single most common mistake when putting Laravel on shared
 hosting.
 
+## Required PHP extensions
+
+cPanel → Select PHP Version → Extensions. Check these are all ticked **before**
+`composer install`:
+
+```
+bcmath  ctype  curl  dom  fileinfo  gd  intl  mbstring
+openssl  pdo_mysql  tokenizer  xml  zip
+```
+
+`intl` is the one that is routinely off on shared hosting, and it does not fail at
+install time — it fails later, at runtime, the first time something formats a number
+or a currency. Verify it:
+
+```bash
+php -m | grep -E 'intl|bcmath|gd|zip'
+```
+
 ## First deploy
 
 ```bash
-git clone <repo> && cd mlg/laravel
+git clone <repo> && cd mlg
 
 composer install --no-dev --optimize-autoloader
 cp .env.example .env
