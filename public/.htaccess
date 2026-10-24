@@ -1,3 +1,15 @@
+# php -- BEGIN cPanel-generated handler, do not edit
+# Committed deliberately. cPanel's MultiPHP Manager writes this block here, and
+# this file is tracked, so a git reset --hard removes it: the domain silently
+# drops to the account default PHP, which on this host has no intl and takes the
+# admin panel down. Keeping it in the repo is what stops that recurring.
+#
+# It is specific to cPanel with EA-PHP 8.2. DELETE THIS BLOCK when deploying
+# anywhere else — an AddHandler naming a handler Apache does not have will fail
+# to serve PHP at all.
+AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+# php -- END cPanel-generated handler, do not edit
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes

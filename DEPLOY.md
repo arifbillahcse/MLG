@@ -80,7 +80,20 @@ rm public/phpcheck.php
 ```
 
 Enabling `intl` and `fileinfo` on *both* PHP builds makes the site survive the
-handler going missing, which is worth the five minutes. If EA-PHP lacks the extensions too, turn **PHP-FPM off** for the domain
+handler going missing, which is worth the five minutes.
+
+The handler block is now committed in `public/.htaccess` so a reset cannot take
+it away again. **Delete that block when deploying anywhere that is not cPanel
+with EA-PHP 8.2** — an `AddHandler` naming a handler Apache does not have will
+stop PHP being served. It can also be re-applied from the shell rather than the
+cPanel UI:
+
+```bash
+curl -s https://your-domain/phpcheck.php   # after writing the one-line check
+```
+
+`curl` from the server hits the web server, so it reports the PHP the site
+actually runs — unlike `php -m`, which reports the shell's. If EA-PHP lacks the extensions too, turn **PHP-FPM off** for the domain
 instead — the Selector then applies — at the cost of some performance.
 
 Never `rm -rf vendor` before `composer check-platform-reqs` passes — a failed
