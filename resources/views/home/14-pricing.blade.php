@@ -41,7 +41,7 @@
                     {{ $level->regular_fee ? '৳ '.number_format($level->regular_fee) : '—' }}
                   </td>
                   <td class="ta-r mono">
-                    {{ $level->hasDiscount() ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                    {{ $level->hasDiscount() ? '৳ '.number_format($level->final_fee) : '—' }}
                   </td>
                   @if ($showOnline)
                     <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>

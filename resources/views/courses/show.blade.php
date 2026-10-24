@@ -58,10 +58,10 @@
 
     <dl class="facts reveal" data-delay="3">
       <div class="fact"><dt>Levels</dt><dd>{{ $levels->pluck('code')->join(' → ') }}</dd></div>
-      <div class="fact"><dt>Duration</dt><dd>{{ $levels->min('months') }}–{{ $levels->max('months') }} months per level</dd></div>
+      <div class="fact"><dt>Duration</dt><dd>{{ $levels->pluck('months_label')->filter()->unique()->join('–') }} months per level</dd></div>
       <div class="fact"><dt>Format</dt><dd>@if ($course->offers_online && $course->offers_in_class)Online or in class @elseif ($course->offers_online)Online @else In class @endif</dd></div>
       <div class="fact"><dt>Exam</dt><dd>{{ $course->exam_name }}</dd></div>
-      <div class="fact"><dt>Fee from</dt><dd class="mono">৳ {{ number_format($levels->whereNotNull('fee_in_class')->min('fee_in_class') ?: $course->price_from) }}</dd></div>
+      <div class="fact"><dt>Fee from</dt><dd class="mono">৳ {{ number_format($levels->pluck('final_fee')->filter()->min() ?: $course->price_from) }}</dd></div>
     </dl>
 
     <div class="hero__actions reveal" data-delay="4" style="margin-top:var(--s6);margin-bottom:0">
@@ -86,6 +86,9 @@
         <span class="lvl__badge">{{ $level->code }}</span>
         <h3>{{ $level->label }}</h3>
         <p class="lvl__sub">{{ $level->subtitle }}</p>
+        @if ($level->schedule_label)
+          <p class="lvl__schedule">{{ $level->schedule_label }}</p>
+        @endif
 
         <div class="lvl__stats">
           <div class="lvl__stat"><b>{{ $level->months_label }}</b><span>months</span></div>
@@ -123,7 +126,7 @@
           @if ($level->hasDiscount())
             <div class="lvl__fee lvl__fee--now">
               <span>Discount price</span>
-              <b class="mono">৳ {{ number_format($level->fee_in_class) }}</b>
+              <b class="mono">৳ {{ number_format($level->final_fee) }}</b>
             </div>
           @endif
           @if ($level->fee_online)
@@ -131,7 +134,7 @@
           @endif
         </div>
         @if ($level->hasDiscount())
-          <p class="lvl__save">Save ৳ {{ number_format($level->fee_before - $level->fee_in_class) }} — limited-time offer</p>
+          <p class="lvl__save">Save ৳ {{ number_format($level->discount) }} — limited-time offer</p>
         @endif
         <a href="#enrol" class="btn btn--primary btn--block">Enrol in {{ $level->code }}</a>
       </article>
@@ -224,7 +227,7 @@
           <div class="compare__row"><span>Doubt-solving</span><b>Every class</b></div>
           <div class="compare__row"><span>Kaiwa practice</span><b>Daily with classmates</b></div>
           <div class="compare__row"><span>Mock papers</span><b class="yes">Included, on paper</b></div>
-          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">{{ $levels->first()?->fee_in_class ? '৳ '.number_format($levels->first()->fee_in_class) : 'Ask us' }}</b></div>
+          <div class="compare__row"><span>{{ $levels->first()?->code }} fee</span><b class="mono">{{ $levels->first()?->final_fee ? '৳ '.number_format($levels->first()->final_fee) : 'Ask us' }}</b></div>
         </div>
       </div>
     </div>
@@ -290,7 +293,7 @@
                   {{ $level->regular_fee ? '৳ '.number_format($level->regular_fee) : '—' }}
                 </td>
                 <td class="ta-r mono">
-                  {{ $level->hasDiscount() ? '৳ '.number_format($level->fee_in_class) : '—' }}
+                  {{ $level->hasDiscount() ? '৳ '.number_format($level->final_fee) : '—' }}
                 </td>
                 @if ($levels->whereNotNull('fee_online')->isNotEmpty())
                   <td class="ta-r mono">{{ $level->fee_online ? '৳ '.number_format($level->fee_online) : '—' }}</td>

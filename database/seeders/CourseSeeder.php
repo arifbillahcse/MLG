@@ -21,7 +21,7 @@ class CourseSeeder extends Seeder
                         'subtitle' => 'No prior Japanese needed. Start from the alphabet.',
                         'months' => 3, 'classes' => 48, 'days_per_week' => 4, 'hours_per_day' => 2,
                         'vocabulary' => '~800', 'characters' => '~100',
-                        'fee_before' => 20000, 'fee_in_class' => 15000, 'fee_online' => null, 'sort' => 1,
+                        'fee_before' => 20000, 'discount' => 5000, 'fee_online' => null, 'sort' => 1,
                         'outcomes' => [
                             'Read and write hiragana and katakana fluently',
                             'Hold basic conversations — introductions, directions, shopping',
@@ -34,7 +34,7 @@ class CourseSeeder extends Seeder
                         'subtitle' => 'Follows N5, and covers JFT-Basic. The level most schools and employers look for.',
                         'months' => 3.5, 'classes' => 56, 'days_per_week' => 4, 'hours_per_day' => 2,
                         'vocabulary' => '~1,500', 'characters' => '~300',
-                        'fee_before' => 25000, 'fee_in_class' => 20000, 'fee_online' => null, 'sort' => 2,
+                        'fee_before' => 25000, 'discount' => 5000, 'fee_online' => null, 'sort' => 2,
                         'outcomes' => [
                             'Handle everyday conversation at natural speed',
                             'Read short passages written in basic kanji',
@@ -51,9 +51,9 @@ class CourseSeeder extends Seeder
                 'is_test_prep' => false, 'price_from' => 11000, 'sort' => 2,
                 'levels' => [
                     ['code' => 'TOPIK I', 'label' => 'Beginner', 'months' => 4, 'classes' => 48,
-                     'fee_in_class' => 11000, 'fee_online' => 8000, 'sort' => 1, 'outcomes' => []],
+                     'fee_before' => 11000, 'discount' => 0, 'fee_online' => 8000, 'sort' => 1, 'outcomes' => []],
                     ['code' => 'TOPIK II', 'label' => 'Intermediate', 'months' => 5, 'classes' => 60,
-                     'fee_in_class' => 14000, 'fee_online' => 10000, 'sort' => 2, 'outcomes' => []],
+                     'fee_before' => 14000, 'discount' => 0, 'fee_online' => 10000, 'sort' => 2, 'outcomes' => []],
                 ],
             ],
             [
@@ -63,9 +63,9 @@ class CourseSeeder extends Seeder
                 'is_test_prep' => false, 'price_from' => 11000, 'sort' => 3,
                 'levels' => [
                     ['code' => 'HSK 1–2', 'label' => 'Beginner', 'months' => 4, 'classes' => 48,
-                     'fee_in_class' => 11000, 'fee_online' => 8000, 'sort' => 1, 'outcomes' => []],
+                     'fee_before' => 11000, 'discount' => 0, 'fee_online' => 8000, 'sort' => 1, 'outcomes' => []],
                     ['code' => 'HSK 3', 'label' => 'Elementary', 'months' => 4, 'classes' => 48,
-                     'fee_in_class' => 13000, 'fee_online' => 9500, 'sort' => 2, 'outcomes' => []],
+                     'fee_before' => 13000, 'discount' => 0, 'fee_online' => 9500, 'sort' => 2, 'outcomes' => []],
                 ],
             ],
             [
@@ -76,9 +76,9 @@ class CourseSeeder extends Seeder
                 'is_test_prep' => true, 'price_from' => 9500, 'sort' => 4,
                 'levels' => [
                     ['code' => 'Academic', 'label' => 'IELTS Academic', 'months' => 2, 'classes' => 32,
-                     'fee_in_class' => 9500, 'fee_online' => 7000, 'sort' => 1, 'outcomes' => []],
+                     'fee_before' => 9500, 'discount' => 0, 'fee_online' => 7000, 'sort' => 1, 'outcomes' => []],
                     ['code' => 'General', 'label' => 'IELTS General Training', 'months' => 2, 'classes' => 32,
-                     'fee_in_class' => 9500, 'fee_online' => 7000, 'sort' => 2, 'outcomes' => []],
+                     'fee_before' => 9500, 'discount' => 0, 'fee_online' => 7000, 'sort' => 2, 'outcomes' => []],
                 ],
             ],
         ];

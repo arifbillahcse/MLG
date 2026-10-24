@@ -31,7 +31,9 @@ class CourseResource extends Resource
                 Forms\Components\TextInput::make('native_name')->label('Native name')->placeholder('日本語'),
                 Forms\Components\TextInput::make('glyph')->maxLength(16)->helperText('Shown on the course card: あ, 한, 中'),
                 Forms\Components\TextInput::make('exam_name')->label('Exam')->placeholder('JLPT'),
-                Forms\Components\TextInput::make('price_from')->label('Price from (BDT)')->numeric()->prefix('৳'),
+                Forms\Components\TextInput::make('price_from')->label('Price from (BDT)')->prefix('৳')
+                    ->disabled()->dehydrated(false)
+                    ->helperText('Calculated from the cheapest visible level. Edit the level fees instead.'),
                 Forms\Components\Textarea::make('description')->rows(3)->columnSpanFull(),
             ]),
             Forms\Components\Section::make('Bengali')->collapsed()->columns(2)->schema([

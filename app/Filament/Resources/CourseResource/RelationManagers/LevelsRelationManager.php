@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CourseResource\RelationManagers;
 
+use App\Models\CourseLevel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -30,10 +31,49 @@ class LevelsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('vocabulary')->placeholder('~800'),
                 Forms\Components\TextInput::make('characters')->label('Kanji / characters')->placeholder('~100'),
                 Forms\Components\TextInput::make('fee_before')->numeric()->prefix('৳')
-                    ->label('Fee before discount')
-                    ->helperText('Shown struck through beside the real fee. Leave blank when no offer is running.'),
-                Forms\Components\TextInput::make('fee_in_class')->numeric()->prefix('৳')->label('Fee — in class'),
-                Forms\Components\TextInput::make('fee_online')->numeric()->prefix('৳')->label('Fee — online'),
+                    ->label('Regular price')
+                    ->minValue(0)
+                    ->rules(['integer', 'min:0'])
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Forms\Set $set, Forms\Get $get) => $set(
+                        'final_price', self::finalPrice($get('fee_before'), $get('discount'))
+                    ))
+                    ->helperText('What the course costs before any offer.'),
+
+                Forms\Components\TextInput::make('discount')->numeric()->prefix('৳')
+                    ->label('Discount')
+                    ->default(0)
+                    ->minValue(0)
+                    ->rules([
+                        'integer',
+                        'min:0',
+                        // A discount larger than the price would mean a
+                        // negative fee, so it is refused at the form, not
+                        // silently clamped where nobody sees it.
+                        fn (Forms\Get $get) => function (string $attribute, $value, \Closure $fail) use ($get) {
+                            $regular = (int) $get('fee_before');
+
+                            if ($regular > 0 && (int) $value > $regular) {
+                                $fail('The discount cannot be larger than the regular price (৳'.number_format($regular).').');
+                            }
+                        },
+                    ])
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Forms\Set $set, Forms\Get $get) => $set(
+                        'final_price', self::finalPrice($get('fee_before'), $get('discount'))
+                    ))
+                    ->helperText('Leave at 0 when no offer is running.'),
+
+                Forms\Components\TextInput::make('final_price')->prefix('৳')
+                    ->label('Final price')
+                    ->disabled()
+                    ->dehydrated(false)          // derived on save, never posted
+                    ->formatStateUsing(fn ($state, ?CourseLevel $record) => $record?->final_fee)
+                    ->helperText('Regular price minus discount. Calculated — this is what the student pays.'),
+
+                Forms\Components\TextInput::make('fee_online')->numeric()->prefix('৳')
+                    ->label('Fee — online')->minValue(0)->rules(['integer', 'min:0'])
+                    ->helperText('Leave blank if this level is not sold online.'),
                 Forms\Components\TextInput::make('sort')->numeric()->default(0),
                 Forms\Components\Toggle::make('is_active')->label('Visible on the site')->default(true),
             ]),
@@ -41,6 +81,16 @@ class LevelsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('item')->required(),
             )->label("What you'll be able to do")->columnSpanFull(),
         ]);
+    }
+
+    /** The one place the admin form works out what the student pays. */
+    protected static function finalPrice($regular, $discount): ?int
+    {
+        if (blank($regular)) {
+            return null;
+        }
+
+        return max(0, (int) $regular - (int) $discount);
     }
 
     public function table(Table $table): Table
@@ -52,10 +102,13 @@ class LevelsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('label'),
                 Tables\Columns\TextColumn::make('months')->suffix(' months'),
                 Tables\Columns\TextColumn::make('classes'),
-                Tables\Columns\TextColumn::make('fee_before')->label('Was')
+                Tables\Columns\TextColumn::make('fee_before')->label('Regular')
                     ->formatStateUsing(fn ($state) => filled($state) ? '৳'.number_format((float) $state) : '—')
                     ->color('gray'),
-                Tables\Columns\TextColumn::make('fee_in_class')->label('In class')
+                Tables\Columns\TextColumn::make('discount')->label('Discount')
+                    ->formatStateUsing(fn ($state) => (int) $state > 0 ? '− ৳'.number_format((float) $state) : '—')
+                    ->color(fn ($state) => (int) $state > 0 ? 'success' : 'gray'),
+                Tables\Columns\TextColumn::make('fee_in_class')->label('Final')->weight('bold')
                     ->formatStateUsing(fn ($state) => filled($state) ? '৳'.number_format((float) $state) : '—'),
                 Tables\Columns\TextColumn::make('fee_online')->label('Online')
                     ->formatStateUsing(fn ($state) => filled($state) ? '৳'.number_format((float) $state) : '—'),

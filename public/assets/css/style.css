@@ -1391,3 +1391,6 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 /* struck-through regular price, shown beside the discounted one */
 .is-struck{color:var(--slate-light);text-decoration:line-through;font-weight:500}
 .lvl__fee--now b{color:var(--teal)}
+
+/* class schedule under a level's subtitle */
+.lvl__schedule{margin:var(--s2) 0 0;font-size:13px;font-weight:600;color:var(--teal)}
