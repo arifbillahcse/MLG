@@ -58,7 +58,29 @@ echo 'alias php=/opt/cpanel/ea-php82/root/usr/bin/php' >> ~/.bashrc && source ~/
 ```
 
 That also ends the PHP Selector problem, since the Selector no longer governs the
-domain. If EA-PHP lacks the extensions too, turn **PHP-FPM off** for the domain
+domain.
+
+**A hard reset silently changes the PHP version.** MultiPHP Manager records its
+choice as a handler block inside the document root's `.htaccess`, and
+`public/.htaccess` is a tracked file. So `git reset --hard` restores Laravel's
+stock copy, the handler block disappears, and the domain drops back to the
+account default — a different PHP with a different extension set. The symptom is
+an extension error returning days after it was fixed, with the reported PHP
+version one patch release different.
+
+After any `git reset --hard`, re-apply the version in MultiPHP Manager and check
+what the web actually runs:
+
+```bash
+cat > public/phpcheck.php <<'PHPCHECK'
+<?php echo PHP_VERSION," | ",php_ini_loaded_file()," | intl:",extension_loaded('intl')?'YES':'NO';
+PHPCHECK
+# open https://your-domain/phpcheck.php in a browser — CLI reports a different PHP
+rm public/phpcheck.php
+```
+
+Enabling `intl` and `fileinfo` on *both* PHP builds makes the site survive the
+handler going missing, which is worth the five minutes. If EA-PHP lacks the extensions too, turn **PHP-FPM off** for the domain
 instead — the Selector then applies — at the cost of some performance.
 
 Never `rm -rf vendor` before `composer check-platform-reqs` passes — a failed
