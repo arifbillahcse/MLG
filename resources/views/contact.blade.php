@@ -12,21 +12,21 @@
 @push('schema')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
+  "@@context": "https://schema.org",
+  "@@type": "EducationalOrganization",
   "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
   "url": "https://example.com/",
   "telephone": "{{ \App\Support\Site::get('phone_raw') }}",
   "email": "{{ \App\Support\Site::get('email') }}",
   "address": {
-    "@type": "PostalAddress",
+    "@@type": "PostalAddress",
     "streetAddress": "{{ \App\Support\Site::get('address_line1') }}",
     "addressLocality": "Dhaka",
     "postalCode": "1205",
     "addressCountry": "BD"
   },
   "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
+    "@@type": "OpeningHoursSpecification",
     "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
     "opens": "10:00",
     "closes": "20:00"

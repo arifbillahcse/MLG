@@ -14,8 +14,8 @@
 @push('schema')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
+  "@@context": "https://schema.org",
+  "@@type": "EducationalOrganization",
   "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
   "alternateName": "MLG",
   "description": "Language institute and study-abroad consultancy in Dhaka, Bangladesh — Japanese, Korean, Chinese and IELTS courses with admission and visa support for Japan, Korea and China.",
@@ -23,7 +23,7 @@
   "telephone": "{{ \App\Support\Site::get('phone_raw') }}",
   "email": "{{ \App\Support\Site::get('email') }}",
   "address": {
-    "@type": "PostalAddress",
+    "@@type": "PostalAddress",
     "streetAddress": "{{ \App\Support\Site::get('address_line1') }}",
     "addressLocality": "Dhaka",
     "postalCode": "1205",

@@ -6,14 +6,14 @@
 @push('schema')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
+  "@@context": "https://schema.org",
+  "@@type": "BlogPosting",
   "headline": {!! json_encode($post->title) !!},
   "description": {!! json_encode($post->excerpt) !!},
   "datePublished": "{{ $post->published_at?->toIso8601String() }}",
   "dateModified": "{{ $post->updated_at?->toIso8601String() }}",
   "publisher": {
-    "@type": "Organization",
+    "@@type": "Organization",
     "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}"
   }
 }

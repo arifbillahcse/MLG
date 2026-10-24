@@ -12,12 +12,12 @@
 @push('schema')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Course",
+  "@@context": "https://schema.org",
+  "@@type": "Course",
   "name": "Japanese Language Course — JLPT N5 &amp; N4",
   "description": "JLPT N5 and N4 preparation in Dhaka. Hiragana and katakana to elementary grammar, taught live in class or as a recorded online course.",
   "provider": {
-    "@type": "EducationalOrganization",
+    "@@type": "EducationalOrganization",
     "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
     "sameAs": "https://example.com/"
   },
@@ -25,14 +25,14 @@
   "teaches": "Japanese language, JLPT N5 and N4 preparation",
   "hasCourseInstance": [
     {
-      "@type": "CourseInstance",
+      "@@type": "CourseInstance",
       "name": "JLPT N5 — in class",
       "courseMode": "onsite",
-      "location": { "@type": "Place", "name": "MLG Dhanmondi centre", "address": "Dhanmondi, Dhaka 1205, Bangladesh" },
+      "location": { "@@type": "Place", "name": "MLG Dhanmondi centre", "address": "Dhanmondi, Dhaka 1205, Bangladesh" },
       "courseWorkload": "P4M"
     },
     {
-      "@type": "CourseInstance",
+      "@@type": "CourseInstance",
       "name": "JLPT N5 — online recorded",
       "courseMode": "online",
       "courseWorkload": "P4M"

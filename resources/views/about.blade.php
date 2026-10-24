@@ -12,17 +12,17 @@
 @push('schema')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
+  "@@context": "https://schema.org",
+  "@@type": "AboutPage",
   "name": "About Multi Languages Gateway",
   "mainEntity": {
-    "@type": "EducationalOrganization",
+    "@@type": "EducationalOrganization",
     "name": "{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}",
     "alternateName": "MLG",
     "description": "Language institute and study-abroad consultancy in Dhaka, Bangladesh — Japanese, Korean, Chinese and IELTS, with admission, scholarship and visa support for Japan, Korea and China.",
-    "founder": { "@type": "Person", "name": "A. K. M. Rahman", "jobTitle": "Chairman & Founder" },
+    "founder": { "@@type": "Person", "name": "A. K. M. Rahman", "jobTitle": "Chairman & Founder" },
     "address": {
-      "@type": "PostalAddress",
+      "@@type": "PostalAddress",
       "streetAddress": "{{ \App\Support\Site::get('address_line1') }}",
       "addressLocality": "Dhaka",
       "postalCode": "1205",
