@@ -82,7 +82,7 @@
 
     <div class="lvls">
       @foreach ($levels as $i => $level)
-      <article class="lvl{{ $loop->last && $levels->count() > 1 ? ' lvl--next' : '' }} reveal" data-delay="{{ $i + 1 }}">
+      <article class="lvl reveal" data-delay="{{ $i + 1 }}">
         <span class="lvl__badge">{{ $level->code }}</span>
         <h3>{{ $level->label }}</h3>
         <p class="lvl__sub">{{ $level->subtitle }}</p>
@@ -201,7 +201,7 @@
         </div>
       </div>
 
-      <div class="compare__card compare__card--featured reveal" data-delay="2">
+      <div class="compare__card reveal" data-delay="2">
         <div class="compare__head">
           <span class="compare__icon">
             <svg viewBox="0 0 24 24" class="ic"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>

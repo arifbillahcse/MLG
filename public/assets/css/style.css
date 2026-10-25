@@ -584,8 +584,9 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 .compare__card{
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:var(--s5);
+  transition:border-color .22s ease;
 }
-.compare__card--featured{border-color:var(--ink)}
+.compare__card:hover{border-color:var(--ink)}
 .compare__head{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s4);padding-bottom:var(--s4);border-bottom:1px solid var(--line)}
 .compare__icon{width:42px;height:42px;border-radius:var(--r-sm);display:grid;place-items:center;flex:none;background:var(--band);color:var(--ink)}
 .compare__head h3{font-size:19px}
@@ -873,8 +874,6 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 .tier__list li{display:flex;align-items:center;gap:7px}
 .tier__list li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--teal);flex:none}
 .tier .btn{grid-column:1 / -1}
-.tier--featured{border-color:var(--red);box-shadow:0 20px 50px -30px rgba(211,55,43,.55)}
-.tier--featured .tier__list li::before{background:var(--red)}
 .tier__badge{
   position:absolute;top:-11px;left:var(--s5);
   background:var(--red);color:#fff;font-size:10.5px;font-weight:700;
@@ -1216,8 +1215,11 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 .lvl{
   position:relative;background:var(--surface);border:1px solid var(--line);
   border-radius:var(--r-lg);padding:var(--s6);display:flex;flex-direction:column;
+  transition:border-color .22s ease;
 }
-.lvl--next{border-color:var(--red)}
+/* The accent marks the card you are pointing at, not one chosen card —
+   a permanent border on a single sibling reads as a mistake. */
+.lvl:hover{border-color:var(--red)}
 .lvl__badge{
   align-self:flex-start;font-family:var(--display);font-weight:900;font-size:22px;
   background:var(--red-soft);color:var(--red);padding:8px 16px;border-radius:var(--r-sm);
