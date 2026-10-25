@@ -1407,3 +1407,29 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
   font-size:14px;color:var(--slate);
 }
 @media (max-width:480px){ .lvl__price-now{font-size:28px} }
+
+/* ---------- instructor cards ---------- */
+/* A portrait is not a square. Without this the face is squashed into the
+   circle; the offset frames the head rather than the chest. */
+img.fac__avatar{object-fit:cover;object-position:center 18%}
+
+/* A single instructor gets a profile card, not a lone column of a grid. */
+.faculty--solo{grid-template-columns:1fr;max-width:740px}
+.faculty--solo .fac{
+  display:grid;grid-template-columns:auto 1fr;gap:var(--s6);
+  align-items:center;text-align:left;padding:var(--s6);
+}
+.faculty--solo .fac__avatar{
+  width:148px;height:148px;margin:0;font-size:46px;
+  box-shadow:0 0 0 6px var(--red-soft);
+}
+.faculty--solo .fac h3{font-size:24px;margin-bottom:3px}
+.faculty--solo .fac__role{margin-bottom:var(--s3)}
+.faculty--solo .fac__cred{margin-bottom:var(--s3)}
+.faculty--solo .fac__quote{font-size:15px;max-width:48ch}
+
+@media (max-width:640px){
+  .faculty--solo .fac{grid-template-columns:1fr;text-align:center;gap:var(--s4)}
+  .faculty--solo .fac__avatar{margin:0 auto;width:118px;height:118px;font-size:36px}
+  .faculty--solo .fac__quote{max-width:none}
+}

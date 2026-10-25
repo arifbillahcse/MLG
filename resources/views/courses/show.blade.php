@@ -306,7 +306,9 @@
       <h2 data-en="Who teaches this course" data-bn="এই কোর্সটি কে পড়াবেন">Who teaches this course</h2>
     </header>
 
-    <div class="faculty">
+    {{-- One instructor in a three-column grid reads as a mistake, so a single
+         card switches to a wider profile layout instead of stretching. --}}
+    <div class="faculty{{ $faculty->count() === 1 ? ' faculty--solo' : '' }}">
       @foreach ($faculty as $i => $member)
       <article class="fac reveal" data-delay="{{ $i + 1 }}">
         @if ($member->photo_url)
@@ -317,7 +319,7 @@
         <h3>{{ $member->name }}</h3>
         <p class="fac__role">{{ $member->role }}</p>
         @if ($member->credential)<p class="fac__cred">{{ $member->credential }}</p>@endif
-        <p class="fac__quote">{{ $member->quote }}</p>
+        @if ($member->quote)<p class="fac__quote">{{ $member->quote }}</p>@endif
       </article>
       @endforeach
     </div>

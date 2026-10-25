@@ -196,7 +196,7 @@
             <h3>{{ $member->name }}</h3>
             <p class="fac__role">{{ $member->role }}</p>
             @if ($member->credential)<p class="fac__cred">{{ $member->credential }}</p>@endif
-            <p class="fac__quote">{{ $member->quote }}</p>
+            @if ($member->quote)<p class="fac__quote">{{ $member->quote }}</p>@endif
           </article>
           @endforeach
       </div>
@@ -218,7 +218,7 @@
             <h3>{{ $member->name }}</h3>
             <p class="fac__role">{{ $member->role }}</p>
             @if ($member->credential)<p class="fac__cred">{{ $member->credential }}</p>@endif
-            <p class="fac__quote">{{ $member->quote }}</p>
+            @if ($member->quote)<p class="fac__quote">{{ $member->quote }}</p>@endif
           </article>
           @endforeach
       </div>
