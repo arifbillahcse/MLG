@@ -29,6 +29,10 @@ class UserResource extends Resource
     {
         return $form->schema([
             Forms\Components\TextInput::make('name')->required(),
+            Forms\Components\TextInput::make('username')->required()
+                ->unique(ignoreRecord: true)
+                ->alphaDash()
+                ->helperText('What this person signs in with. Letters, numbers, dashes and underscores.'),
             Forms\Components\TextInput::make('email')->email()->required()->unique(ignoreRecord: true),
             Forms\Components\Select::make('role')->required()->default('editor')
                 ->options(['admin' => 'Administrator', 'editor' => 'Editor']),

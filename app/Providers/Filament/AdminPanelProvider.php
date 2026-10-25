@@ -26,7 +26,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->brandName('MLG Admin')
             ->favicon(asset('assets/img/glm-logo-132.png'))
             // Midnight Indigo and Torii Red, so the admin matches the site.

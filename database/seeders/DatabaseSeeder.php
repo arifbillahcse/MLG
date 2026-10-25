@@ -12,7 +12,8 @@ class DatabaseSeeder extends Seeder
         // Change this password immediately after the first login.
         User::updateOrCreate(
             ['email' => 'admin@mlg.com.bd'],
-            ['name' => 'MLG Admin', 'password' => 'ChangeMe!2026', 'role' => 'admin'],
+            // Signing in uses the username, not this email address.
+            ['name' => 'MLG Admin', 'username' => 'admin', 'password' => 'ChangeMe!2026', 'role' => 'admin'],
         );
 
         $this->call([
