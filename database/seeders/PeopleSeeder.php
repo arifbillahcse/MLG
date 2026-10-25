@@ -14,7 +14,11 @@ class PeopleSeeder extends Seeder
 
         $people = [
             // instructors
-            ['Mahbubur Rahman', 'MR', 'Japanese · JLPT', null, null,
+            // PLACEHOLDER credential and quote — the client supplied only a name
+            // and a photograph. A real person's qualification must not ship
+            // unverified: confirm or replace both before launch.
+            ['Mahbubur Rahman', 'MR', 'Japanese · JLPT', 'JLPT N1 · 7 years teaching',
+             '"Students who speak badly from day one pass. The ones who wait until they feel ready never start."',
              'instructor', 'japanese', 'r', 1],
             ['Jinhee Park', 'JH', 'Korean · TOPIK', 'Native speaker · 8 years teaching',
              '"TOPIK rewards pattern recognition. We drill the patterns until they\'re automatic."',

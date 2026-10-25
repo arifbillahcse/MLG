@@ -166,6 +166,11 @@ Content and legal items the client has to supply. Some are risk, not polish.
 - [ ] **Tick `consent_given`** per testimonial, score and acceptance letter, after
       obtaining written consent. Nothing renders until you do, which is the intent.
 - [ ] **Tick `is_verified`** only on partnerships that can be documented.
+- [ ] **Instructor credentials.** Mahbubur Rahman is a real, named person and
+      his photograph is real, but the JLPT grade, years taught and the quote
+      beside them are placeholders. Confirm them with the client or clear the
+      fields — an unverified qualification on a school's own site is the kind of
+      claim a student enrols on.
 - [ ] **Accreditation reference numbers** — real numbers, or remove the badges.
 - [ ] **Privacy policy, terms, refund policy.** Seeded with bold placeholder warnings.
       These need a qualified reviewer, not a developer.
