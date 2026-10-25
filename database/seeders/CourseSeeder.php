@@ -17,7 +17,7 @@ class CourseSeeder extends Seeder
                 'is_test_prep' => false, 'price_from' => 15000, 'sort' => 1,
                 'levels' => [
                     [
-                        'code' => 'N5', 'label' => 'Beginner',
+                        'code' => 'N5', 'label' => 'Japanese Language N5',
                         'subtitle' => 'No prior Japanese needed. Start from the alphabet.',
                         'months' => 3, 'classes' => 48, 'days_per_week' => 4, 'hours_per_day' => 2,
                         'vocabulary' => '~800', 'characters' => '~100',
@@ -30,7 +30,7 @@ class CourseSeeder extends Seeder
                         ],
                     ],
                     [
-                        'code' => 'N4', 'label' => 'Elementary — N4 / JFT',
+                        'code' => 'N4', 'label' => 'Japanese Language N4 / JFT',
                         'subtitle' => 'Follows N5, and covers JFT-Basic. The level most schools and employers look for.',
                         'months' => 3.5, 'classes' => 56, 'days_per_week' => 4, 'hours_per_day' => 2,
                         'vocabulary' => '~1,500', 'characters' => '~300',

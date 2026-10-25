@@ -138,6 +138,16 @@ class CourseLevel extends Model
         return max(0, (int) $this->fee_before - (int) $this->discount);
     }
 
+    /** The saving as a whole percentage, for the "-25%" badge. */
+    public function getDiscountPercentAttribute(): ?int
+    {
+        if (! $this->hasDiscount()) {
+            return null;
+        }
+
+        return (int) round($this->discount / $this->fee_before * 100);
+    }
+
     /** Only a real saving counts — a "discount" that is not one is not shown. */
     public function hasDiscount(): bool
     {

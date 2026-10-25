@@ -1233,12 +1233,6 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
 .lvl__list{display:flex;flex-direction:column;gap:9px;margin-bottom:var(--s5);font-size:14.5px;color:var(--slate)}
 .lvl__list li{display:flex;align-items:flex-start;gap:9px}
 .lvl__list .ic{width:16px;height:16px;color:var(--red);margin-top:3px;flex:none}
-.lvl__fees{
-  display:flex;gap:var(--s5);margin-top:auto;margin-bottom:var(--s4);
-  padding-top:var(--s4);border-top:1px dashed var(--line);
-}
-.lvl__fee span{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-light)}
-.lvl__fee b{font-family:var(--display);font-weight:900;font-size:22px;font-variant-numeric:tabular-nums}
 
 @media (max-width:820px){
   .lvls{grid-template-columns:1fr}
@@ -1384,13 +1378,32 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
   color:var(--slate-light);text-decoration:line-through;
   font-size:.85em;margin-right:6px;font-weight:500;
 }
-.lvl__save{
-  margin:var(--s2) 0 0;font-size:13px;font-weight:600;color:var(--teal);
-}
 
 /* struck-through regular price, shown beside the discounted one */
 .is-struck{color:var(--slate-light);text-decoration:line-through;font-weight:500}
-.lvl__fee--now b{color:var(--teal)}
 
 /* class schedule under a level's subtitle */
 .lvl__schedule{margin:var(--s2) 0 0;font-size:13px;font-weight:600;color:var(--teal)}
+
+/* ---------- level price: final figure first, then what it was ---------- */
+.lvl__price{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--s2);
+  margin:var(--s5) 0 var(--s4);
+}
+.lvl__price-now{
+  font-family:var(--mono);font-size:32px;font-weight:800;
+  line-height:1;color:var(--red);letter-spacing:-.02em;
+}
+.lvl__price-was{
+  font-family:var(--mono);font-size:16px;color:var(--slate-light);
+  text-decoration:line-through;
+}
+.lvl__price-off{
+  font-size:13px;font-weight:700;color:var(--red);
+  background:var(--red-soft);border-radius:var(--r-sm);padding:3px 8px;
+}
+.lvl__price-online{
+  margin:calc(var(--s4) * -1) 0 var(--s4);
+  font-size:14px;color:var(--slate);
+}
+@media (max-width:480px){ .lvl__price-now{font-size:28px} }

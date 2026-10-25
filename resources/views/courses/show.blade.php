@@ -116,25 +116,15 @@
           </ul>
         @endif
 
-        <div class="lvl__fees">
-          @if ($level->regular_fee)
-            <div class="lvl__fee">
-              <span>Price</span>
-              <b class="mono {{ $level->hasDiscount() ? 'is-struck' : '' }}">৳ {{ number_format($level->regular_fee) }}</b>
-            </div>
-          @endif
+        <div class="lvl__price">
+          <b class="lvl__price-now">৳ {{ number_format($level->final_fee) }}</b>
           @if ($level->hasDiscount())
-            <div class="lvl__fee lvl__fee--now">
-              <span>Discount price</span>
-              <b class="mono">৳ {{ number_format($level->final_fee) }}</b>
-            </div>
-          @endif
-          @if ($level->fee_online)
-            <div class="lvl__fee"><span>Online</span><b class="mono">৳ {{ number_format($level->fee_online) }}</b></div>
+            <span class="lvl__price-was">৳ {{ number_format($level->regular_fee) }}</span>
+            <span class="lvl__price-off">-{{ $level->discount_percent }}%</span>
           @endif
         </div>
-        @if ($level->hasDiscount())
-          <p class="lvl__save">Save ৳ {{ number_format($level->discount) }} — limited-time offer</p>
+        @if ($level->fee_online)
+          <p class="lvl__price-online">Online: ৳ {{ number_format($level->fee_online) }}</p>
         @endif
         <a href="#enrol" class="btn btn--primary btn--block">Enrol in {{ $level->code }}</a>
       </article>
