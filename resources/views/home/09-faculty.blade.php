@@ -15,10 +15,12 @@
         @else
           <span class="fac__avatar fac__avatar--{{ $member->avatar_variant }}" aria-hidden="true">{{ $member->initials }}</span>
         @endif
-        <h3>{{ $member->name }}</h3>
-        <p class="fac__role">{{ $member->role }}</p>
-        @if ($member->credential)<p class="fac__cred">{{ $member->credential }}</p>@endif
-        @if ($member->quote)<p class="fac__quote">{{ $member->quote }}</p>@endif
+        <div class="fac__body">
+          <h3>{{ $member->name }}</h3>
+          <p class="fac__role">{{ $member->role }}</p>
+          @if ($member->credential)<p class="fac__cred">{{ $member->credential }}</p>@endif
+          @if ($member->quote)<p class="fac__quote">{{ $member->quote }}</p>@endif
+        </div>
       </article>
       @endforeach
     </div>
