@@ -1413,7 +1413,9 @@ body.nav-open .totop{opacity:0;pointer-events:none;transition:opacity .2s ease}
    circle; the offset frames the head rather than the chest. */
 img.fac__avatar{object-fit:cover;object-position:center 18%}
 
-/* A single instructor gets a profile card, not a lone column of a grid. */
+/* A single instructor gets a profile card, not a lone column of a grid.
+   Round portrait with a soft brand ring; the text reads role, name, rule,
+   teaching line, then credential. */
 .faculty--solo{grid-template-columns:1fr;max-width:740px}
 .faculty--solo .fac{
   display:grid;grid-template-columns:auto 1fr;gap:var(--s6);
@@ -1423,13 +1425,21 @@ img.fac__avatar{object-fit:cover;object-position:center 18%}
   width:148px;height:148px;margin:0;font-size:46px;
   box-shadow:0 0 0 6px var(--red-soft);
 }
-.faculty--solo .fac h3{font-size:24px;margin-bottom:3px}
-.faculty--solo .fac__role{margin-bottom:var(--s3)}
-.faculty--solo .fac__cred{margin-bottom:var(--s3)}
-.faculty--solo .fac__quote{font-size:15px;max-width:48ch}
+/* Ordered here rather than in the markup, so the multi-instructor grid keeps
+   its own reading order. */
+.faculty--solo .fac__body{display:flex;flex-direction:column}
+.faculty--solo .fac__role{order:1;color:var(--teal);margin:0 0 6px}
+.faculty--solo .fac h3{order:2;font-size:24px;margin:0}
+.faculty--solo .fac h3::after{
+  content:"";display:block;width:38px;height:3px;
+  background:var(--red);border-radius:2px;margin:12px 0 14px;
+}
+.faculty--solo .fac__quote{order:3;font-style:normal;font-size:15.5px;line-height:1.65;max-width:46ch;margin:0}
+.faculty--solo .fac__cred{order:4;margin:var(--s3) 0 0;font-size:11.5px}
 
 @media (max-width:640px){
   .faculty--solo .fac{grid-template-columns:1fr;text-align:center;gap:var(--s4)}
   .faculty--solo .fac__avatar{margin:0 auto;width:118px;height:118px;font-size:36px}
+  .faculty--solo .fac h3::after{margin-left:auto;margin-right:auto}
   .faculty--solo .fac__quote{max-width:none}
 }
