@@ -188,14 +188,14 @@
       <div class="faculty">
         @foreach ($instructors as $i => $member)
           <article class="fac reveal" data-delay="{{ $i + 1 }}">
-            @if ($member->photo)
-              <img class="fac__avatar" src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" width="84" height="84">
+            @if ($member->photo_url)
+              <img class="fac__avatar" src="{{ $member->photo_url }}" alt="{{ $member->name }}" width="84" height="84">
             @else
               <span class="fac__avatar fac__avatar--{{ $member->avatar_variant }}" aria-hidden="true">{{ $member->initials }}</span>
             @endif
             <h3>{{ $member->name }}</h3>
             <p class="fac__role">{{ $member->role }}</p>
-            <p class="fac__cred">{{ $member->credential }}</p>
+            @if ($member->credential)<p class="fac__cred">{{ $member->credential }}</p>@endif
             <p class="fac__quote">{{ $member->quote }}</p>
           </article>
           @endforeach
@@ -210,14 +210,14 @@
       <div class="faculty">
         @foreach ($counsellors as $i => $member)
           <article class="fac reveal" data-delay="{{ $i + 1 }}">
-            @if ($member->photo)
-              <img class="fac__avatar" src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}" width="84" height="84">
+            @if ($member->photo_url)
+              <img class="fac__avatar" src="{{ $member->photo_url }}" alt="{{ $member->name }}" width="84" height="84">
             @else
               <span class="fac__avatar fac__avatar--{{ $member->avatar_variant }}" aria-hidden="true">{{ $member->initials }}</span>
             @endif
             <h3>{{ $member->name }}</h3>
             <p class="fac__role">{{ $member->role }}</p>
-            <p class="fac__cred">{{ $member->credential }}</p>
+            @if ($member->credential)<p class="fac__cred">{{ $member->credential }}</p>@endif
             <p class="fac__quote">{{ $member->quote }}</p>
           </article>
           @endforeach

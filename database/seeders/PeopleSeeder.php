@@ -14,15 +14,8 @@ class PeopleSeeder extends Seeder
 
         $people = [
             // instructors
-            ['Shahriar Rahman', 'SR', 'Japanese · JLPT', 'JLPT N1 · 6 years in Tokyo',
-             '"Speak from day one. Perfect grammar with no confidence gets you nowhere at the embassy."',
+            ['Mahbubur Rahman', 'MR', 'Japanese · JLPT', null, null,
              'instructor', 'japanese', 'r', 1],
-            ['Mahfuza Khatun', 'MK', 'Instructor · N5 batches', 'JLPT N2 · 4 years teaching',
-             '"Beginners quit over kanji. Teach the radicals first and it stops being memorisation."',
-             'instructor', 'japanese', '', 2],
-            ['Yuki Tanaka', 'YT', 'Kaiwa sessions', 'Native speaker · Weekly conversation',
-             '"Students understand more than they can say. Conversation class is for closing that gap."',
-             'instructor', 'japanese', 't', 3],
             ['Jinhee Park', 'JH', 'Korean · TOPIK', 'Native speaker · 8 years teaching',
              '"TOPIK rewards pattern recognition. We drill the patterns until they\'re automatic."',
              'instructor', 'korean', '', 4],
@@ -45,9 +38,16 @@ class PeopleSeeder extends Seeder
              'counsellor', null, 'r', 3],
         ];
 
+        // Photographs that ship with the repository rather than being
+        // uploaded. Faculty::photo_url resolves either kind.
+        $photos = [
+            'Mahbubur Rahman' => 'assets/img/faculty/mahbubur-rahman.jpg',
+        ];
+
         foreach ($people as [$name, $initials, $role, $cred, $quote, $group, $slug, $variant, $sort]) {
             Faculty::updateOrCreate(['name' => $name], [
                 'initials' => $initials,
+                'photo' => $photos[$name] ?? null,
                 'role' => $role,
                 'credential' => $cred,
                 'quote' => $quote,

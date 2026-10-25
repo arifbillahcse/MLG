@@ -35,6 +35,22 @@ class Faculty extends Model
         ];
     }
 
+    /**
+     * A path under assets/ ships with the repository; anything else came from
+     * the admin's uploader and lives on the storage disk. Resolving both here
+     * means a seeded photograph and an uploaded one render the same way.
+     */
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if (blank($this->photo)) {
+            return null;
+        }
+
+        return str_starts_with($this->photo, 'assets/')
+            ? asset($this->photo)
+            : asset('storage/'.$this->photo);
+    }
+
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
