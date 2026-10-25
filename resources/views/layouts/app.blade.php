@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ \App\Support\Asset::url('assets/css/style.css') }}">
 
 @stack('schema')
 </head>
@@ -39,6 +39,6 @@
 
 @include('partials.footer')
 
-<script src="{{ asset('assets/js/main.js') }}" defer></script>
+<script src="{{ \App\Support\Asset::url('assets/js/main.js') }}" defer></script>
 </body>
 </html>
