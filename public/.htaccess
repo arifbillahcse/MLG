@@ -4,10 +4,12 @@
 # drops to the account default PHP, which on this host has no intl and takes the
 # admin panel down. Keeping it in the repo is what stops that recurring.
 #
-# It is specific to cPanel with EA-PHP 8.2. DELETE THIS BLOCK when deploying
-# anywhere else — an AddHandler naming a handler Apache does not have will fail
-# to serve PHP at all.
-AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+# It is specific to cPanel with EA-PHP 8.2 — change or remove it when deploying
+# anywhere else. The mime_module guard is how cPanel writes it: where that
+# module is absent the block is skipped rather than breaking PHP entirely.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+</IfModule>
 # php -- END cPanel-generated handler, do not edit
 
 <IfModule mod_rewrite.c>
