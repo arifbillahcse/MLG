@@ -1445,3 +1445,7 @@ img.fac__avatar{object-fit:cover;object-position:center 18%}
   .faculty--solo .fac h3::after{margin-left:auto;margin-right:auto}
   .faculty--solo .fac__quote{max-width:none}
 }
+
+/* Instructor cards hover like every other card on the site. */
+.fac{transition:border-color .22s ease}
+.fac:hover{border-color:var(--red)}

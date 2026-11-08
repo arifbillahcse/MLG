@@ -48,6 +48,9 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->weight('bold'),
+                Tables\Columns\TextColumn::make('username')->searchable()->copyable()
+                    ->description('signs in with this')
+                    ->placeholder('— cannot sign in'),
                 Tables\Columns\TextColumn::make('email')->searchable()->copyable(),
                 Tables\Columns\TextColumn::make('role')->badge()
                     ->color(fn (string $state) => $state === 'admin' ? 'danger' : 'gray'),

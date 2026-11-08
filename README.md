@@ -15,7 +15,7 @@ theme.
 |---|---|
 | Backend | **Laravel 11/12**, PHP 8.2+ |
 | Templating | **Blade** — 42 views |
-| ORM | **Eloquent** — 21 models, 23 migrations, 9 seeders |
+| ORM | **Eloquent** — 21 models, 27 migrations, 9 seeders |
 | Admin panel | **Filament v3** at `/admin` |
 | Database | MySQL / MariaDB |
 | Frontend | Hand-written CSS (~1,380 lines) and vanilla JS (~650 lines) |
@@ -195,12 +195,14 @@ MLG/                       ← a standard Laravel project. Clone it and run it.
 │   ├── Support/Site.php   cached settings + nav
 │   └── View/Composers/    ChromeComposer — topbar, header, footer
 ├── bootstrap/app.php      middleware + provider registration
-├── database/              23 migrations · 9 seeders
+├── database/              27 migrations · 9 seeders
 ├── resources/views/       layouts · partials · home/01–20 · courses · errors
 ├── routes/web.php         13 named routes
 ├── public/                ← the web root. Point the document root HERE
+├── tests/Feature/         pricing tests (php artisan test)
 ├── artisan
 ├── composer.json
+├── phpunit.xml
 ├── ARCHITECTURE.md        how it is built, phase by phase
 ├── DEPLOY.md              cPanel deployment + launch checklist
 └── README.md              this file
