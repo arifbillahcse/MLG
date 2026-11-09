@@ -51,6 +51,23 @@ class Site
         );
     }
 
+    /**
+     * The page's address on the primary domain, whichever host served it.
+     *
+     * The site answers on more than one domain. url()->current() reflects the
+     * host that was asked, so each domain would declare itself canonical and
+     * search engines would treat the two as separate, competing pages. Built
+     * from APP_URL instead, every copy of a page points at the same address.
+     *
+     * Only the canonical and sharing tags use this. Links and form actions
+     * stay on the host the visitor is actually on — sending a form across
+     * domains would lose the session and fail CSRF.
+     */
+    public static function canonical(): string
+    {
+        return rtrim(config('app.url'), '/').request()->getPathInfo();
+    }
+
     public static function flush(): void
     {
         foreach (static::CACHE_KEYS as $key) {

@@ -10,10 +10,10 @@
 
 @yield('og')
 
-<link rel="canonical" href="{{ url()->current() }}">
-<link rel="alternate" hreflang="en" href="{{ url()->current() }}">
-<link rel="alternate" hreflang="bn" href="{{ url()->current() }}">
-<meta property="og:url" content="{{ url()->current() }}">
+<link rel="canonical" href="{{ \App\Support\Site::canonical() }}">
+<link rel="alternate" hreflang="en" href="{{ \App\Support\Site::canonical() }}">
+<link rel="alternate" hreflang="bn" href="{{ \App\Support\Site::canonical() }}">
+<meta property="og:url" content="{{ \App\Support\Site::canonical() }}">
 <meta property="og:site_name" content="{{ \App\Support\Site::get('site_name', 'Multi Languages Gateway') }}">
 <meta property="og:image" content="{{ asset('assets/img/glm-logo-132.png') }}">
 <meta name="twitter:card" content="summary">
