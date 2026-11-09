@@ -1,8 +1,9 @@
-{{-- The XML declaration is echoed, not written literally. Blade copies
-     literal text straight into the compiled PHP file, and where
-     short_open_tag is on the declaration is read as a PHP open tag and
-     the page 500s. Inside an echo it is just a string. --}}
-{!! '<?xml version="1.0" encoding="UTF-8"?>' !!}
+{{-- The angle bracket is concatenated on so the two characters that open a
+     PHP tag never sit next to each other in this file. Blade runs the raw
+     template through token_get_all() before compiling, and where
+     short_open_tag is on that reads the XML declaration as PHP — even inside
+     an echo — and the view no longer parses. --}}
+{!! '<'.'?xml version="1.0" encoding="UTF-8"?'.'>' !!}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 @foreach ($urls as $url)
     <url>
